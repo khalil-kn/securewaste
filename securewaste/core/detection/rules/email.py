@@ -15,9 +15,7 @@ from securewaste.core.detection.rules.base import DetectionRule
 from securewaste.core.extraction import PageText
 
 # local part (no leading/trailing word char), @, one or more domain labels, TLD of 2+ letters.
-_EMAIL_RE = re.compile(
-    r"(?<!\w)[A-Za-z0-9._%+\-]+@(?:[A-Za-z0-9\-]+\.)+[A-Za-z]{2,}(?!\w)"
-)
+_EMAIL_RE = re.compile(r"(?<!\w)[A-Za-z0-9._%+\-]+@(?:[A-Za-z0-9\-]+\.)+[A-Za-z]{2,}(?!\w)")
 
 
 class EmailRule(DetectionRule):
