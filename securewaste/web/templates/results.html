@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+
+{% block title %}SecureWaste · Results{% endblock %}
+
+{% block content %}
+<div class="sw-page-title">
+  <h1>Scan Results</h1>
+  <p class="sw-page-subtitle">File: {{ file_name }}</p>
+</div>
+
+<div class="sw-card">
+  <div class="sw-card-header">
+    <span>Findings: {{ findings|length }}</span>
+  </div>
+
+  {% if findings %}
+  <div class="sw-findings-table" role="table">
+    <div class="sw-findings-header" role="row">
+      <div class="sw-findings-cell sw-findings-cell--category" role="columnheader">Category</div>
+      <div class="sw-findings-cell sw-findings-cell--value" role="columnheader">Masked Value</div>
+      <div class="sw-findings-cell sw-findings-cell--page" role="columnheader">Page</div>
+      <div class="sw-findings-cell sw-findings-cell--occurrences" role="columnheader">Occurrences</div>
+      <div class="sw-findings-cell sw-findings-cell--severity" role="columnheader">Severity</div>
+      <div class="sw-findings-cell sw-findings-cell--status" role="columnheader">Status</div>
+    </div>
+
+    {% for finding in findings %}
+    <div class="sw-finding-row" role="row">
+      <div class="sw-findings-cell sw-findings-cell--category" role="cell">
+        <span class="sw-category-badge">{{ finding.category|title }}</span>
+      </div>
+      <div class="sw-findings-cell sw-findings-cell--value" role="cell">
+        <code class="sw-masked-value">{{ finding.masked_value }}</code>
+      </div>
+      <div class="sw-findings-cell sw-findings-cell--page" role="cell">
+        <span class="sw-tabular">{{ finding.page_number }}</span>
+      </div>
+      <div class="sw-findings-cell sw-findings-cell--occurrences" role="cell">
+        <span class="sw-tabular">{{ finding.occurrences }}</span>
+      </div>
+      <div class="sw-findings-cell sw-findings-cell--severity" role="cell">
+        <div class="sw-severity-meter" aria-label="Severity: {{ finding.severity }}">
+          {% set sev_levels = ['informational', 'low', 'medium', 'high', 'critical'] %}
+          {% set sev_index = sev_levels.index(finding.severity) %}
+          <span class="sw-severity-bar {% if sev_index >= 0 %}sw-severity-bar--active{% endif %}" style="--bar-index: 0;"></span>
+          <span class="sw-severity-bar {% if sev_index >= 1 %}sw-severity-bar--active{% endif %}" style="--bar-index: 1;"></span>
+          <span class="sw-severity-bar {% if sev_index >= 2 %}sw-severity-bar--active{% endif %}" style="--bar-index: 2;"></span>
+          <span class="sw-severity-bar {% if sev_index >= 3 %}sw-severity-bar--active{% endif %}" style="--bar-index: 3;"></span>
+        </div>
+        <span class="sw-severity-label">{{ finding.severity|title }}</span>
+      </div>
+      <div class="sw-findings-cell sw-findings-cell--status" role="cell">
+        <span class="sw-status-pill sw-status-pill--open">Needs review</span>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  {% else %}
+  <p class="sw-muted">No findings detected.</p>
+  <p class="sw-hint">The document appears clean — no sensitive data categories were matched.</p>
+  {% endif %}
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/results.js') }}"></script>
+{% endblock %}

@@ -21,6 +21,16 @@ def create_app(test_config: dict | None = None) -> Flask:
     for sub in ("originals", "sanitized", "tmp"):
         (app.config["STORAGE_DIR"] / sub).mkdir(parents=True, exist_ok=True)
 
+    # Build upload limits from config
+    app.config["UPLOAD_LIMITS"] = {
+        "max_bytes": app.config["MAX_CONTENT_LENGTH"],
+        "max_pdf_pages": app.config["MAX_PDF_PAGES"],
+        "max_extracted_chars": app.config["MAX_EXTRACTED_CHARS"],
+    }
+
+    # Detection rules will be populated by Milestone 1 issue #5; empty list for now
+    app.config["DETECTION_RULES"] = []
+
     from securewaste.db import connection
     from securewaste.web import routes_api, routes_dashboard, routes_documents, security
 

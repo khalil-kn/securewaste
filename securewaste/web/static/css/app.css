@@ -10,3 +10,202 @@ code { font-family: var(--sw-font-mono); }
 .sw-main { max-width: 1200px; margin: 0 auto; padding: var(--sw-space-6) var(--sw-space-4); }
 .sw-muted { color: var(--sw-text-muted); }
 :focus-visible { outline: 2px solid var(--sw-accent); outline-offset: 2px; }
+
+/* --- Results page (Issue #6) --- */
+.sw-page-title {
+  margin-bottom: var(--sw-space-6);
+}
+.sw-page-title h1 {
+  margin: 0 0 var(--sw-space-1);
+  font-size: 1.75rem;
+  font-weight: 600;
+}
+.sw-page-subtitle {
+  margin: 0;
+  color: var(--sw-text-muted);
+  font-size: 1rem;
+}
+
+.sw-card {
+  background: var(--sw-surface);
+  border: 1px solid var(--sw-border);
+  border-radius: var(--sw-radius);
+  overflow: hidden;
+}
+.sw-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--sw-space-4) var(--sw-space-4);
+  border-bottom: 1px solid var(--sw-border);
+  font-weight: 500;
+}
+
+/* Findings table (grid-based for responsive) */
+.sw-findings-table {
+  display: grid;
+  grid-template-columns: 1fr 2fr 60px 90px 140px 140px;
+  gap: 0;
+}
+.sw-findings-header {
+  display: contents;
+}
+.sw-findings-cell {
+  display: flex;
+  align-items: center;
+  padding: var(--sw-space-3) var(--sw-space-4);
+  border-bottom: 1px solid var(--sw-border);
+}
+.sw-findings-header .sw-findings-cell {
+  font-weight: 600;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--sw-text-muted);
+  background: var(--sw-bg);
+}
+.sw-finding-row .sw-findings-cell {
+  font-size: 0.9rem;
+}
+.sw-finding-row:last-child .sw-findings-cell {
+  border-bottom: none;
+}
+.sw-finding-row:hover .sw-findings-cell {
+  background: rgba(255, 255, 255, 0.02);
+}
+
+/* Cell-specific */
+.sw-findings-cell--category { }
+.sw-findings-cell--value { }
+.sw-findings-cell--page { justify-content: center; }
+.sw-findings-cell--occurrences { justify-content: center; }
+.sw-findings-cell--severity { }
+.sw-findings-cell--status { justify-content: flex-end; }
+
+/* Category badge */
+.sw-category-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 8px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  border-radius: 9999px;
+  background: var(--sw-border);
+  color: var(--sw-text);
+  text-transform: capitalize;
+}
+
+/* Masked value - mono, tabular nums */
+.sw-masked-value {
+  font-family: var(--sw-font-mono);
+  font-variant-numeric: tabular-nums;
+  font-size: 0.85rem;
+  background: var(--sw-bg);
+  padding: 2px 6px;
+  border-radius: 4px;
+  border: 1px solid var(--sw-border);
+}
+
+/* Tabular numbers for page/occurrences */
+.sw-tabular {
+  font-family: var(--sw-font-mono);
+  font-variant-numeric: tabular-nums;
+}
+
+/* Severity meter - 4 small bars */
+.sw-severity-meter {
+  display: inline-flex;
+  align-items: flex-end;
+  gap: 2px;
+  height: 16px;
+  margin-right: var(--sw-space-2);
+}
+.sw-severity-bar {
+  width: 4px;
+  border-radius: 2px 2px 0 0;
+  background: var(--sw-border);
+  transition: height 0.15s ease, background 0.15s ease;
+}
+.sw-severity-bar[style*="--bar-index: 0"] { height: 25%; }
+.sw-severity-bar[style*="--bar-index: 1"] { height: 50%; }
+.sw-severity-bar[style*="--bar-index: 2"] { height: 75%; }
+.sw-severity-bar[style*="--bar-index: 3"] { height: 100%; }
+
+/* Active bars get severity color */
+.sw-severity-bar--active[style*="--bar-index: 0"] { background: var(--sw-sev-info); }
+.sw-severity-bar--active[style*="--bar-index: 1"] { background: var(--sw-sev-low); }
+.sw-severity-bar--active[style*="--bar-index: 2"] { background: var(--sw-sev-medium); }
+.sw-severity-bar--active[style*="--bar-index: 3"] { background: var(--sw-sev-high); }
+.sw-severity-bar--active[style*="--bar-index: 4"] { background: var(--sw-sev-critical); }
+
+.sw-severity-label {
+  font-size: 0.75rem;
+  font-weight: 500;
+  text-transform: capitalize;
+  color: var(--sw-text-muted);
+}
+
+/* Status pill - fully rounded */
+.sw-status-pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 12px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  border-radius: 9999px;
+  white-space: nowrap;
+}
+.sw-status-pill--open {
+  background: rgba(217, 164, 65, 0.15);
+  color: var(--sw-sev-medium);
+  border: 1px solid var(--sw-sev-medium);
+}
+.sw-status-pill--confirmed {
+  background: rgba(95, 195, 156, 0.15);
+  color: var(--sw-sev-low);
+  border: 1px solid var(--sw-sev-low);
+}
+.sw-status-pill--false_positive {
+  background: rgba(122, 162, 214, 0.15);
+  color: var(--sw-sev-info);
+  border: 1px solid var(--sw-sev-info);
+}
+.sw-status-pill--resolved {
+  background: rgba(154, 165, 184, 0.15);
+  color: var(--sw-text-muted);
+  border: 1px solid var(--sw-text-muted);
+}
+
+/* Hint text for non-specialists */
+.sw-hint {
+  margin-top: var(--sw-space-3);
+  font-size: 0.85rem;
+  color: var(--sw-text-muted);
+}
+
+/* Responsive: stack on narrow screens */
+@media (max-width: 768px) {
+  .sw-findings-table {
+    grid-template-columns: 1fr;
+  }
+  .sw-findings-header {
+    display: none;
+  }
+  .sw-finding-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--sw-space-2) var(--sw-space-4);
+    padding: var(--sw-space-3) var(--sw-space-4);
+    border-bottom: 1px solid var(--sw-border);
+  }
+  .sw-finding-row .sw-findings-cell {
+    border: none;
+    padding: 0;
+  }
+  .sw-findings-cell--category { grid-column: 1; }
+  .sw-findings-cell--value { grid-column: 2; font-size: 0.8rem; }
+  .sw-findings-cell--page { grid-column: 1; justify-content: flex-start; }
+  .sw-findings-cell--occurrences { grid-column: 2; justify-content: flex-start; }
+  .sw-findings-cell--severity { grid-column: 1; }
+  .sw-findings-cell--status { grid-column: 2; justify-content: flex-end; }
+}
