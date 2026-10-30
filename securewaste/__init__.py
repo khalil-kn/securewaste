@@ -22,7 +22,7 @@ def create_app(test_config: dict | None = None) -> Flask:
         (app.config["STORAGE_DIR"] / sub).mkdir(parents=True, exist_ok=True)
 
     from securewaste.db import connection
-    from securewaste.web import routes_api, routes_dashboard, routes_documents, security
+    from securewaste.web import routes_api, routes_dashboard, routes_detect, routes_documents, security
 
     security.init_app(app)
     connection.init_app(app)
@@ -30,4 +30,5 @@ def create_app(test_config: dict | None = None) -> Flask:
     app.register_blueprint(routes_dashboard.bp)
     app.register_blueprint(routes_documents.bp)
     app.register_blueprint(routes_api.bp)
+    app.register_blueprint(routes_detect.bp)
     return app
