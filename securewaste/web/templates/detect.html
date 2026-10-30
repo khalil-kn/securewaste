@@ -2,16 +2,20 @@
 {% block title %}Detect sensitive data{% endblock %}
 {% block content %}
   <h1>Detect sensitive data</h1>
-  <p class="sw-muted">Paste text below to find e-mails, Tunisian phone numbers and sensitive keywords. Values are masked — the original text never appears in results.</p>
+  <p class="sw-muted">Upload a PDF — its text is extracted and scanned for e-mails, Tunisian phone numbers and sensitive keywords. Values are masked: the original text never appears in results.</p>
 
-  <form class="sw-card sw-form" method="post" action="{{ url_for('detect.detect_run') }}">
+  <form class="sw-card sw-form" method="post" action="{{ url_for('detect.detect_run') }}" enctype="multipart/form-data">
     <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-    <label class="sw-label" for="text">Text to scan</label>
-    <textarea class="sw-textarea" id="text" name="text" rows="10" autofocus>{{ text }}</textarea>
+    <label class="sw-label" for="document">PDF to scan</label>
+    <input class="sw-file" type="file" id="document" name="document" accept="application/pdf,.pdf">
     <div class="sw-form-actions">
       <button class="sw-btn sw-btn-primary" type="submit">Scan</button>
     </div>
   </form>
+
+  {% if error %}
+    <p class="sw-error">{{ error }}</p>
+  {% endif %}
 
   {% if findings is not none %}
     <section class="sw-results">
@@ -37,7 +41,7 @@
           {% endfor %}
         </ul>
       {% else %}
-        <p class="sw-muted sw-empty">No sensitive data found in this text.</p>
+        <p class="sw-muted sw-empty">No sensitive data found in this document.</p>
       {% endif %}
     </section>
   {% endif %}

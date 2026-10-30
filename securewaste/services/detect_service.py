@@ -1,18 +1,21 @@
-"""Text-detection service for the /detect page (Issue #5).
+"""Detection service for /detect (Issue #5).
 
-Runs the detection engine over a single block of pasted text and returns the findings plus a
-masked copy of the text (the original is never echoed back to the page). This keeps the route
-thin and puts the engine wiring in one place. It does not persist anything (persistence is
-Milestone 3).
+Consumes the page text produced by extract_pages() — the PDF→text step owned by Milestone 1
+issue #4 — and runs the detection engine over those pages. This module does not read files
+itself and persists nothing (persistence is Milestone 3).
 """
 
 from __future__ import annotations
 
-from securewaste.core.detection.engine import DetectionEngine, mask_text
+from pathlib import Path
+from typing import Literal
+
+from securewaste.core.detection.engine import DetectionEngine
 from securewaste.core.detection.rules.email import EmailRule
 from securewaste.core.detection.rules.keywords import KeywordRule
 from securewaste.core.detection.rules.phone import PhoneRule
-from securewaste.core.extraction import PageText
+from securewaste.core.extraction import PageText, extract_pages
+from securewaste.core.upload import Limits
 
 
 def _build_rules(keywords: list[str]):
@@ -22,9 +25,26 @@ def _build_rules(keywords: list[str]):
     return rules
 
 
-def detect_text(text: str, keywords: list[str], min_confidence: float, hmac_key: bytes) -> tuple[list, str]:
-    """Return (findings, masked_text). masked_text has every detected value replaced by its mask."""
+def detect_pages(
+    pages: list[PageText],
+    keywords: list[str],
+    min_confidence: float,
+    hmac_key: bytes,
+) -> list:
+    """Run detection over already-extracted pages; findings never contain raw values (ST-01)."""
     rules = _build_rules(keywords)
     engine = DetectionEngine(rules, min_confidence, hmac_key)
-    findings = engine.scan([PageText(page_number=1, text=text)])
-    return findings, mask_text(text, rules)
+    return engine.scan(pages)
+
+
+def scan_file(
+    path: Path,
+    file_type: Literal["pdf", "txt"],
+    limits: Limits,
+    keywords: list[str],
+    min_confidence: float,
+    hmac_key: bytes,
+) -> tuple[list, list[PageText]]:
+    """Extract text (reusing issue #4's extract_pages) then detect. Returns (findings, pages)."""
+    pages = extract_pages(path, file_type, limits)
+    return detect_pages(pages, keywords, min_confidence, hmac_key), pages

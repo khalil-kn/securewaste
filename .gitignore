@@ -40,3 +40,8 @@ docs/diagrams/tools/
 .DS_Store
 Thumbs.db
 desktop.ini
+
+# ---- Working files / AI tooling: keep untracked, never commit ----
+design.md
+images/
+.thinkrail/
