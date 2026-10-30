@@ -58,5 +58,5 @@ def _mask_phone(value: str) -> str:
 def value_hmac(key: bytes, rule_id: str, value: str) -> str:
     """HMAC-SHA256 hex of *rule_id* + normalised *value* (ADR-0006)."""
     norm = " ".join(value.strip().split()).lower()
-    payload = f"{rule_id}\x00{norm}".encode("utf-8")
+    payload = f"{rule_id}\x00{norm}".encode()
     return hmac.new(key, payload, hashlib.sha256).hexdigest()

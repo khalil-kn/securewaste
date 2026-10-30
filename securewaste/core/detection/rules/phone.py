@@ -15,9 +15,10 @@ from securewaste.core.detection.models import Candidate
 from securewaste.core.detection.rules.base import DetectionRule
 from securewaste.core.extraction import PageText
 
-# Optional prefix (+216 / 00216 / 0) then exactly eight digits, each optionally preceded by a
-# separator. Word-boundary guards stop the match from starting inside a longer number.
-_PHONE_RE = re.compile(r"(?<!\d)(?:\+216|00216|0)?(?:[ .-]?\d){8}(?!\d)")
+# Optional prefix (+216 / 00216 / 0) then exactly eight digits, each optionally followed by a
+# separator, ending on a digit (no stray leading/trailing separator is captured). Word-boundary
+# guards stop the match from starting inside a longer number.
+_PHONE_RE = re.compile(r"(?<!\d)(?:(?:\+216|00216|0)[ .-]?)?(?:\d[ .-]?){7}\d(?!\d)")
 
 _CONTEXT_WINDOW = 40
 _CONTEXT_BOOST = 0.2
