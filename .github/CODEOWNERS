@@ -4,19 +4,19 @@
 #
 # The tech lead owns the structure: anything that changes how the pieces fit together.
 
-*                                   @TECH-LEAD-USERNAME
+*                                   @khalil-kn
 
 # Structure and shared contracts — tech lead approval required
-/securewaste/__init__.py            @TECH-LEAD-USERNAME
-/securewaste/config.py              @TECH-LEAD-USERNAME
-/securewaste/web/security.py        @TECH-LEAD-USERNAME
-/securewaste/db/schema.sql          @TECH-LEAD-USERNAME
-/securewaste/core/errors.py         @TECH-LEAD-USERNAME
-/securewaste/core/detection/models.py     @TECH-LEAD-USERNAME
-/securewaste/core/detection/catalogue.py  @TECH-LEAD-USERNAME
-/securewaste/core/detection/rules/base.py @TECH-LEAD-USERNAME
-/requirements*.txt                  @TECH-LEAD-USERNAME
-/pyproject.toml                     @TECH-LEAD-USERNAME
-/.github/                           @TECH-LEAD-USERNAME
-/docs/03-api.md                     @TECH-LEAD-USERNAME
-/docs/adr/                          @TECH-LEAD-USERNAME
+/securewaste/__init__.py            @khalil-kn
+/securewaste/config.py              @khalil-kn
+/securewaste/web/security.py        @khalil-kn
+/securewaste/db/schema.sql          @khalil-kn
+/securewaste/core/errors.py         @khalil-kn
+/securewaste/core/detection/models.py     @khalil-kn
+/securewaste/core/detection/catalogue.py  @khalil-kn
+/securewaste/core/detection/rules/base.py @khalil-kn
+/requirements*.txt                  @khalil-kn
+/pyproject.toml                     @khalil-kn
+/.github/                           @khalil-kn
+/docs/03-api.md                     @khalil-kn
+/docs/adr/                          @khalil-kn
