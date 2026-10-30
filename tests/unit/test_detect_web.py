@@ -71,3 +71,30 @@ def test_detect_post_missing_file_shows_error(tmp_path):
     response = client.post("/detect", data={}, content_type="multipart/form-data")
     assert response.status_code == 200
     assert "Please choose a PDF file" in response.get_data(as_text=True)
+
+
+def _render_pdf(texts):
+    import pymupdf
+
+    with pymupdf.open() as pdf:
+        for text in texts:
+            page = pdf.new_page()
+            page.insert_text((55, 75), text, fontsize=12)
+        return pdf.tobytes()
+
+
+def test_detect_post_with_real_pdf_extraction(tmp_path):
+    """Integration: real extract_pages (issue #4) feeds the detection engine end to end."""
+    app = make_app(tmp_path)
+    client = app.test_client()
+    pdf_bytes = _render_pdf(["Contact: sana@example.tn, tel +216 98 123 456"])
+    response = client.post(
+        "/detect",
+        data={"document": (io.BytesIO(pdf_bytes), "sample.pdf")},
+        content_type="multipart/form-data",
+    )
+    assert response.status_code == 200
+    body = response.get_data(as_text=True)
+    assert "s•••@e•••.tn" in body
+    assert "sana@example.tn" not in body
+    assert "page 1" in body

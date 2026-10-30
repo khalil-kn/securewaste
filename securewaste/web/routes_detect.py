@@ -11,6 +11,7 @@ from uuid import uuid4
 
 from flask import Blueprint, current_app, render_template, request
 
+from securewaste.core.errors import ExtractionFailed
 from securewaste.core.upload import Limits
 from securewaste.services.detect_service import scan_file
 
@@ -45,11 +46,11 @@ def detect_run():
             current_app.config["MIN_CONFIDENCE"],
             current_app.config["HMAC_KEY"],
         )
-    except NotImplementedError:
-        # extract_pages is another contributor's deliverable (issue #4); it is not wired yet.
-        return render_template(
-            "detect.html",
-            findings=None,
-            error="PDF text extraction isn't implemented yet (Milestone 1 issue #4).",
+    except ExtractionFailed as exc:
+        message = (
+            "This PDF has no selectable text layer."
+            if exc.code == "NO_TEXT_LAYER"
+            else "Could not read text from this PDF; please try another file."
         )
+        return render_template("detect.html", findings=None, error=message)
     return render_template("detect.html", findings=findings, error=None)
