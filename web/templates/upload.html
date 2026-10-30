@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Secure Waste - Upload</title>
+
+    <style>
+        :root {
+            --bg-1: #eef3fb;
+            --bg-2: #dfe9f9;
+            --card: #ffffff;
+            --text: #1b2437;
+            --muted: #6b778c;
+            --primary: #2457a7;
+            --primary-dark: #1a417d;
+            --primary-soft: #eaf1fd;
+            --border: #cdd9ee;
+            --error-bg: #fdecec;
+            --error-text: #b42318;
+            --success-bg: #e8f7ee;
+            --success-text: #14793f;
+            --shadow: 0 20px 45px rgba(36, 87, 167, 0.15);
+        }
+
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --bg-1: #0f1626;
+                --bg-2: #162240;
+                --card: #1a2338;
+                --text: #e8edf7;
+                --muted: #93a0b8;
+                --primary: #4b82e0;
+                --primary-dark: #3a6cc4;
+                --primary-soft: #223152;
+                --border: #33436a;
+                --error-bg: #3a1c1f;
+                --error-text: #ff8a80;
+                --success-bg: #17301f;
+                --success-text: #6fdc99;
+                --shadow: 0 20px 45px rgba(0, 0, 0, 0.45);
+            }
+        }
+
+        * { box-sizing: border-box; }
+
+        html {
+            height: 100%;
+            overflow: hidden;
+        }
+
+        body {
+            margin: 0;
+            height: 100vh;
+            height: 100dvh;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 12px;
+            font-family: "Segoe UI", system-ui, -apple-system, Roboto, Arial, sans-serif;
+            color: var(--text);
+            background: linear-gradient(135deg, var(--bg-1), var(--bg-2));
+        }
+
+        .container {
+            width: 100%;
+            max-width: 480px;
+            background: var(--card);
+            padding: clamp(18px, 4vh, 36px) 28px;
+            border-radius: 18px;
+            box-shadow: var(--shadow);
+            animation: rise 0.5s ease both;
+        }
+
+        @keyframes rise {
+            from { opacity: 0; transform: translateY(14px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        .icon {
+            width: 56px;
+            height: 56px;
+            margin: 0 auto clamp(6px, 1.5vh, 14px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 16px;
+            background: var(--primary-soft);
+            color: var(--primary);
+        }
+
+        h1 {
+            margin: 0 0 6px;
+            text-align: center;
+            font-size: 1.6rem;
+            font-weight: 700;
+            letter-spacing: -0.01em;
+        }
+
+        .subtitle {
+            margin: 0 0 clamp(12px, 3vh, 24px);
+            text-align: center;
+            color: var(--muted);
+            font-size: 0.95rem;
+        }
+
+        /* Messages */
+        .alert {
+            margin: 0 0 18px;
+            padding: 12px 14px;
+            border-radius: 10px;
+            font-size: 0.93rem;
+            line-height: 1.45;
+            border-left: 4px solid;
+        }
+
+        .error {
+            background: var(--error-bg);
+            color: var(--error-text);
+            border-color: var(--error-text);
+        }
+
+        .success {
+            background: var(--success-bg);
+            color: var(--success-text);
+            border-color: var(--success-text);
+        }
+
+        .details {
+            margin: 0 0 18px;
+            padding: 12px 14px;
+            border-radius: 10px;
+            background: var(--primary-soft);
+            font-size: 0.85rem;
+        }
+
+        .details p { margin: 4px 0; }
+
+        .details strong { color: var(--muted); font-weight: 600; }
+
+        .details .hash {
+            display: block;
+            margin-top: 2px;
+            font-family: ui-monospace, Consolas, monospace;
+            font-size: 0.78rem;
+            word-break: break-all;
+        }
+
+        /* Drop zone */
+        .dropzone {
+            position: relative;
+            display: block;
+            padding: clamp(16px, 4vh, 30px) 16px;
+            text-align: center;
+            border: 2px dashed var(--border);
+            border-radius: 14px;
+            background: var(--primary-soft);
+            cursor: pointer;
+            transition: border-color 0.2s, background 0.2s, transform 0.2s;
+        }
+
+        .dropzone:hover,
+        .dropzone.dragover {
+            border-color: var(--primary);
+            transform: translateY(-1px);
+        }
+
+        .dropzone:focus-within {
+            outline: 3px solid var(--primary);
+            outline-offset: 2px;
+        }
+
+        .dropzone input[type="file"] {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            cursor: pointer;
+        }
+
+        .dropzone .title {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .dropzone .title span { color: var(--primary); }
+
+        .hint {
+            margin: 12px 0 0;
+            text-align: center;
+            color: var(--muted);
+            font-size: 0.85rem;
+        }
+
+        #file-name {
+            display: block;
+            margin-top: 8px;
+            font-size: 0.88rem;
+            color: var(--primary);
+            font-weight: 600;
+            word-break: break-all;
+        }
+
+        /* Button */
+        button {
+            width: 100%;
+            margin-top: clamp(12px, 2.5vh, 20px);
+            padding: 14px;
+            border: none;
+            border-radius: 12px;
+            background: var(--primary);
+            color: #fff;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s, transform 0.1s, box-shadow 0.2s;
+            box-shadow: 0 8px 18px rgba(36, 87, 167, 0.28);
+        }
+
+        button:hover { background: var(--primary-dark); }
+
+        button:active { transform: scale(0.98); }
+
+        button:focus-visible {
+            outline: 3px solid var(--primary);
+            outline-offset: 3px;
+        }
+
+        .secure {
+            margin-top: 18px;
+            text-align: center;
+            font-size: 0.78rem;
+            color: var(--muted);
+        }
+
+        @media (max-width: 480px) {
+            .container { padding-left: 20px; padding-right: 20px; }
+        }
+
+        /* Short screens: drop the extras so everything fits without scrolling */
+        @media (max-height: 640px) {
+            .icon, .subtitle, .secure { display: none; }
+            h1 { font-size: 1.3rem; margin-bottom: 12px; }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <div class="icon" aria-hidden="true">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+             stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+            <polyline points="17 8 12 3 7 8"/>
+            <line x1="12" y1="3" x2="12" y2="15"/>
+        </svg>
+    </div>
+
+    <h1>Upload Document</h1>
+    <p class="subtitle">Send a file securely for analysis</p>
+
+    {% if error %}
+        <p class="alert error" role="alert">{{ error }}</p>
+    {% endif %}
+
+    {% if success %}
+        <p class="alert success" role="status">{{ success }}</p>
+        <div class="details">
+            <p><strong>Filename</strong><br>{{ filename }}</p>
+            <p><strong>SHA-256</strong><span class="hash">{{ fingerprint }}</span></p>
+        </div>
+    {% endif %}
+
+    <form action="{{ url_for('documents.upload_document') }}"
+          method="POST"
+          enctype="multipart/form-data">
+
+        <!-- Hidden CSRF security token -->
+        <input type="hidden"
+               name="csrf_token"
+               value="{{ csrf_token() }}">
+
+        <!-- File picker -->
+        <label class="dropzone" id="dropzone">
+            <input type="file"
+                   name="file"
+                   id="file"
+                   accept=".pdf,.txt"
+                   required>
+            <span class="title"><span>Choose a file</span> or drag it here</span>
+            <span id="file-name">No file selected</span>
+        </label>
+
+        <p class="hint">PDF or TXT, max 10 MB</p>
+
+        <button type="submit">Upload File</button>
+
+    </form>
+
+    <p class="secure">Files are checked and given a safe random name.</p>
+
+</div>
+
+<script>
+    // Show the chosen file name and highlight the zone while dragging.
+    var input = document.getElementById("file");
+    var zone = document.getElementById("dropzone");
+    var label = document.getElementById("file-name");
+
+    input.addEventListener("change", function () {
+        label.textContent = input.files.length ? input.files[0].name : "No file selected";
+    });
+
+    ["dragenter", "dragover"].forEach(function (evt) {
+        zone.addEventListener(evt, function () { zone.classList.add("dragover"); });
+    });
+
+    ["dragleave", "drop"].forEach(function (evt) {
+        zone.addEventListener(evt, function () { zone.classList.remove("dragover"); });
+    });
+</script>
+
+</body>
+</html>

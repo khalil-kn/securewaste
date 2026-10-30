@@ -1,0 +1,7 @@
+Hello Secure Waste!
+
+This is my first upload test.
+
+Testing PDF and TXT file validation.
+
+File upload is working correctly.
