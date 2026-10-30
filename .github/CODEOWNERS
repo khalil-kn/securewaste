@@ -1,0 +1,22 @@
+# Code owners are requested automatically as reviewers on pull requests that touch these paths.
+# Replace the placeholders with real GitHub usernames (e.g. @khalil-knaissi), then enable
+# "Require review from Code Owners" in the main branch rule.
+#
+# The tech lead owns the structure: anything that changes how the pieces fit together.
+
+*                                   @TECH-LEAD-USERNAME
+
+# Structure and shared contracts — tech lead approval required
+/securewaste/__init__.py            @TECH-LEAD-USERNAME
+/securewaste/config.py              @TECH-LEAD-USERNAME
+/securewaste/web/security.py        @TECH-LEAD-USERNAME
+/securewaste/db/schema.sql          @TECH-LEAD-USERNAME
+/securewaste/core/errors.py         @TECH-LEAD-USERNAME
+/securewaste/core/detection/models.py     @TECH-LEAD-USERNAME
+/securewaste/core/detection/catalogue.py  @TECH-LEAD-USERNAME
+/securewaste/core/detection/rules/base.py @TECH-LEAD-USERNAME
+/requirements*.txt                  @TECH-LEAD-USERNAME
+/pyproject.toml                     @TECH-LEAD-USERNAME
+/.github/                           @TECH-LEAD-USERNAME
+/docs/03-api.md                     @TECH-LEAD-USERNAME
+/docs/adr/                          @TECH-LEAD-USERNAME

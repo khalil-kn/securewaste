@@ -1,0 +1,58 @@
+@startuml seq-upload-scan
+!include _style.iuml
+skinparam linetype polyline
+autonumber "<b>0."
+title SecureWaste — Upload and scan (synchronous MVP)
+
+actor "Analyst" as user
+participant "Browser" as browser
+participant "documents\nroute" as route
+participant "ScanService" as svc
+participant "UploadValidator" as val
+participant "TextExtractor\n(PyMuPDF)" as ext
+participant "DetectionEngine" as det
+participant "RiskEngine" as risk
+database "SQLite" as db
+collections "File storage" as fs
+
+user -> browser : choose file, click "Scan"
+browser -> route : POST /documents\n(multipart, csrf_token)
+activate route
+route -> svc : upload_and_scan(filename, bytes)
+activate svc
+svc -> val : validate(filename, bytes, limits)
+activate val
+alt file rejected
+  val --> svc : UploadRejected(code)
+  svc --> route : error code
+  route --> browser : 413 / 415 / 422 + message
+else file accepted
+  val --> svc : ValidatedUpload(type, sha256, pages)
+  deactivate val
+  svc -> fs : write originals/<uuid>.<ext>
+  svc -> db : INSERT document, scan(status=running)
+  svc -> ext : extract_pages(path)
+  activate ext
+  ext --> svc : list[PageText]
+  deactivate ext
+  svc -> det : scan(pages)
+  activate det
+  loop each enabled rule, each page
+    det -> det : match, validate (Luhn / mod-97),\ncontext, confidence, mask + HMAC
+  end
+  det --> svc : list[Finding] (masked only)
+  deactivate det
+  svc -> risk : assess(findings)
+  activate risk
+  risk --> svc : RiskAssessment(score, level, reasons)
+  deactivate risk
+  svc -> db : INSERT findings, UPDATE scan(completed, risk)
+  svc -> db : INSERT audit_event(document.uploaded, scan.completed)
+  svc --> route : document_id
+  deactivate svc
+  route --> browser : 303 See Other → /documents/{id}
+  deactivate route
+  browser -> route : GET /documents/{id}
+  route --> browser : 200 details page (masked values)
+end
+@enduml

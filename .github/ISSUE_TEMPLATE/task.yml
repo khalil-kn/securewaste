@@ -1,0 +1,19 @@
+name: Task / chore
+description: Docs, tests, refactoring, tooling or CI work
+title: "chore: "
+labels: ["type: task"]
+body:
+  - type: textarea
+    id: what
+    attributes:
+      label: What needs to be done?
+    validations:
+      required: true
+  - type: textarea
+    id: done
+    attributes:
+      label: Done when
+      value: |
+        - [ ] 
+    validations:
+      required: true

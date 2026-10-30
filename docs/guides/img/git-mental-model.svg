@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1500" height="430" viewBox="0 0 1500 430">
+<defs><marker id="a" markerWidth="10" markerHeight="10" refX="9" refY="5" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#3B4A5E"/></marker></defs>
+<rect width="1500" height="430" fill="#FFFFFF"/>
+<text x="750.0" y="34" text-anchor="middle" style="font-family:Helvetica,Arial,sans-serif;font-size:20px;font-weight:bold" fill="#1F2A37">Where your code lives: three places on your computer, one on GitHub</text>
+<rect x="30" y="62" width="1036" height="300" rx="12" fill="none" stroke="#94A3B8" stroke-dasharray="6 4"/>
+<text x="44" y="86" style="font-family:Helvetica,Arial,sans-serif;font-size:13px;font-weight:bold" fill="#475569">YOUR COMPUTER (only you see this until you push)</text>
+<rect x="60" y="130" width="260" height="130" rx="10" fill="#F8FAFC" stroke="#3B4A5E" stroke-width="1.6"/>
+<text x="190" y="170" text-anchor="middle" style="font-family:Helvetica,Arial,sans-serif;font-size:17px;font-weight:bold" fill="#1F2A37">Working folder</text>
+<text x="190" y="200" text-anchor="middle" style="font-family:Helvetica,Arial,sans-serif;font-size:13px" fill="#475569">files you edit in VS Code</text>
+<rect x="430" y="130" width="260" height="130" rx="10" fill="#F8FAFC" stroke="#3B4A5E" stroke-width="1.6"/>
+<text x="560" y="170" text-anchor="middle" style="font-family:Helvetica,Arial,sans-serif;font-size:17px;font-weight:bold" fill="#1F2A37">Staging area</text>
+<text x="560" y="200" text-anchor="middle" style="font-family:Helvetica,Arial,sans-serif;font-size:13px" fill="#475569">the next snapshot</text>
+<rect x="800" y="130" width="260" height="130" rx="10" fill="#F8FAFC" stroke="#3B4A5E" stroke-width="1.6"/>
+<text x="930" y="170" text-anchor="middle" style="font-family:Helvetica,Arial,sans-serif;font-size:17px;font-weight:bold" fill="#1F2A37">Local repository</text>
+<text x="930" y="200" text-anchor="middle" style="font-family:Helvetica,Arial,sans-serif;font-size:13px" fill="#475569">.git/ — commits, branches,</text>
+<text x="930" y="220" text-anchor="middle" style="font-family:Helvetica,Arial,sans-serif;font-size:13px" fill="#475569">origin/main = last known GitHub</text>
+<rect x="1190" y="130" width="260" height="130" rx="10" fill="#EFF4FF" stroke="#2563EB" stroke-width="1.6"/>
+<text x="1320" y="170" text-anchor="middle" style="font-family:Helvetica,Arial,sans-serif;font-size:17px;font-weight:bold" fill="#1F2A37">GitHub (origin)</text>
+<text x="1320" y="200" text-anchor="middle" style="font-family:Helvetica,Arial,sans-serif;font-size:13px" fill="#475569">shared history, pull requests,</text>
+<text x="1320" y="220" text-anchor="middle" style="font-family:Helvetica,Arial,sans-serif;font-size:13px" fill="#475569">main changes only by merged PRs</text>
+<line x1="322" y1="165" x2="428" y2="165" stroke="#3B4A5E" stroke-width="2" marker-end="url(#a)"/>
+<text x="375.0" y="157" text-anchor="middle" style="font-family:Consolas,Menlo,monospace;font-size:13px" fill="#1F2A37">git add</text>
+<line x1="692" y1="165" x2="798" y2="165" stroke="#3B4A5E" stroke-width="2" marker-end="url(#a)"/>
+<text x="745.0" y="157" text-anchor="middle" style="font-family:Consolas,Menlo,monospace;font-size:13px" fill="#1F2A37">git commit</text>
+<line x1="1062" y1="165" x2="1188" y2="165" stroke="#3B4A5E" stroke-width="2" marker-end="url(#a)"/>
+<text x="1133.0" y="157" text-anchor="middle" style="font-family:Consolas,Menlo,monospace;font-size:13px" fill="#1F2A37">git push</text>
+<line x1="1188" y1="230" x2="1062" y2="230" stroke="#3B4A5E" stroke-width="2" marker-end="url(#a)"/>
+<text x="1133.0" y="250" text-anchor="middle" style="font-family:Consolas,Menlo,monospace;font-size:13px" fill="#1F2A37">  fetch / pull</text>
+<line x1="428" y1="230" x2="322" y2="230" stroke="#3B4A5E" stroke-width="2" marker-end="url(#a)"/>
+<text x="375.0" y="250" text-anchor="middle" style="font-family:Consolas,Menlo,monospace;font-size:13px" fill="#1F2A37">git restore</text>
+<path d="M930,262 L930,300 L190,300 L190,264" fill="none" stroke="#3B4A5E" stroke-width="2" marker-end="url(#a)"/>
+<text x="560" y="322" text-anchor="middle" style="font-family:Consolas,Menlo,monospace;font-size:13px" fill="#1F2A37">git switch &lt;branch&gt;  (updates the files you see)</text>
+<text x="30" y="400" style="font-family:Helvetica,Arial,sans-serif;font-size:13px" fill="#475569">A branch is a movable label on a commit. main = your local label; origin/main = your memory of GitHub's main, refreshed only by fetch/pull.</text>
+</svg>

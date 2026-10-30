@@ -1,0 +1,26 @@
+/* Design tokens mirrored from the Figma design system ("Color · Dark (active)", "Spacing & Radius").
+   Rule: components use var(--sw-*) only, never a raw hex value. Sync the values from Figma when they change. */
+:root {
+  --sw-font-sans: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --sw-font-mono: "IBM Plex Mono", ui-monospace, Consolas, monospace;
+
+  --sw-bg: #0f1420;
+  --sw-surface: #171e2d;
+  --sw-border: #2a3448;
+  --sw-text: #e6eaf2;
+  --sw-text-muted: #9aa5b8;
+  --sw-accent: #4f8cff;
+
+  --sw-sev-critical: #ff5c6c;
+  --sw-sev-high: #ff9a3d;
+  --sw-sev-medium: #f5c542;
+  --sw-sev-low: #4fc3a1;
+  --sw-sev-info: #7aa2d6;
+
+  --sw-space-1: 4px;
+  --sw-space-2: 8px;
+  --sw-space-3: 12px;
+  --sw-space-4: 16px;
+  --sw-space-6: 24px;
+  --sw-radius: 8px;
+}

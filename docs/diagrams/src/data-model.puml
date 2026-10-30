@@ -1,0 +1,103 @@
+@startuml data-model
+!include _style.iuml
+skinparam linetype ortho
+hide empty methods
+title SecureWaste — SQLite data model
+
+entity "documents" as documents {
+  * id : TEXT <<PK>>
+  --
+  * display_name : TEXT
+  * stored_name : TEXT <<UNIQUE>>
+  * file_type : TEXT <<CHECK pdf|txt>>
+  * size_bytes : INTEGER
+  * sha256 : TEXT
+  * page_count : INTEGER
+  * uploaded_at : TEXT
+}
+
+entity "scans" as scans {
+  * id : TEXT <<PK>>
+  --
+  * document_id : TEXT <<FK>>
+  * status : TEXT <<CHECK>>
+  * ruleset_version : TEXT
+  * started_at : TEXT
+  finished_at : TEXT
+  risk_score : INTEGER
+  risk_level : TEXT
+  risk_reasons : TEXT <<JSON>>
+  error_code : TEXT
+}
+
+entity "findings" as findings {
+  * id : TEXT <<PK>>
+  --
+  * scan_id : TEXT <<FK>>
+  * rule_id : TEXT
+  * category : TEXT
+  * severity : TEXT
+  * confidence : REAL
+  page_number : INTEGER
+  * char_start : INTEGER
+  * char_end : INTEGER
+  * occurrences : INTEGER
+  * masked_value : TEXT
+  * value_hmac : TEXT
+  context_masked : TEXT
+  * explanation : TEXT
+  * recommendation : TEXT
+  * review_status : TEXT <<CHECK>>
+  * updated_at : TEXT
+}
+
+entity "review_actions" as review_actions {
+  * id : INTEGER <<PK>>
+  --
+  * finding_id : TEXT <<FK>>
+  * from_status : TEXT
+  * to_status : TEXT
+  note : TEXT
+  * actor : TEXT
+  * created_at : TEXT
+}
+
+entity "redactions" as redactions {
+  * id : TEXT <<PK>>
+  --
+  * document_id : TEXT <<FK>>
+  * scan_id : TEXT <<FK>>
+  * output_name : TEXT
+  * status : TEXT <<CHECK>>
+  * redacted_count : INTEGER
+  * unmappable_count : INTEGER
+  * created_at : TEXT
+}
+
+entity "redaction_items" as redaction_items {
+  * redaction_id : TEXT <<PK, FK>>
+  * finding_id : TEXT <<PK, FK>>
+  --
+  * outcome : TEXT <<CHECK>>
+}
+
+entity "audit_events" as audit_events {
+  * id : INTEGER <<PK>>
+  --
+  * occurred_at : TEXT
+  * actor : TEXT
+  * event_type : TEXT
+  document_id : TEXT <<FK, SET NULL>>
+  scan_id : TEXT
+  details : TEXT <<JSON>>
+}
+
+documents ||--o{ scans : "has"
+scans ||--o{ findings : "produces"
+findings ||--o{ review_actions : "history"
+documents ||--o{ redactions : "sanitized copies"
+scans ||--o{ redactions : "based on"
+redactions ||--|{ redaction_items : "contains"
+findings ||--o{ redaction_items : "targeted by"
+documents |o--o{ audit_events : "about"
+@enduml

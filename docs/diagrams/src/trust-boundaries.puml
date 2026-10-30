@@ -1,0 +1,51 @@
+@startuml trust-boundaries
+!include _style.iuml
+skinparam linetype polyline
+skinparam nodesep 60
+skinparam ranksep 60
+skinparam RectangleBorderStyle dashed
+skinparam RectangleBorderColor #DC2626
+skinparam RectangleBorderThickness 2
+skinparam RectangleFontColor #B91C1C
+title SecureWaste — Data flows and trust boundaries
+
+rectangle "TB1 · User / browser zone (untrusted input)" as z1 {
+  actor "Analyst" as user
+  agent "Web browser" as browser
+}
+rectangle "TB5 · Developer / CI zone" as z5 {
+  node "GitHub repo\n+ Actions" as gh
+}
+
+component "Flask application\n(trusted code,\nlocalhost only)" as app
+
+rectangle "TB2 · Parser zone\n(untrusted document bytes)" as z2 {
+  component "PyMuPDF / MuPDF\n(native code)" as parser
+}
+rectangle "TB3 · File storage" as z3 {
+  folder "originals /\nsanitized / tmp" as fs
+}
+rectangle "TB4 · Database" as z4 {
+  database "SQLite (masked values,\nHMACs, audit)" as db
+}
+
+legend right
+  |= Flow |= Data |
+  | DF1 | uploads, forms, JSON (+ CSRF token) |
+  | DF2 | HTML / JSON pages — masked values only |
+  | DF3 | untrusted file bytes to the parser |
+  | DF4 | extracted page text |
+  | DF5 | originals and sanitized copies |
+  | DF6 | masked findings, audit events |
+  | DF7 | code and dependencies (pip-audit in CI) |
+endlegend
+
+user -right-> browser
+browser -down-> app : DF1
+app -up-> browser : DF2
+app -left-> parser : DF3
+parser -right-> app : DF4
+app -down-> fs : DF5
+app -down-> db : DF6
+gh ..> app : DF7
+@enduml

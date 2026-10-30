@@ -1,0 +1,135 @@
+@startuml class-domain
+!include _style.iuml
+skinparam linetype ortho
+skinparam nodesep 45
+skinparam PackageBorderColor #94A3B8
+skinparam PackageBackgroundColor #FFFFFF
+skinparam ranksep 50
+title SecureWaste — Domain class diagram (core package)
+
+package "Processing (core services)" {
+class PageText {
+  page_number : int
+  text : str
+}
+
+abstract class DetectionRule {
+  rule_id : str
+  category : Category
+  base_confidence : float
+  context_words : list[str]
+  + find(page : PageText) : list[Candidate]
+}
+
+class RegexRule {
+  pattern : re.Pattern
+  + validate(value : str) : bool
+}
+
+class PaymentCardRule
+class IbanRule
+class SecretRule
+class EmailRule
+
+class DetectionEngine {
+  min_confidence : float
+  + scan(pages : list[PageText]) : list[Finding]
+}
+
+class Masker {
+  + mask(category, value) : str
+  + hmac(rule_id, value) : str
+}
+
+class RiskEngine {
+  weights : dict
+  thresholds : dict
+  + assess(findings : list[Finding]) : RiskAssessment
+}
+
+class Redactor {
+  + redact(src, dst, targets) : Redaction
+  + verify(dst, targets) : bool
+}
+}
+
+package "Domain entities (persisted)" {
+class Document {
+  id : UUID
+  display_name : str
+  stored_name : str
+  file_type : FileType
+  size_bytes : int
+  sha256 : str
+  page_count : int
+  uploaded_at : datetime
+}
+
+class ScanJob {
+  id : UUID
+  status : ScanStatus
+  ruleset_version : str
+  started_at : datetime
+  finished_at : datetime
+  error_code : str
+}
+
+class RiskAssessment {
+  score : int
+  level : RiskLevel
+  reasons : list[str]
+}
+
+class Finding {
+  id : UUID
+  rule_id : str
+  category : Category
+  severity : Severity
+  confidence : float
+  page_number : int
+  occurrences : int
+  masked_value : str
+  value_hmac : str
+  context : str
+  explanation : str
+  recommendation : str
+  review_status : ReviewStatus
+  + change_status(to, note, actor)
+}
+
+class ReviewAction {
+  from_status : ReviewStatus
+  to_status : ReviewStatus
+  note : str
+  actor : str
+  created_at : datetime
+}
+
+class Redaction {
+  id : UUID
+  output_name : str
+  status : RedactionStatus
+  redacted_count : int
+  unmappable_count : int
+}
+
+}
+DetectionEngine ..> Finding : <<creates>>
+RiskEngine ..> RiskAssessment : <<creates>>
+Redactor ..> Redaction : <<creates>>
+DetectionEngine "1" o-- "1..*" DetectionRule
+DetectionEngine .> Masker : uses
+DetectionRule .> PageText : reads
+DetectionRule <|-- RegexRule
+RegexRule <|-- EmailRule
+RegexRule <|-- PaymentCardRule
+RegexRule <|-- IbanRule
+RegexRule <|-- SecretRule
+
+Document "1" *-- "0..*" ScanJob
+Document "1" *-- "0..*" Redaction
+ScanJob "1" *-- "0..*" Finding
+ScanJob "1" *-- "0..1" RiskAssessment
+Finding "1" *-- "0..*" ReviewAction
+Redaction "0..*" --> "1..*" Finding : redacts
+@enduml

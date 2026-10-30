@@ -1,0 +1,62 @@
+@startuml component
+!include _style.iuml
+skinparam linetype polyline
+skinparam nodesep 40
+skinparam ranksep 45
+title SecureWaste — Component diagram
+
+actor "Analyst" as user
+node "Web browser\n(HTTP to 127.0.0.1)" as browser {
+  [Jinja2 pages + vanilla JS] as ui
+}
+
+package "Flask application (securewaste)" {
+  package "web" {
+    [Routes (HTML + JSON)] as routes
+    [Security middleware\n(CSRF, headers, errors)] as secmw
+  }
+  package "services" as services {
+    [ScanService] as scansvc
+    [ReviewService] as reviewsvc
+    [RedactionService] as redsvc
+    [AuditLogger] as audit
+  }
+  package "core" as corepkg {
+    [UploadValidator] as validator
+    [TextExtractor] as extractor
+    [RiskEngine] as riskeng
+    [DetectionEngine\n+ rules + validators] as detection
+    [Masker] as masker
+    [Redactor] as redactor
+    [ReportBuilder] as report
+  }
+  package "db" as dbpkg {
+    [Repositories] as repos
+  }
+}
+
+database "SQLite\nsecurewaste.db" as sqlite
+folder "instance/storage\noriginals · sanitized · tmp" as storage
+component "PyMuPDF" as pymupdf
+
+user -right-> ui
+ui --> routes
+routes -right-> secmw
+routes --> scansvc
+routes --> reviewsvc
+routes --> redsvc
+routes ..> report : report page
+scansvc --> validator
+scansvc --> extractor
+scansvc --> detection
+scansvc --> riskeng
+reviewsvc --> riskeng
+redsvc --> detection
+redsvc --> redactor
+detection --> masker
+services --> dbpkg : all services\npersist via
+services --> storage : Scan / Redaction\nservices
+repos --> sqlite
+extractor --> pymupdf
+redactor --> pymupdf
+@enduml

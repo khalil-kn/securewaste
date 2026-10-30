@@ -1,0 +1,55 @@
+@startuml activity-scan-review-redact
+!include _style.iuml
+title SecureWaste — End-to-end activity (swimlanes)
+
+|Analyst|
+start
+:Choose a PDF or TXT file;
+:Submit upload form;
+|Web layer|
+:Check CSRF token and size limit;
+|Core pipeline|
+:Validate real format\n(magic bytes, UTF-8, PDF open);
+if (Valid?) then (no)
+  |Web layer|
+  :Show error code and message;
+  stop
+else (yes)
+  |Storage & DB|
+  :Store original as uuid name;
+  :Create scan job (running);
+  |Core pipeline|
+  :Extract text per page;
+  if (Text found?) then (yes)
+    :Run rules, validate,\nmask, compute confidence;
+    :Compute risk score\nand reasons;
+    |Storage & DB|
+    :Save findings and risk;\nwrite audit event;
+  else (no)
+    |Storage & DB|
+    :Mark scan failed\n(NO_TEXT_LAYER);\nshow error to analyst;
+    stop
+  endif
+endif
+|Analyst|
+:Read findings and risk;
+repeat
+  :Review a finding\n(confirm / false positive / resolve);
+  |Core pipeline|
+  :Re-assess risk;
+  |Analyst|
+repeat while (More findings to review?) is (yes) not (no)
+if (PDF and redaction needed?) then (yes)
+  :Select findings to redact;
+  |Core pipeline|
+  :Locate values, apply redactions,\nscrub metadata;
+  :Re-extract and verify;
+  |Storage & DB|
+  :Save sanitized copy\nand redaction record;
+  |Analyst|
+  :Download sanitized copy\n(check verification status);
+else (no)
+endif
+:Generate HTML report;
+stop
+@enduml

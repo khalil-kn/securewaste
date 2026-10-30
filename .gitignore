@@ -1,0 +1,42 @@
+# ---- Python ----
+__pycache__/
+*.py[cod]
+*.egg-info/
+.eggs/
+build/
+dist/
+.pytest_cache/
+.coverage
+coverage.xml
+htmlcov/
+.mypy_cache/
+.ruff_cache/
+
+# ---- Virtual environments (dependencies) ----
+.venv/
+venv/
+env/
+
+# ---- Secrets: never commit real keys ----
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+
+# ---- Runtime data: uploads, sanitized copies, database ----
+instance/
+*.db
+*.sqlite3
+uploads/
+
+# ---- Diagram tooling (download locally, do not commit) ----
+docs/diagrams/tools/
+
+# ---- Editors / OS ----
+.vscode/
+.idea/
+*.swp
+.DS_Store
+Thumbs.db
+desktop.ini

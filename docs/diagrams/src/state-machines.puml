@@ -1,0 +1,29 @@
+@startuml state-machines
+!include _style.iuml
+skinparam linetype polyline
+skinparam nodesep 110
+skinparam ranksep 110
+title SecureWaste — State machines
+
+state "Scan job" as ScanJob {
+  [*] --> queued : document stored
+  queued --> running : start()
+  running --> completed : pipeline OK /\nsave findings + risk
+  running --> failed : error /\nset error_code,\ndelete temp files
+  completed --> [*]
+  failed --> [*]
+}
+
+state "Finding review status" as Review {
+  [*] --> open : finding created
+  open --> confirmed : confirm
+  open --> false_positive : mark false positive\n/ re-assess risk
+  confirmed --> false_positive : mark false positive
+  false_positive --> confirmed : confirm
+  confirmed --> resolved : resolve
+  open --> resolved : resolve
+  false_positive --> open : reopen
+  resolved --> open : reopen
+}
+ScanJob -[hidden]right-> Review
+@enduml

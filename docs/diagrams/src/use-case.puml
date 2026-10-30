@@ -1,0 +1,39 @@
+@startuml use-case
+!include _style.iuml
+skinparam linetype polyline
+left to right direction
+title SecureWaste — Use case diagram (MVP)
+
+actor "Analyst" as analyst
+actor "Compliance\nofficer" as officer
+
+rectangle "SecureWaste (local web application)" {
+  usecase "Upload document" as UC1
+  usecase "Re-scan document" as UC10
+  usecase "Scan document" as UC2
+  usecase "Redact PDF" as UC7
+  usecase "Verify redaction" as UC8
+  usecase "Review finding\n(confirm / false positive /\nresolve)" as UC6
+  usecase "Browse & filter\nscan history" as UC4
+  usecase "Delete document" as UC11
+  usecase "View dashboard" as UC3
+  usecase "View document\nfindings" as UC5
+  usecase "Generate scan report" as UC9
+}
+
+analyst -- UC1
+analyst -- UC10
+analyst -- UC7
+analyst -- UC6
+analyst -- UC4
+analyst -- UC11
+analyst -- UC3
+analyst -- UC5
+analyst -- UC9
+UC1 ..> UC2 : <<include>>
+UC10 ..> UC2 : <<include>>
+UC7 ..> UC8 : <<include>>
+UC3 -- officer
+UC5 -- officer
+UC9 -- officer
+@enduml

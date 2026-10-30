@@ -1,0 +1,40 @@
+@startuml deployment
+!include _style.iuml
+skinparam linetype ortho
+title SecureWaste — Deployment (MVP and Milestone 5)
+
+node "Student laptop (Windows / macOS / Linux)" as laptop {
+  node "Web browser" as br {
+    artifact "HTML / CSS / JS pages" as pages
+  }
+  node "Python 3.12 virtual environment" as venv {
+    artifact "securewaste package\n(Flask dev server, 127.0.0.1:5000)" as app
+    artifact "PyMuPDF (native MuPDF)" as mupdf
+  }
+  folder "instance/ (git-ignored)" as inst {
+    database "securewaste.db" as dbf
+    folder "storage/originals\nstorage/sanitized\nstorage/tmp" as files
+  }
+  file ".env — secrets\n(read at startup, git-ignored)" as env
+}
+
+node "Docker container (Milestone 5)" as docker {
+  artifact "gunicorn + securewaste\n(non-root user)" as gapp
+}
+
+cloud "GitHub" as gh {
+  node "Repository + pull requests" as repo
+  node "GitHub Actions runner\n(ubuntu-latest)" as ci {
+    artifact "pytest + pip-audit" as tests
+  }
+}
+
+br --> app : HTTP 127.0.0.1:5000
+app --> mupdf
+app --> dbf : sqlite3
+app --> files : read/write
+app ..> env
+docker ..> inst : volume mount
+laptop --> repo : git push (HTTPS)
+repo --> ci : on pull_request
+@enduml

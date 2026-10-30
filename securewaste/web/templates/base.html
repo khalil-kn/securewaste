@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}SecureWaste{% endblock %} · SecureWaste</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/tokens.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/app.css') }}">
+</head>
+<body>
+  <header class="sw-topbar">
+    <a class="sw-brand" href="{{ url_for('dashboard.index') }}">SecureWaste</a>
+    <span class="sw-local-badge">Local · 127.0.0.1</span>
+  </header>
+  <main class="sw-main" id="main">
+    {% block content %}{% endblock %}
+  </main>
+  {# Page scripts go in static/js and are added per page; CSP forbids inline <script>. #}
+  {% block scripts %}{% endblock %}
+</body>
+</html>

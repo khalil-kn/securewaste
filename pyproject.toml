@@ -1,0 +1,25 @@
+[project]
+name = "securewaste"
+version = "0.1.0"
+description = "Sensitive data exposure prevention platform (DLP-style portfolio project)"
+requires-python = ">=3.12"
+license = { text = "AGPL-3.0-or-later (proposed, see ADR-0004)" }
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]   # lets plain `pytest` import the securewaste package from the repo root
+addopts = "-q"
+
+[tool.coverage.run]
+source = ["securewaste"]
+
+[tool.ruff]
+line-length = 120
+target-version = "py312"
+
+[tool.ruff.lint]
+# E/F: errors, I: import order, B: likely bugs, S: security (bandit rules), UP: modern syntax
+select = ["E", "F", "I", "B", "S", "UP"]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**" = ["S101"]   # assert is the point of a test

@@ -1,0 +1,42 @@
+@startuml seq-review-finding
+!include _style.iuml
+autonumber "<b>0."
+title SecureWaste — Review a finding
+
+actor "Analyst" as user
+participant "Browser\n(review.js)" as browser
+participant "api route" as route
+participant "ReviewService" as svc
+participant "RiskEngine" as risk
+database "SQLite" as db
+
+user -> browser : choose "False positive",\nadd note
+browser -> route : PATCH /api/findings/{id}\nX-CSRFToken, JSON body
+activate route
+route -> route : check CSRF, parse JSON,\nvalidate note length
+route -> svc : change_status(id, to, note, actor)
+activate svc
+svc -> db : SELECT finding
+alt finding not found
+  svc --> route : NotFound
+  route --> browser : 404 NOT_FOUND
+else transition not allowed
+  svc --> route : InvalidTransition
+  route --> browser : 409 INVALID_TRANSITION
+else allowed
+  svc -> db : UPDATE finding.review_status
+  svc -> db : INSERT review_action
+  svc -> db : SELECT findings of scan
+  svc -> risk : assess(findings)
+  activate risk
+  risk --> svc : RiskAssessment (false positives excluded)
+  deactivate risk
+  svc -> db : UPDATE scan risk
+  svc -> db : INSERT audit_event(finding.reviewed)
+  svc --> route : finding + risk
+  deactivate svc
+  route --> browser : 200 {finding, risk}
+  deactivate route
+  browser -> browser : update row badge\nand risk card
+end
+@enduml

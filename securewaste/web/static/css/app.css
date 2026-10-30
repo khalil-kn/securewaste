@@ -1,0 +1,12 @@
+/* Base layout only. Component styles (.sw-severity-badge, .sw-finding-row, …) are added by their feature PRs. */
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--sw-bg); color: var(--sw-text); font-family: var(--sw-font-sans); line-height: 1.5; }
+a { color: var(--sw-accent); }
+code { font-family: var(--sw-font-mono); }
+.sw-topbar { display: flex; align-items: center; justify-content: space-between; gap: var(--sw-space-4);
+  padding: var(--sw-space-3) var(--sw-space-4); background: var(--sw-surface); border-bottom: 1px solid var(--sw-border); }
+.sw-brand { color: var(--sw-text); font-weight: 600; text-decoration: none; }
+.sw-local-badge { color: var(--sw-text-muted); font-size: 0.85rem; }
+.sw-main { max-width: 1200px; margin: 0 auto; padding: var(--sw-space-6) var(--sw-space-4); }
+.sw-muted { color: var(--sw-text-muted); }
+:focus-visible { outline: 2px solid var(--sw-accent); outline-offset: 2px; }

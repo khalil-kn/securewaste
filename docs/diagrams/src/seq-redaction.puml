@@ -1,0 +1,53 @@
+@startuml seq-redaction
+!include _style.iuml
+autonumber "<b>0."
+title SecureWaste — Redact a PDF with verification
+
+actor "Analyst" as user
+participant "Browser" as browser
+participant "documents\nroute" as route
+participant "RedactionService" as svc
+participant "DetectionEngine" as det
+participant "Redactor\n(PyMuPDF)" as red
+database "SQLite" as db
+collections "File storage" as fs
+
+user -> browser : select findings, click "Redact"
+browser -> route : POST /documents/{id}/redactions\nfinding_ids[], csrf_token
+activate route
+route -> svc : create_redaction(doc_id, finding_ids)
+activate svc
+svc -> db : SELECT document, selected findings
+svc -> fs : read original PDF
+svc -> det : re-scan original (selected rules only)
+activate det
+det --> svc : candidates with raw values (memory only)
+deactivate det
+svc -> svc : match candidates to findings\nby page + value_hmac
+loop each selected finding
+  alt located on its page
+    svc -> red : add target (page, value)
+  else not located
+    svc -> svc : mark "unmappable"
+  end
+end
+svc -> red : redact(original, sanitized, targets)
+activate red
+red -> red : search_for → add_redact_annot\n→ apply_redactions
+red -> red : clear metadata, XMP, annotations,\nembedded files; save(garbage=4)
+red -> fs : write sanitized/<stem>__SANITIZED.pdf
+red --> svc : output path
+deactivate red
+svc -> red : verify(sanitized, targets)
+activate red
+red -> red : re-open, extract text,\nre-run selected rules
+red --> svc : still_present = []
+deactivate red
+svc -> db : INSERT redaction(status), redaction_items
+svc -> db : INSERT audit_event(redaction.created)
+svc --> route : redaction_id
+deactivate svc
+route --> browser : 303 → /redactions/{id}
+deactivate route
+browser -> user : show verified / incomplete result,\nunmappable list, download link
+@enduml
