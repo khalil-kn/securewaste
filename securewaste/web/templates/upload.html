@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block title %}Upload{% endblock %}
+
+{% block content %}
+<div class="sw-page-title">
+  <h1>Upload a document</h1>
+  <p class="sw-page-subtitle">Scan a document for sensitive information.</p>
+</div>
+
+<div class="sw-card sw-upload-card">
+  <form method="post" action="{{ url_for('documents.upload_document') }}" enctype="multipart/form-data">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+    <label for="document-file">Choose a file</label>
+    <input id="document-file" type="file" name="file" accept=".pdf,.txt,application/pdf,text/plain" required>
+    <p class="sw-muted">PDF or TXT, max 10 MB</p>
+    <button type="submit">Upload and scan</button>
+  </form>
+</div>
+{% endblock %}

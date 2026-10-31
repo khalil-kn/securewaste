@@ -4,12 +4,11 @@ Milestone 1 issue #3 adds GET /upload and POST /documents here. Keep each handle
 parse the request, call one function in securewaste.services, render or redirect (303).
 """
 
-from flask import Blueprint, render_template, request, redirect, url_for, current_app
+from flask import Blueprint, current_app, render_template, request
 
 from securewaste.core.detection.catalogue import Category, ReviewStatus, Severity
 from securewaste.core.detection.models import Finding
-from securewaste.core.detection.rules.base import DetectionRule
-from securewaste.core.errors import UploadRejected, ExtractionFailed
+from securewaste.core.errors import ExtractionFailed, UploadRejected
 from securewaste.services.scan_service import upload_and_scan
 
 bp = Blueprint("documents", __name__)
@@ -88,6 +87,12 @@ def _demo_findings() -> list[Finding]:
     ]
 
 
+@bp.get("/upload")
+def upload_page():
+    """Render the upload form."""
+    return render_template("upload.html")
+
+
 @bp.get("/results/demo")
 def results_demo():
     """Temporary demo route showing the results page with fake data."""
@@ -105,8 +110,6 @@ def upload_document():
 
     # Read file data
     data = file.read()
-    if not data:
-        return render_template("error.html", message="The uploaded file is empty"), 400
 
     # Get app config for limits and rules
     upload_limits = current_app.config.get("UPLOAD_LIMITS")
@@ -136,6 +139,14 @@ def upload_document():
     except ExtractionFailed as e:
         message = ERROR_MESSAGES.get(e.code, f"Extraction failed: {e.code}")
         return render_template("error.html", message=message, status=400, code=e.code), 400
-    except Exception as e:
+    except Exception:
         current_app.logger.exception("Unexpected error during upload and scan")
-        return render_template("error.html", message="An unexpected error occurred. Please try again.", status=500, code="INTERNAL_ERROR"), 500
+        return (
+            render_template(
+                "error.html",
+                message="An unexpected error occurred. Please try again.",
+                status=500,
+                code="INTERNAL_ERROR",
+            ),
+            500,
+        )

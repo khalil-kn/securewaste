@@ -10,15 +10,14 @@ Milestone 1 wires validate + extract + detect; persistence arrives in Milestone 
 from __future__ import annotations
 
 import logging
-import uuid
 from pathlib import Path
 
 from securewaste.core.detection.engine import DetectionEngine
 from securewaste.core.detection.models import Finding
 from securewaste.core.detection.rules.base import DetectionRule
+from securewaste.core.errors import ExtractionFailed, UploadRejected
 from securewaste.core.extraction import extract_pages
-from securewaste.core.upload import Limits, validate_upload, ValidatedUpload
-from securewaste.core.errors import UploadRejected, ExtractionFailed
+from securewaste.core.upload import Limits, ValidatedUpload, validate_upload
 
 logger = logging.getLogger(__name__)
 

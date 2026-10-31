@@ -1,0 +1,6 @@
+# Application Configuration
+DATABASE_URL=postgresql://user:pass@localhost/db
+AWS_ACCESS_KEY_ID=AKIAIOSFODNN7EXAMPLE
+AWS_SECRET_ACCESS_KEY=wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY
+STRIPE_API_KEY=test_stripe_key_placeholder
+PASSWORD=SuperSecretPassword123

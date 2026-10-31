@@ -6,10 +6,53 @@ code { font-family: var(--sw-font-mono); }
 .sw-topbar { display: flex; align-items: center; justify-content: space-between; gap: var(--sw-space-4);
   padding: var(--sw-space-3) var(--sw-space-4); background: var(--sw-surface); border-bottom: 1px solid var(--sw-border); }
 .sw-brand { color: var(--sw-text); font-weight: 600; text-decoration: none; }
+.sw-nav { display: flex; align-items: center; gap: var(--sw-space-4); margin-left: auto; }
+.sw-nav-link { color: var(--sw-text-muted); text-decoration: none; }
+.sw-nav-link:hover, .sw-nav-link--active { color: var(--sw-text); }
 .sw-local-badge { color: var(--sw-text-muted); font-size: 0.85rem; }
 .sw-main { max-width: 1200px; margin: 0 auto; padding: var(--sw-space-6) var(--sw-space-4); }
 .sw-muted { color: var(--sw-text-muted); }
 :focus-visible { outline: 2px solid var(--sw-accent); outline-offset: 2px; }
+
+@media (max-width: 640px) {
+  .sw-topbar { flex-wrap: wrap; }
+  .sw-nav { order: 3; width: 100%; margin-left: 0; }
+  .sw-local-badge { margin-left: auto; }
+}
+
+/* --- Upload page --- */
+.sw-upload-card {
+  max-width: 640px;
+  padding: var(--sw-space-6);
+}
+.sw-upload-card form {
+  display: grid;
+  gap: var(--sw-space-3);
+}
+.sw-upload-card label {
+  font-weight: 600;
+}
+.sw-upload-card input[type="file"] {
+  padding: var(--sw-space-3);
+  color: var(--sw-text);
+  background: var(--sw-bg);
+  border: 1px solid var(--sw-border);
+  border-radius: var(--sw-radius);
+}
+.sw-upload-card p {
+  margin: 0;
+}
+.sw-upload-card button {
+  width: fit-content;
+  padding: var(--sw-space-2) var(--sw-space-4);
+  color: var(--sw-text);
+  background: var(--sw-accent);
+  border: 0;
+  border-radius: var(--sw-radius);
+  cursor: pointer;
+  font: inherit;
+  font-weight: 600;
+}
 
 /* --- Results page (Issue #6) --- */
 .sw-page-title {
@@ -50,6 +93,9 @@ code { font-family: var(--sw-font-mono); }
 .sw-findings-header {
   display: contents;
 }
+.sw-finding-row {
+  display: contents;
+}
 .sw-findings-cell {
   display: flex;
   align-items: center;
@@ -81,6 +127,11 @@ code { font-family: var(--sw-font-mono); }
 .sw-findings-cell--occurrences { justify-content: center; }
 .sw-findings-cell--severity { }
 .sw-findings-cell--status { justify-content: flex-end; }
+
+/* Header cells - match data cell alignment per column */
+.sw-findings-header .sw-findings-cell--page { justify-content: center; }
+.sw-findings-header .sw-findings-cell--occurrences { justify-content: center; }
+.sw-findings-header .sw-findings-cell--status { justify-content: flex-end; }
 
 /* Category badge */
 .sw-category-badge {

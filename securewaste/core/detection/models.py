@@ -21,6 +21,7 @@ class Candidate:
     raw_value: str  # memory only — the engine turns this into a Finding and drops it
     confidence: float
     validation: str = ""  # e.g. "Luhn checksum passed"
+    occurrences: int = 1
 
 
 @dataclass

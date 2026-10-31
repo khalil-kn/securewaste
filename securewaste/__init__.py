@@ -28,8 +28,15 @@ def create_app(test_config: dict | None = None) -> Flask:
         "max_extracted_chars": app.config["MAX_EXTRACTED_CHARS"],
     }
 
-    # Detection rules will be populated by Milestone 1 issue #5; empty list for now
-    app.config["DETECTION_RULES"] = []
+    # Detection rules (Milestone 1 issue #5)
+    from securewaste.core.detection.rules import EmailRule, PhoneRule, KeywordRule
+
+    keywords = tuple(app.config.get("KEYWORDS", []))
+    app.config["DETECTION_RULES"] = [
+        EmailRule(),
+        PhoneRule(),
+        KeywordRule(keywords=keywords),
+    ]
 
     from securewaste.db import connection
     from securewaste.web import routes_api, routes_dashboard, routes_documents, security
