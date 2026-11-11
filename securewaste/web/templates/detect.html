@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block title %}Detect sensitive data{% endblock %}
+{% block content %}
+  {% if findings is none %}
+    <div class="sr-upload-shell">
+      <p class="sr-eyebrow">SECURE WASTE / DOCUMENT SCANNER</p>
+      <h1>Check before you share.</h1>
+      <p class="sr-muted">Scan a text-based PDF locally for emails, Tunisian phone numbers and configured sensitive keywords.</p>
+      <form class="sw-card sw-form sr-upload-form" method="post" action="{{ url_for('detect.detect_run') }}" enctype="multipart/form-data">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+        <label class="sw-label" for="document">Select a PDF document</label>
+        <input class="sw-file" type="file" id="document" name="document" accept="application/pdf,.pdf" required>
+        <div class="sw-form-actions"><button class="sw-btn sw-btn-primary" type="submit">Scan document</button></div>
+      </form>
+      {% if error %}<p class="sw-error" role="alert">{{ error }}</p>{% endif %}
+      <p class="sr-footnote">The scan is rule-based and may miss sensitive information. Do not treat a clean result as proof of safety.</p>
+    </div>
+  {% else %}
+    {% include "results.html" %}
+  {% endif %}
+{% endblock %}
+{% block scripts %}
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/results.css') }}">
+{% endblock %}
