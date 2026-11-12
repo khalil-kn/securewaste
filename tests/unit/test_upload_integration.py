@@ -125,16 +125,16 @@ def test_filename_is_sanitized(limits):
 
 
 # --------------------------------------------------
-# Flask integration test
+# Flask integration tests
 # --------------------------------------------------
 
-def test_flask_upload_success(client, app):
-    # Step 1: Load the upload page.
+def get_csrf_token(client):
+    """Retrieve a valid CSRF token from the upload page."""
+
     page = client.get("/upload")
 
     assert page.status_code == 200
 
-    # Step 2: Extract the CSRF token from the HTML.
     match = re.search(
         rb'name="csrf_token"\s+value="([^"]+)"',
         page.data,
@@ -142,9 +142,14 @@ def test_flask_upload_success(client, app):
 
     assert match is not None, "CSRF token not found"
 
-    csrf_token = match.group(1).decode("utf-8")
+    return match.group(1).decode("utf-8")
 
-    # Step 3: Upload a TXT file with a valid CSRF token.
+
+def test_flask_upload_success(client, app):
+    """A valid TXT upload should be scanned and cleaned up."""
+
+    csrf_token = get_csrf_token(client)
+
     response = client.post(
         "/documents",
         data={
@@ -157,29 +162,56 @@ def test_flask_upload_success(client, app):
         content_type="multipart/form-data",
     )
 
-    # Step 4: Verify the HTTP response.
-    assert response.status_code == 201
+    # Verify successful processing and results page.
+    assert response.status_code == 200
+    assert b"Scan results" in response.data
+    assert b"No findings detected" in response.data
 
-    assert b"File uploaded successfully!" in response.data
-
-    # Step 5: Verify local storage.
+    # Temporary uploaded files must be removed after scanning.
     storage_dir = app.config["STORAGE_DIR"] / "tmp"
 
     stored_files = list(storage_dir.glob("*.txt"))
 
-    assert len(stored_files) == 1
+    assert len(stored_files) == 0
 
-    stored_file = stored_files[0]
 
-    # Step 6: Verify the file contents.
-    assert stored_file.read_bytes() == b"Hello Secure Waste!"
+def test_flask_upload_detects_sensitive_email(client, app):
+    """A TXT document containing an email should produce masked findings."""
 
-    # Step 7: Verify the generated filename.
-    uuid.UUID(stored_file.stem)
+    csrf_token = get_csrf_token(client)
 
-    # Step 8: Verify SHA-256 integrity.
-    expected_hash = hashlib.sha256(
-        b"Hello Secure Waste!"
-    ).hexdigest()
+    sensitive_email = b"alice@example.com"
 
-    assert expected_hash.encode() in response.data
+    document = (
+        b"Employee contact information:\n"
+        b"Email: " + sensitive_email + b"\n"
+    )
+
+    response = client.post(
+        "/documents",
+        data={
+            "csrf_token": csrf_token,
+            "file": (
+                BytesIO(document),
+                "employee.txt",
+            ),
+        },
+        content_type="multipart/form-data",
+    )
+
+    # The scan should complete successfully.
+    assert response.status_code == 200
+
+    # The results page should be displayed.
+    assert b"Scan results" in response.data
+
+    # An email finding should be present.
+    assert b"Email" in response.data
+
+    # The complete sensitive email must not appear in the HTML.
+    assert sensitive_email not in response.data
+
+    # Temporary files must be deleted.
+    storage_dir = app.config["STORAGE_DIR"] / "tmp"
+
+    assert list(storage_dir.glob("*.txt")) == []
