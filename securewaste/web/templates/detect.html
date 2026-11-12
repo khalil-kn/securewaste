@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% block title %}Detect sensitive data{% endblock %}
+{% block content %}
+  <h1>Detect sensitive data</h1>
+  <p class="sw-muted">Upload a PDF — its text is extracted and scanned for e-mails, Tunisian phone numbers and sensitive keywords. Values are masked: the original text never appears in results.</p>
+
+  <form class="sw-card sw-form" method="post" action="{{ url_for('detect.detect_run') }}" enctype="multipart/form-data">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+    <label class="sw-label" for="document">PDF to scan</label>
+    <input class="sw-file" type="file" id="document" name="document" accept="application/pdf,.pdf">
+    <div class="sw-form-actions">
+      <button class="sw-btn sw-btn-primary" type="submit">Scan</button>
+    </div>
+  </form>
+
+  {% if error %}
+    <p class="sw-error">{{ error }}</p>
+  {% endif %}
+
+  {% if findings is not none %}
+    <section class="sw-results">
+      <h2>Findings <span class="sw-count">({{ findings|length }})</span></h2>
+
+      {% if findings %}
+        <ul class="sw-finding-list">
+          {% for f in findings %}
+            <li class="sw-finding-row sw-sev-{{ f.severity.value }}">
+              <span class="sw-severity-badge">{{ f.severity.value }}</span>
+              <div class="sw-finding-body">
+                <div class="sw-finding-meta">
+                  <span class="sw-category">{{ f.category.value }}</span>
+                  <span class="sw-occurrences" title="Times found">× {{ f.occurrences }}</span>
+                  <span class="sw-page">page {{ f.page_number }}</span>
+                </div>
+                <div class="sw-masked-value"><code>{{ f.masked_value }}</code></div>
+                <p class="sw-context">“{{ f.context }}”</p>
+                <p class="sw-explanation">{{ f.explanation }}</p>
+                <p class="sw-recommendation"><strong>Recommendation:</strong> {{ f.recommendation }}</p>
+              </div>
+            </li>
+          {% endfor %}
+        </ul>
+      {% else %}
+        <p class="sw-muted sw-empty">No sensitive data found in this document.</p>
+      {% endif %}
+    </section>
+  {% endif %}
+{% endblock %}
