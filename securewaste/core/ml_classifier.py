@@ -220,12 +220,26 @@ def train_and_save_model(
     return MLClassifier.train(train_texts, train_labels, model_path, metadata_path)
 
 
+def predict_classification_dict(text: str) -> dict:
+    """Sprint 2 ML -> Full-stack contract: returns dict with label, confidence, model_version.
+
+    Matches the exact interface specified in the Sprint 2 execution guide.
+    """
+    result = predict_classification_with_confidence(text)
+    return {
+        "label": result.label.value,
+        "confidence": round(result.confidence, 4),
+        "model_version": "baseline-v1",
+    }
+
+
 __all__ = [
     "MLClassifier",
     "MLClassificationResult",
     "MLClassifierError",
     "predict_classification",
     "predict_classification_with_confidence",
+    "predict_classification_dict",
     "train_and_save_model",
     "LABELS",
     "MODEL_PATH",

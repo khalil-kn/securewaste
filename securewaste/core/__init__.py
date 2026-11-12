@@ -13,6 +13,7 @@ from securewaste.core.ml_classifier import (
     MLClassifierError,
     predict_classification,
     predict_classification_with_confidence,
+    predict_classification_dict,
     train_and_save_model,
 )
 
@@ -24,6 +25,7 @@ __all__ = [
     "classify_document",
     "predict_classification",
     "predict_classification_with_confidence",
+    "predict_classification_dict",
     "train_and_save_model",
     "MLClassifier",
     "MLClassificationResult",
