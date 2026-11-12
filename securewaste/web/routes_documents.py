@@ -1,4 +1,3 @@
-
 """Document upload and scanning routes for Secure Waste."""
 
 from pathlib import Path
@@ -13,7 +12,6 @@ from securewaste.core.upload import (
     validate_upload,
 )
 from securewaste.services.detect_service import scan_file
-
 
 bp = Blueprint("documents", __name__)
 
@@ -114,9 +112,7 @@ def upload_document():
         ), 400
 
     except OSError:
-        current_app.logger.exception(
-            "Unable to store or read uploaded document"
-        )
+        current_app.logger.exception("Unable to store or read uploaded document")
 
         return render_template(
             "upload.html",
@@ -129,9 +125,7 @@ def upload_document():
             try:
                 destination.unlink(missing_ok=True)
             except OSError:
-                current_app.logger.warning(
-                    "Unable to remove temporary upload"
-                )
+                current_app.logger.warning("Unable to remove temporary upload")
 
 
 @bp.errorhandler(RequestEntityTooLarge)

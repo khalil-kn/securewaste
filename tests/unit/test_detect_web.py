@@ -1,4 +1,3 @@
-
 """Tests for the validated document scanning workflow."""
 
 import io
@@ -11,19 +10,18 @@ from securewaste.core.extraction import PageText
 
 
 def make_app(tmp_path):
-    return create_app({
-        "TESTING": True,
-        "WTF_CSRF_ENABLED": False,
-        "STORAGE_DIR": tmp_path / "storage",
-        "DATABASE_PATH": tmp_path / "test.db",
-    })
+    return create_app(
+        {
+            "TESTING": True,
+            "WTF_CSRF_ENABLED": False,
+            "STORAGE_DIR": tmp_path / "storage",
+            "DATABASE_PATH": tmp_path / "test.db",
+        }
+    )
 
 
 def sample_pages(*texts):
-    return [
-        PageText(page_number=i + 1, text=text)
-        for i, text in enumerate(texts)
-    ]
+    return [PageText(page_number=i + 1, text=text) for i, text in enumerate(texts)]
 
 
 def render_pdf(texts):
@@ -62,9 +60,7 @@ def test_upload_form_renders(tmp_path):
 
 def test_document_scans_extracted_pages(tmp_path):
     client = make_app(tmp_path).test_client()
-    pages = sample_pages(
-        "Contact: sana@example.tn, tel +216 98 123 456"
-    )
+    pages = sample_pages("Contact: sana@example.tn, tel +216 98 123 456")
     pdf_bytes = render_pdf(["Test document"])
 
     with patch(
@@ -94,9 +90,7 @@ def test_document_no_sensitive_data(tmp_path):
         response = upload_pdf(client, pdf_bytes)
 
     assert response.status_code == 200
-    assert "No sensitive data found" in response.get_data(
-        as_text=True
-    )
+    assert "No sensitive data found" in response.get_data(as_text=True)
 
 
 def test_document_missing_file_shows_error(tmp_path):
@@ -109,16 +103,12 @@ def test_document_missing_file_shows_error(tmp_path):
     )
 
     assert response.status_code == 400
-    assert "Please select a file" in response.get_data(
-        as_text=True
-    )
+    assert "Please select a file" in response.get_data(as_text=True)
 
 
 def test_document_with_real_pdf_extraction(tmp_path):
     client = make_app(tmp_path).test_client()
-    pdf_bytes = render_pdf([
-        "Contact: sana@example.tn, tel +216 98 123 456"
-    ])
+    pdf_bytes = render_pdf(["Contact: sana@example.tn, tel +216 98 123 456"])
 
     response = upload_pdf(client, pdf_bytes)
 
@@ -129,7 +119,5 @@ def test_document_with_real_pdf_extraction(tmp_path):
     assert "s•••@e•••.tn" in body
     assert "page 1" in body.lower()
 
-    temporary_files = list(
-        (tmp_path / "storage" / "tmp").glob("*")
-    )
+    temporary_files = list((tmp_path / "storage" / "tmp").glob("*"))
     assert temporary_files == []

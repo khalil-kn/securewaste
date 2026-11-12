@@ -1,4 +1,3 @@
-
 """Validate PDF and TXT uploads before storing them locally."""
 
 from __future__ import annotations

@@ -1,4 +1,3 @@
-
 """Issue #6: Test the results page using the validated scanning workflow."""
 
 import io
@@ -11,12 +10,14 @@ from securewaste.core.extraction import PageText
 
 
 def make_app(tmp_path):
-    return create_app({
-        "TESTING": True,
-        "WTF_CSRF_ENABLED": False,
-        "STORAGE_DIR": tmp_path / "storage",
-        "DATABASE_PATH": tmp_path / "test.db",
-    })
+    return create_app(
+        {
+            "TESTING": True,
+            "WTF_CSRF_ENABLED": False,
+            "STORAGE_DIR": tmp_path / "storage",
+            "DATABASE_PATH": tmp_path / "test.db",
+        }
+    )
 
 
 def make_pdf(text="Test document"):

@@ -1,4 +1,3 @@
-
 """Tests for Secure Waste upload validation and Flask integration."""
 
 import hashlib
@@ -28,6 +27,7 @@ def limits():
 # --------------------------------------------------
 # Upload validation tests
 # --------------------------------------------------
+
 
 def test_valid_txt(limits):
     data = b"Hello Secure Waste!"
@@ -128,6 +128,7 @@ def test_filename_is_sanitized(limits):
 # Flask integration tests
 # --------------------------------------------------
 
+
 def get_csrf_token(client):
     """Retrieve a valid CSRF token from the upload page."""
 
@@ -182,10 +183,7 @@ def test_flask_upload_detects_sensitive_email(client, app):
 
     sensitive_email = b"alice@example.com"
 
-    document = (
-        b"Employee contact information:\n"
-        b"Email: " + sensitive_email + b"\n"
-    )
+    document = b"Employee contact information:\nEmail: " + sensitive_email + b"\n"
 
     response = client.post(
         "/documents",

@@ -1,4 +1,3 @@
-
 """Legacy detection routes for Secure Waste.
 
 All document uploads now use the validated /documents workflow.
