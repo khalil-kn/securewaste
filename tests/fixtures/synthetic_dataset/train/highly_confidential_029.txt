@@ -1,0 +1,1 @@
+JWT signing key: Z9C65FPYST5V0175. Keep secure. HIGHLY CONFIDENTIAL

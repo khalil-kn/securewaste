@@ -1,0 +1,1 @@
+Kubernetes secret: api-key=NU4I5YMQT3DGD8OP secret=AewOoXhEK@joM%Ze20$oobYCqljsf6EC. HIGHLY CONFIDENTIAL
