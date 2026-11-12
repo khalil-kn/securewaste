@@ -1,0 +1,65 @@
+{# Presentation only. Receives Jawed's Finding objects; never scans, persists or unmasks data. #}
+<section class="sr" aria-labelledby="sr-title">
+  <div class="sr-heading">
+    <div>
+      <p class="sr-eyebrow">LOCAL DOCUMENT ANALYSIS</p>
+      <h2 id="sr-title">Scan results</h2>
+      <p class="sr-muted">Sensitive values are masked. Review findings before sharing this document.</p>
+    </div>
+    <a class="sr-rescan" href="{{ url_for('detect.detect_form') }}">Scan another PDF</a>
+  </div>
+
+  {% set counts = namespace(email=0, phone=0, keyword=0, total=0) %}
+  {% for f in findings %}
+    {% set counts.total = counts.total + f.occurrences %}
+    {% if f.category.value == 'email' %}{% set counts.email = counts.email + f.occurrences %}{% endif %}
+    {% if f.category.value == 'phone' %}{% set counts.phone = counts.phone + f.occurrences %}{% endif %}
+    {% if f.category.value == 'keyword' %}{% set counts.keyword = counts.keyword + f.occurrences %}{% endif %}
+  {% endfor %}
+  <div class="sr-stats" aria-label="Finding summary">
+    <div class="sr-stat"><strong>{{ findings|length }}</strong><span>Distinct findings</span></div>
+    <div class="sr-stat"><strong>{{ counts.total }}</strong><span>Total occurrences</span></div>
+    <div class="sr-stat"><strong>{{ counts.email }}</strong><span>Email occurrences</span></div>
+    <div class="sr-stat"><strong>{{ counts.phone }}</strong><span>Phone occurrences</span></div>
+    <div class="sr-stat"><strong>{{ counts.keyword }}</strong><span>Keyword occurrences</span></div>
+  </div>
+
+  {% if findings %}
+    <div class="sr-section-title"><h3>Detected information</h3><span>{{ findings|length }} finding(s)</span></div>
+    <div class="sr-list">
+    {% for f in findings %}
+      <article class="sr-item" aria-label="{{ f.category.value }} finding on page {{ f.page_number }}">
+        <div class="sr-item-top">
+          <div class="sr-tags">
+            <span class="sr-tag sr-severity-{{ f.severity.value }}">{{ f.severity.value|replace('_',' ')|title }}</span>
+            <span class="sr-tag sr-category">{{ f.category.value|replace('_',' ')|title }}</span>
+            <span class="sr-tag">Page {{ f.page_number }}</span>
+            {% if f.occurrences > 1 %}<span class="sr-tag">{{ f.occurrences }} occurrences</span>{% endif %}
+          </div>
+          <span class="sr-status">{{ f.review_status.value|replace('_',' ')|title }}</span>
+        </div>
+        <div class="sr-value"><code>{{ f.masked_value }}</code></div>
+        {% if f.context %}
+          <div class="sr-context"><span class="sr-field-label">Masked context</span><p>{{ f.context }}</p></div>
+        {% endif %}
+        <p class="sr-explanation">{{ f.explanation }}</p>
+        <div class="sr-recommendation"><strong>Recommended action</strong><p>{{ f.recommendation }}</p></div>
+      </article>
+    {% endfor %}
+    </div>
+  
+
+{% else %}
+  <div class="sr-empty">
+    <h3>No findings detected</h3>
+    <p>No sensitive data found in this document.</p>
+    <p>
+      No configured detection rule matched this document.
+      This does not guarantee the document is free of sensitive information.
+    </p>
+  </div>
+{% endif %}
+
+
+  <p class="sr-footnote">Review status is displayed only. Changing status and calculating a document risk score require the separate review and risk features.</p>
+</section>
