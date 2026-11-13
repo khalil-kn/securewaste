@@ -1,4 +1,5 @@
-# Runs on every pull request and every push to main. Branch protection on main requires the "test" job.
+# Runs on every pull request and every push to main.
+# Branch protection on main requires the "test" job.
 name: CI
 
 on:
@@ -12,10 +13,28 @@ permissions:
 jobs:
   test:
     runs-on: ubuntu-latest
+    # SCRUM-27/28: the cloud metadata API tests need a real PostgreSQL to
+    # prove the insert/read round trip. Same credentials as the documented
+    # local setup (cloud_api/README.md), so local and CI behave alike.
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: securewaste_cloud_ci
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
     env:
       # Dummy values: CI never uses real keys or real documents.
       SECUREWASTE_SECRET_KEY: ci-secret-not-real
       SECUREWASTE_HMAC_KEY: ci-hmac-not-real
+      CLOUD_DATABASE_URL: >-
+        postgresql://postgres:postgres@localhost:5432/securewaste_cloud_ci
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
