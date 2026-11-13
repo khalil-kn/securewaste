@@ -1,1 +1,1 @@
-Audit trail: Transaction 4414408727065176 verified. CONFIDENTIAL
+Invoice #40781: Payment card 4436687805396181 for $7,753.00. CONFIDENTIAL

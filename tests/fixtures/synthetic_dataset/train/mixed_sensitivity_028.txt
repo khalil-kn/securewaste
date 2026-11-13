@@ -1,0 +1,25 @@
+Internal Security Review Notes - SEC-REV-2026651
+
+Date: 2026-12-24
+Reviewer: Alice Doe (zazrwur@company.org)
+Classification: INTERNAL
+
+Review Summary:
+Completed security review of API Platform. Overall posture: Acceptable.
+
+Findings:
+1. Weak password policy - Severity: HIGH
+2. Weak encryption - Severity: MEDIUM
+3. Missing authorization checks - Severity: HIGH
+
+Credentials Found in Code Review (HIGHLY CONFIDENTIAL - MUST ROTATE):
+- AWS Key: AKIA5410XO0VMSFKOG25
+- GitHub Token: ghp_7uRgtyOKs8R7KZ1p3BLtd4SXvVYzY8k0aXcq
+- Database Password: AX@0%1K@gS#%5HalKq$ScH@1!%JWGQfu
+
+Remediation:
+1. Immediately rotate all exposed credentials
+2. Add pre-commit hooks to prevent future leaks
+3. Schedule follow-up scan in 30 days
+
+Approved by: Mike Williams (gfcpxulkme@sample.co)

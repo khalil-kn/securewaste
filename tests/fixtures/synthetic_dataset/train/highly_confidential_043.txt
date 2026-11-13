@@ -1,1 +1,39 @@
-Encryption key: 1V47LZN9UHJPKHF3 for staging-api. HIGHLY CONFIDENTIAL
+Production Deployment Runbook - DEP-2026900
+
+Date: 2026-07-14
+Environment: PRODUCTION
+Classification: HIGHLY CONFIDENTIAL
+
+Pre-deployment Checklist:
+- [ ] All tests passing in staging
+- [ ] Security scan clean
+- [ ] Database migration reviewed
+- [ ] Rollback plan documented
+- [ ] On-call engineer confirmed: Jane Doe (+62 277 388 4794)
+
+Secrets Required:
+AWS Access Key: AKIA8BL8SXGON74SY6JH
+AWS Secret Key: Y%s3JaDl0LXU44W$ZVoZsm#eSZ0ifPWI
+Database Password: KQ0p3qVPZVj9RM!3QZyUGPAjK#Hi4wJ7
+API Keys: LjfRMAMFgMLk5XTkVha1rBLvR6SHk7EH5O9RDTZfJPoe0EEx, ugJcPtsPhjZr7qdjf9EVGfbLb3VdrOzdxITPvDeMVWHsQIq8, c2iP8S9FVWxmwmv02H0JWPBnYKeMUnsAQaQz7wrjAjEMefOK, pPqXpruf1fXFf0OH7WYHKsLu2YvXVKMCUIFPlsqHMfLWBSZv
+JWT Signing Key: X4xDDpbq6K9MJNpYWdAwveEZZf3i8hPcHh3REOYEchN26Or3E5oqRTRxjI6WK7sb
+Encryption Keys: EAunWN1tHYt03WUD7bMzrYjs4hRUV49u, ZJkUa6T9aqLZHjdaOT60wozJ4TspkZXd, eCJxuVCsGzKiFol2A0ye9lWN4Y6dU9qY
+
+Deployment Steps:
+1. Create pre-deployment snapshot
+2. Apply database migrations
+3. Deploy application containers
+4. Run smoke tests
+5. Update DNS records
+6. Monitor error rates for 30 minutes
+
+Rollback Procedure:
+1. Revert DNS
+2. Restore database snapshot
+3. Redeploy previous container version
+4. Notify stakeholders
+
+Emergency Contacts:
+Security: security@company.com
+Infrastructure: infra@company.com
+Management: management@company.com

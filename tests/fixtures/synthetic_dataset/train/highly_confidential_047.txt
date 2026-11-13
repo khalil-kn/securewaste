@@ -1,1 +1,1 @@
-Encryption key: 8XMOE545VYBJH4OU for payments. HIGHLY CONFIDENTIAL
+Encryption key: I835JVSDUR9VTBYS for prod-db. HIGHLY CONFIDENTIAL

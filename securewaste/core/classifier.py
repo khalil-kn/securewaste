@@ -266,11 +266,74 @@ def predict_classification(text: str) -> ClassificationLabel:
     if email_pattern.search(text) or phone_pattern.search(text):
         return ClassificationLabel.INTERNAL
 
-    # Default
     return ClassificationLabel.PUBLIC
 
 
-# Export the public API
+def predict_classification_with_confidence(text: str) -> tuple[ClassificationLabel, float, dict[ClassificationLabel, float]]:
+    """Rule-based classification with confidence scores.
+    
+    Args:
+        text: Document text to classify
+        
+    Returns:
+        Tuple of (label, confidence, all_probabilities)
+    """
+    if not text or not text.strip():
+        probs = {label: 1.0 if label == ClassificationLabel.PUBLIC else 0.0 for label in ClassificationLabel}
+        return ClassificationLabel.PUBLIC, 0.9, probs
+    
+    import re
+    
+    # Check for high-sensitivity patterns FIRST (highest priority)
+    secret_pattern = re.compile(
+        r"\b(AKIA[0-9A-Z]{16}|api[_-]?key\s*[:=]\s*[\"']?[a-zA-Z0-9_\-]{20,}|"
+        r"secret[_-]?key\s*[:=]\s*[\"']?[a-zA-Z0-9_\-]{20,}|"
+        r"password\s*[:=]\s*[\"']?[^\s\"']{8,}|"
+        r"BEGIN (RSA |EC |OPENSSH )?PRIVATE KEY\b)",
+        re.IGNORECASE,
+    )
+    if secret_pattern.search(text):
+        probs = {label: 0.9 if label == ClassificationLabel.HIGHLY_CONFIDENTIAL else 0.025 for label in ClassificationLabel}
+        return ClassificationLabel.HIGHLY_CONFIDENTIAL, 0.9, probs
+    
+    # Payment card pattern
+    card_pattern = re.compile(r"\b\d{4}[\s\-]?\d{4}[\s\-]?\d{4}[\s\-]?\d{4}\b")
+    if card_pattern.search(text):
+        probs = {label: 0.85 if label == ClassificationLabel.CONFIDENTIAL else 0.05 for label in ClassificationLabel}
+        return ClassificationLabel.CONFIDENTIAL, 0.85, probs
+    
+    # IBAN pattern
+    iban_pattern = re.compile(
+        r"[A-Z]{2}\d{2}[A-Z0-9]{1,30}",
+        re.IGNORECASE,
+    )
+    if iban_pattern.search(text):
+        probs = {label: 0.8 if label == ClassificationLabel.CONFIDENTIAL else 0.067 for label in ClassificationLabel}
+        return ClassificationLabel.CONFIDENTIAL, 0.8, probs
+    
+    # National ID / Passport patterns
+    id_pattern = re.compile(r"\b\d{8}\b")
+    passport_pattern = re.compile(r"\b[A-Z]{1,2}\d{6,9}\b")
+    if id_pattern.search(text) or passport_pattern.search(text):
+        probs = {label: 0.75 if label == ClassificationLabel.CONFIDENTIAL else 0.083 for label in ClassificationLabel}
+        return ClassificationLabel.CONFIDENTIAL, 0.75, probs
+    
+    # Check for explicit confidentiality labels
+    label_pattern = re.compile(r"(?<!\w)(CONFIDENTIAL|INTERNAL|RESTRICTED)(?!\w)")
+    if label_pattern.search(text.upper()):
+        probs = {label: 0.7 if label == ClassificationLabel.CONFIDENTIAL else 0.1 for label in ClassificationLabel}
+        return ClassificationLabel.CONFIDENTIAL, 0.7, probs
+    
+    # Email/phone/keyword patterns (lower sensitivity)
+    email_pattern = re.compile(r"\b[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}\b")
+    phone_pattern = re.compile(r"\b(?:\+?\d{1,3}[\s\-]?)?\(?\d{3}\)?[\s\-]?\d{3}[\s\-]?\d{4}\b")
+    if email_pattern.search(text) or phone_pattern.search(text):
+        probs = {label: 0.65 if label == ClassificationLabel.INTERNAL else 0.117 for label in ClassificationLabel}
+        return ClassificationLabel.INTERNAL, 0.65, probs
+    
+    # Default
+    probs = {label: 1.0 if label == ClassificationLabel.PUBLIC else 0.0 for label in ClassificationLabel}
+    return ClassificationLabel.PUBLIC, 0.6, probs
 __all__ = [
     "ClassificationLabel",
     "ClassificationResult",

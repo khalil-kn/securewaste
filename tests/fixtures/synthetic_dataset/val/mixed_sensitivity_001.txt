@@ -1,0 +1,28 @@
+Onboarding Document - Sarah Williams
+
+Welcome to the team! This document contains internal information for your onboarding.
+Classification: INTERNAL
+
+Team Contacts:
+- Manager: Alice Smith (hupezafajn@company.org)
+- Buddy: Chris Brown (ifdju@demo.io)
+- HR: Tom Taylor (mzslg@sample.co)
+
+Systems Access:
+You'll need access to the following systems:
+- Jira: https://jira.internal
+- GitLab: https://gitlab.company.com
+- Confluence: https://confluence.company.com
+- VPN: vpn.internal
+
+IMPORTANT - Production Database Credentials (HIGHLY CONFIDENTIAL):
+Host: prod-db-primary
+Port: 5432
+Username: admin
+Password: goI2fMkJbUH1Wyc6GVQztdrcqEtxJPlb
+
+AWS Credentials (HIGHLY CONFIDENTIAL):
+Access Key: AKIAE23NHKQHDLSNPP24
+Secret Key: @WjWDJHcZ5EdGpXpCCXE7HI1t$R6bW4Z
+
+Please store these securely and never commit to version control.

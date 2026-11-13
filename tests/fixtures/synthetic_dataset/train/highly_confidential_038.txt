@@ -1,1 +1,34 @@
-Encryption key: S3Y4H1TE48M2Q6X2 for staging-api. HIGHLY CONFIDENTIAL
+Infrastructure Configuration - CFG-2026983
+
+Environment: STAGING
+Last Updated: 2026-11-14
+Classification: HIGHLY CONFIDENTIAL
+
+Database Clusters:
+Primary: db-primary-1:5432
+  Credentials: admin / 6EhHH7Ap5JAtTq1dtNzZci5SzaBcLnn3
+  Connection String: postgresql://...
+Replica: db-replica-1:3306
+  Credentials: replication / 7cqXxrfEmPDhlgPbSDef7q1LLBOYzBOn
+
+Message Queues:
+RabbitMQ: mq-3
+  Credentials: app_user / QlCxx!nRXvNWPH6Wu2JP43qgZw0h7U6L
+Kafka: kafka-prod:9092
+  SASL Credentials: app_user / KNL4cq#LXrWI3P%0h2XYIzL6I2t57X0N
+
+Cache Layer:
+Redis: redis-3:6379
+  Password: 3YkcJ6J5$cR#MLJ@eec4S68T%GHqnY83
+  Cluster Mode: enabled
+
+Secrets Management:
+Vault Address: https://vault-prod.company.com
+Vault Token: 6NANtZ0m5n8!sKiHlGFXggv46BAgUpDO
+Key Paths: secret/data/app
+
+Monitoring:
+Prometheus: https://prometheus.company.com
+Grafana: https://grafana.company.com
+  Admin: grafana_admin / @VWpeXDhlcT9OnHNTt4G69Gql#d3KuIL
+Alertmanager: https://alerts.company.com

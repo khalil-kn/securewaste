@@ -1,0 +1,31 @@
+Financial Report - FY 2026
+
+Prepared by: Jane Doe (qwdijzpan@test.net)
+Date: 2026-02-16
+Classification: CONFIDENTIAL
+
+Revenue Summary:
+Total Revenue: $17,320,018.00
+Recurring Revenue: $13,441,626.00 (61%)
+New Business: $9,091,819.00
+
+Expense Breakdown:
+Personnel: $973,032.00
+Infrastructure: $4,395,256.00
+Marketing: $8,635,651.00
+Operations: $1,327,971.00
+
+Key Metrics:
+Gross Margin: 66%
+Customer Acquisition Cost: $3,089.00
+Lifetime Value: $65,182.00
+Churn Rate: 4%
+
+Payment Processing:
+Cards processed: 31930
+Total volume: $44,061,638.00
+Chargeback rate: 1%
+
+Bank Accounts:
+Primary: DE65 0R5M JZK0 QZMR 6N76 UQTD
+Reserve: DE38 3O49 73PN GTFY X97U PY3S

@@ -1,1 +1,1 @@
-Kubernetes secret: api-key=GRMQDZPJL9R9KMP6 secret=r3!IDlXG@L9QDmdmFkFh7HD%LEhWjxnt. HIGHLY CONFIDENTIAL
+Encryption key: LQ9DWCJTAC15DI4Y for analytics. HIGHLY CONFIDENTIAL

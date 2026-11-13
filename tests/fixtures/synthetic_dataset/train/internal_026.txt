@@ -1,1 +1,23 @@
-IT support ticket: Mike Smith reports issue with GitLab. Contact alphgs@demo.io.
+Employee Onboarding Plan - Mike Smith
+
+Role: Designer
+Start Date: 2026-01-17
+Manager: Alice Williams (dxqnimgw@example.com)
+Buddy: Sarah Davis (rbvmq@demo.io)
+Classification: INTERNAL
+
+Week 1: Orientation
+- Day 1: HR orientation, IT setup, team introductions
+- Day 2: Security training, access provisioning
+- Day 3: Codebase walkthrough, development environment
+- Day 4: Confluence training, VPN training
+- Day 5: First task assignment, 30-day goals
+
+Week 2-4: Ramp-up
+- Pair programming with Sarah Davis
+- Complete Code Review certification
+- Shadow Tech Lead for 8 days
+- First code review participation
+
+30-Day Check-in: 2026-09-18 with Alice Williams
+90-Day Review: 2026-05-12

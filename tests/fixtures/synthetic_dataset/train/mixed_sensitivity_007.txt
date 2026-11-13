@@ -1,0 +1,39 @@
+Public Tutorial: Docker Basics
+
+In this tutorial, we'll learn how to secure your API.
+
+Prerequisites:
+- Python 3.8+
+- Cloud account
+
+Step 1: Configuration
+Create a config file with your settings:
+    # config.yaml
+    database:
+      host: localhost
+      port: 5432
+      # WARNING: Never hardcode passwords in config files!
+      # Use environment variables instead:
+      # password: ${DB_PASSWORD}
+      username: tutorial_user
+
+Step 2: Running the Application
+Start the server:
+    python app.py
+
+Common Example (DO NOT USE IN PRODUCTION):
+    # Bad example - hardcoded password
+    password = "example_password_123"
+    
+    # Good example - from environment
+    import os
+    password = os.environ.get("DB_PASSWORD")
+
+Security Best Practices:
+- Never commit passwords or API keys to version control
+- Use a secrets manager in production
+- Rotate credentials regularly
+- Use least-privilege access
+
+Next Steps:
+Explore the advanced features in our documentation.

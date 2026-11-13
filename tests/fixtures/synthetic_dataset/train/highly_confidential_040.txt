@@ -1,1 +1,1 @@
-Database config: password=slu6Rj6Xq7mbSEr!fCkHIdsgRXCtANJH api_key=E5158OQESUX9L0IJ. HIGHLY CONFIDENTIAL
+Database config: password=tP8K0!2jN3dOyadoewhLnx5EHav49Y6H api_key=BF6VHO6A3LW00I6P. HIGHLY CONFIDENTIAL

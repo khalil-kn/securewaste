@@ -1,1 +1,1 @@
-JWT signing key: Z9C65FPYST5V0175. Keep secure. HIGHLY CONFIDENTIAL
+Webhook secret: ArA!dnAufZFhqjVbuw1fDHV73QUM0Od7 for /api/webhook/179. HIGHLY CONFIDENTIAL

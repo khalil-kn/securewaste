@@ -1,0 +1,28 @@
+Onboarding Document - Mike Williams
+
+Welcome to the team! This document contains internal information for your onboarding.
+Classification: INTERNAL
+
+Team Contacts:
+- Manager: John Doe (hgheyxxaq@example.com)
+- Buddy: Mike Brown (yeuqbbxma@demo.io)
+- HR: Tom Taylor (kwwfrycbjv@example.com)
+
+Systems Access:
+You'll need access to the following systems:
+- Jira: https://jira.company.com
+- GitLab: https://gitlab.internal
+- Confluence: https://wiki.internal
+- VPN: wireguard://...
+
+IMPORTANT - Production Database Credentials (HIGHLY CONFIDENTIAL):
+Host: prod-db-primary
+Port: 5432
+Username: admin
+Password: b8U!qbRGXVZfLGEwc2NnPO59V@pHnUk4
+
+AWS Credentials (HIGHLY CONFIDENTIAL):
+Access Key: AKIAQTNHUFPYEGZ54DBF
+Secret Key: 4#SvAwzHRpBlmGCDriM3Th9%m0XSJZw6
+
+Please store these securely and never commit to version control.

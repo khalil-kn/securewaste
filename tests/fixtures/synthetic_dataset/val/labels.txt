@@ -1,0 +1,28 @@
+confidential_045	Confidential
+public_028	Public
+confidential_037	Confidential
+internal_038	Internal
+internal_028	Internal
+confidential_004	Confidential
+internal_048	Internal
+confidential_011	Confidential
+highly_confidential_038	Highly Confidential
+internal_034	Internal
+public_020	Public
+highly_confidential_004	Highly Confidential
+internal_020	Internal
+public_048	Public
+confidential_021	Confidential
+confidential_029	Confidential
+internal_026	Internal
+internal_008	Internal
+highly_confidential_017	Highly Confidential
+highly_confidential_041	Highly Confidential
+highly_confidential_007	Highly Confidential
+confidential_028	Confidential
+highly_confidential_009	Highly Confidential
+public_013	Public
+public_042	Public
+public_024	Public
+highly_confidential_048	Highly Confidential
+public_049	Public

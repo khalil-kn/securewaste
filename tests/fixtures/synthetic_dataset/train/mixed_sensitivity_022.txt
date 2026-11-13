@@ -1,0 +1,28 @@
+Onboarding Document - John Smith
+
+Welcome to the team! This document contains internal information for your onboarding.
+Classification: INTERNAL
+
+Team Contacts:
+- Manager: Bob Smith (uloje@test.net)
+- Buddy: Chris Wilson (lyzavuf@test.net)
+- HR: Lisa Taylor (itmqcjz@company.org)
+
+Systems Access:
+You'll need access to the following systems:
+- Jira: https://jira.internal
+- GitLab: https://gitlab.internal
+- Confluence: https://wiki.internal
+- VPN: vpn.internal
+
+IMPORTANT - Production Database Credentials (HIGHLY CONFIDENTIAL):
+Host: prod-db-primary
+Port: 1433
+Username: app_user
+Password: H4avKYl4fACreRFaktYHjMCiYERgADOa
+
+AWS Credentials (HIGHLY CONFIDENTIAL):
+Access Key: AKIA45A5HJZRC35WEMCB
+Secret Key: v%1BhLl7iI9FbT6pRAFrxFUoBBZDrVHe
+
+Please store these securely and never commit to version control.

@@ -1,1 +1,30 @@
-Client contract: Payment terms 4660832798083241. IBAN: DE99 OZ8A QRBQ L3FW EHID 2S2P. CONFIDENTIAL
+Client Contract - CTR-2026212
+
+Parties: Globex Inc (psdfmoq@example.com) and Company Inc.
+Date: 2026-04-10
+Classification: CONFIDENTIAL
+
+Scope of Work:
+License grant for...
+
+Payment Terms:
+Total Amount: $4,446,623.00
+Payment Schedule: Net 45
+Payment Method: Credit Card ending in 4318
+IBAN for Wire Transfer: DE47 BPKA PO5S 4LU9 8UK5 0DIV
+
+Confidentiality:
+Both parties agree to maintain strict confidentiality of all proprietary information
+exchanged during the term of this agreement. This includes but is not limited to:
+technical specifications, pricing data, customer lists, and trade secrets.
+
+Data Protection:
+Personal data processed under this contract shall comply with GDPR/CCPA requirements.
+Data Processing Addendum attached as Appendix A.
+
+Term and Termination:
+Initial term: 35 months. Auto-renewal unless 30 days written notice.
+
+Signatures:
+Client: _______________________ Date: __________
+Company: _______________________ Date: __________

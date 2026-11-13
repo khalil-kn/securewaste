@@ -1,0 +1,26 @@
+Client Project Proposal - Nexus
+
+Client: Acme Corp
+Date: 2026-01-05
+Classification: CONFIDENTIAL
+
+Project Overview:
+Security audit
+
+Scope and Deliverables:
+Testing
+
+Timeline: 9 months
+Budget: $1,899,949.00
+
+Payment Information:
+Wire transfer to IBAN: DE40 1UDK ZAO9 9PT5 RUUM IC17
+Reference: PAY-49054
+
+Technical Integration:
+The client's API requires the following credentials (HIGHLY CONFIDENTIAL):
+API Endpoint: https://api.partner.io
+API Key: m1vfztyu8vYBzy5vquTqIKSdkcs8th7IQCid0NQY20XD5pZe
+Webhook Secret: fOybdyEmGR4SrTeqPQlfkxdbCNa8KE4Bg1jlUZJQ
+
+These credentials must be stored in the secure vault and rotated quarterly.

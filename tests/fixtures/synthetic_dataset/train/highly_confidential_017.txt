@@ -1,1 +1,38 @@
-Kubernetes secret: api-key=JKU2W8ZUVJUTPMC3 secret=HuSuBqISK7QImHS3!rQ258!WenEqYZ4B. HIGHLY CONFIDENTIAL
+Incident Response Playbook - INC-2026385
+
+Severity: SEV-3
+Detected: 2026-10-04 21:59
+Classification: HIGHLY CONFIDENTIAL
+
+Incident Summary:
+Credential compromise suspected...
+
+Affected Systems:
+API gateway
+
+Root Cause Analysis:
+Misconfigured permissions
+
+Compromised Credentials (ROTATE IMMEDIATELY):
+- AWS Keys: AKIA80SUJCKUH1DL1ZL8 / lYiIAU0VYBlTXK6jSCxgUeD21IDRttvs
+- Database: app_user / bFtwT8EG9i783Y16HgqY7o07VnwXFHz6
+- API Tokens: 9l4uC9AcxNwFwjfcFzv0mx8E1OqlqPZmBr0tWya2IQaFgNGI, KSKNDJFJn0gLDLfugGeTCUgbGSQthzsWuQMkgXZ2uUEEefMX
+- SSH Keys: CI/CD deploy key
+
+Containment Actions Taken:
+Blocked IP ranges
+
+Eradication Steps:
+1. Rotate all compromised credentials
+2. Patch vulnerable systems
+3. Remove unauthorized access
+4. Verify integrity of all systems
+
+Recovery Plan:
+Full credential rotation
+
+Lessons Learned:
+Automate dependency scanning
+
+Report Prepared by: Jane Doe (sumyuu@test.net)
+Approved by: Mike Brown (gmrbwwitl@test.net)

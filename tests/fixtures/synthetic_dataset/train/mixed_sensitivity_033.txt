@@ -1,0 +1,26 @@
+Client Project Proposal - Vanguard
+
+Client: Wayne Inc
+Date: 2026-06-24
+Classification: CONFIDENTIAL
+
+Project Overview:
+Build new API platform
+
+Scope and Deliverables:
+API design
+
+Timeline: 3 months
+Budget: $1,821,622.00
+
+Payment Information:
+Wire transfer to IBAN: DE88 5VSA G521 ECC2 9JFO P157
+Reference: PAY-21084
+
+Technical Integration:
+The client's API requires the following credentials (HIGHLY CONFIDENTIAL):
+API Endpoint: https://api.client.com/v1
+API Key: EgGXGwjNw2U7qwDpmfDTpcgXSRJbJUoMedPcwYyPYCkEU7us
+Webhook Secret: vIu92jWUaHlrQrOi2WFxzEkh09SqCVpaCqvI0q7i
+
+These credentials must be stored in the secure vault and rotated quarterly.

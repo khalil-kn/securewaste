@@ -1,1 +1,34 @@
-JWT signing key: L9UE421VMEFOZTP7. Keep secure. HIGHLY CONFIDENTIAL
+Infrastructure Configuration - CFG-2026556
+
+Environment: STAGING
+Last Updated: 2026-02-08
+Classification: HIGHLY CONFIDENTIAL
+
+Database Clusters:
+Primary: db-primary-2:1433
+  Credentials: app_user / mai$gH7fbgRcgioog@QREbqvNx4rcMS5
+  Connection String: sqlserver://...
+Replica: db-replica-2:3306
+  Credentials: app_user / 0WV6L#5fCssUuS%ei6F6S@j8Ji@eC%tX
+
+Message Queues:
+RabbitMQ: mq-1
+  Credentials: admin / 9rdI@OxQwjsUAj4HCvZp@Ys1acv3gUo$
+Kafka: kafka-1:9092,kafka-2:9092,kafka-3:9092
+  SASL Credentials: app_user / RtC7qhT@K4dGC3YEzh1J$sUv5ssuHpVy
+
+Cache Layer:
+Redis: redis-3:6379
+  Password: 35FCOcSHy4yqS4G5d$1ob9hvAMDRXyLv
+  Cluster Mode: disabled
+
+Secrets Management:
+Vault Address: https://vault.company.com
+Vault Token: OGMHJDkAd@XOQlf!gN5cUW830lGR7b$%
+Key Paths: secret/data/prod
+
+Monitoring:
+Prometheus: https://prometheus.company.com
+Grafana: https://dashboards.company.com
+  Admin: admin / fi#3ENO6j3kqfwGjaU3IxYCCUU#rm1HV
+Alertmanager: https://alertmanager.company.com

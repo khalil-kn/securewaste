@@ -1,1 +1,32 @@
-Access request: John Smith needs VPN access. Email: mxnbnwbbw@demo.io
+Internal Project Proposal - Atlas
+
+Prepared by: Sarah Williams (jfleewtar@sample.co)
+Date: 2026-10-02
+Classification: INTERNAL
+
+Executive Summary:
+This proposal outlines the Atlas initiative to add features.
+The project requires 10 engineers over 6 months.
+
+Background:
+User feedback indicates...
+
+Technical Approach:
+We propose a microservices approach...
+Data migration will use...
+
+Resource Requirements:
+- Engineering: 4 FTEs
+- Design: 3 FTEs
+- QA: 3 FTEs
+- Project Management: 1 FTE
+
+Budget Estimate: $591,072.00
+ROI Projection: 162% over 12 months
+
+Risks:
+1. Technical complexity
+2. Vendor dependencies
+3. Compliance requirements
+
+Approval Required: Bob Johnson (gwznkho@sample.co)

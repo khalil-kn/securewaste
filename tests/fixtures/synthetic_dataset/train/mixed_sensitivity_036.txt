@@ -1,0 +1,26 @@
+Client Project Proposal - Atlas
+
+Client: Globex Ltd
+Date: 2026-01-10
+Classification: CONFIDENTIAL
+
+Project Overview:
+Build new API platform
+
+Scope and Deliverables:
+Deployment
+
+Timeline: 6 months
+Budget: $1,312,534.00
+
+Payment Information:
+Wire transfer to IBAN: DE69 7PAT H70S BG6M B31T HPDU
+Reference: PAY-49898
+
+Technical Integration:
+The client's API requires the following credentials (HIGHLY CONFIDENTIAL):
+API Endpoint: https://api.partner.io
+API Key: GyKvPn7NSvgRffB8UlMlvuZ41Hek1M3Nx11KlSnJJLLnVomC
+Webhook Secret: KPn2Qxc6KrjR8rpnCciIIIMDVrV8WvSnkBNmUQxS
+
+These credentials must be stored in the secure vault and rotated quarterly.

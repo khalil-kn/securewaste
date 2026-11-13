@@ -1,1 +1,31 @@
-Financial statement: Account DE96 P1QE 87V2 IATQ BLOB A5N7 balance $8,913.00. CONFIDENTIAL
+Financial Report - Q2 2026
+
+Prepared by: Alice Doe (tawschd@demo.io)
+Date: 2026-03-14
+Classification: CONFIDENTIAL
+
+Revenue Summary:
+Total Revenue: $45,454,724.00
+Recurring Revenue: $2,621,079.00 (70%)
+New Business: $3,438,530.00
+
+Expense Breakdown:
+Personnel: $16,282,470.00
+Infrastructure: $2,279,688.00
+Marketing: $2,043,004.00
+Operations: $3,582,403.00
+
+Key Metrics:
+Gross Margin: 75%
+Customer Acquisition Cost: $4,606.00
+Lifetime Value: $264,820.00
+Churn Rate: 3%
+
+Payment Processing:
+Cards processed: 341669
+Total volume: $53,770,451.00
+Chargeback rate: 3%
+
+Bank Accounts:
+Primary: DE27 IYFD D4W8 JR4A A7QK 7AXN
+Reserve: DE26 3305 IR8O CZQF AHR8 5I8R

@@ -1,1 +1,39 @@
-Service account: jsgaqbpx@company.org key=J7UBBRNU8C0S41KS. HIGHLY CONFIDENTIAL
+Production Deployment Runbook - DEP-2026273
+
+Date: 2026-07-24
+Environment: PRODUCTION
+Classification: HIGHLY CONFIDENTIAL
+
+Pre-deployment Checklist:
+- [ ] All tests passing in staging
+- [ ] Security scan clean
+- [ ] Database migration reviewed
+- [ ] Rollback plan documented
+- [ ] On-call engineer confirmed: Jane Doe (786-711-9544)
+
+Secrets Required:
+AWS Access Key: AKIA97JI7TJABWHM24N2
+AWS Secret Key: lCUNY3Z@o#WFnwHjAGme5aLwS5xNyjuw
+Database Password: AbM056wGKBOUnn8e8qQwmNvXJPT%DWD#
+API Keys: XAbqxZWpB9WTe1Et6mIfTZ3o4ClewDEsau8ZBhjVStqEwodg, TFDzRQkNiSJKX3YjtWaRh1iRrqF5vCXeZPg6OxatHZJ3yYtB, y5Y6UyxDAyp8cvaP50iButlEdJHEiIEiwTiaeRwc3kZCQOAQ, cxDs1AKpXfpmHlJ3obe5XFPypGvExRwJgelL6vRGt672mFSf, ovyAM8p9YHXw2HPeO5uQ4QLU9W4AqALNA6Ky26rA1ZEKlDTL
+JWT Signing Key: 9f2i9YEeVQ9tSPhaHOj4h1wecqvXks9qQjfuzNonQcjlihoH7adEt1UZeqjirsUv
+Encryption Keys: ra7LTpldK6JXbqa5mbMDfIouQ6i1DNEv, pyBBDntIgDg4zg3pnVUhqCdiedNmp0NJ, BD0HM2F3YDn2JZLLcBgLjBLJWtPfrlWf
+
+Deployment Steps:
+1. Create pre-deployment snapshot
+2. Apply database migrations
+3. Deploy application containers
+4. Run smoke tests
+5. Update DNS records
+6. Monitor error rates for 30 minutes
+
+Rollback Procedure:
+1. Revert DNS
+2. Restore database snapshot
+3. Redeploy previous container version
+4. Notify stakeholders
+
+Emergency Contacts:
+Security: security@company.com
+Infrastructure: infra@company.com
+Management: management@company.com

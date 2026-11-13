@@ -1,1 +1,21 @@
-Contact Sarah Doe at wzbugqkc@test.net or 979-646-7226 for project questions.
+Internal Audit Report - Compliance
+
+Audit Period: 2026-01-01 to 2026-10-22
+Auditor: Audit Team B (kcpgoqov@example.com)
+Classification: INTERNAL
+
+Scope:
+This audit covered data handling.
+
+Findings:
+1. Missing encryption - Risk Level: HIGH
+2. Gap in monitoring - Risk Level: MEDIUM
+3. Process deviation - Risk Level: HIGH
+
+Recommendations:
+Implement encryption
+
+Management Response:
+Under review
+
+Follow-up Date: 2026-10-27

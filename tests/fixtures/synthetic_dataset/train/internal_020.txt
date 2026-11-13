@@ -1,1 +1,21 @@
-Expense report: Alice Johnson submitted via wvcwgmp@demo.io. Phone: (129) 606-6325
+Internal Audit Report - Financial
+
+Audit Period: 2026-01-01 to 2026-06-26
+Auditor: External Auditor (nynueok@test.net)
+Classification: INTERNAL
+
+Scope:
+This audit covered data handling.
+
+Findings:
+1. Missing encryption - Risk Level: LOW
+2. Incomplete documentation - Risk Level: MEDIUM
+3. Training gap - Risk Level: MEDIUM
+
+Recommendations:
+Implement encryption
+
+Management Response:
+Under review
+
+Follow-up Date: 2026-09-16

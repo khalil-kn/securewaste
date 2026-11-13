@@ -1,1 +1,1 @@
-Database config: password=ivawF18LzOJgsO75f7CYvvn1H%CilvzM api_key=MTK0RSOGGY5KOV1L. HIGHLY CONFIDENTIAL
+JWT signing key: ODTTBXYF744NLDE4. Keep secure. HIGHLY CONFIDENTIAL

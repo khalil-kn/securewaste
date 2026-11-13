@@ -1,0 +1,26 @@
+Client Project Proposal - Orion
+
+Client: Wayne Corp
+Date: 2026-10-15
+Classification: CONFIDENTIAL
+
+Project Overview:
+Performance optimization
+
+Scope and Deliverables:
+Deployment
+
+Timeline: 3 months
+Budget: $585,960.00
+
+Payment Information:
+Wire transfer to IBAN: DE90 DIDL AY3G GLDH C00A Q1MP
+Reference: PAY-72140
+
+Technical Integration:
+The client's API requires the following credentials (HIGHLY CONFIDENTIAL):
+API Endpoint: https://api.client.com/v1
+API Key: dYnEX0y7DMgy2GVN8ICVaUOfeBBzdcgvDYbKv0Fh1ucL3AlF
+Webhook Secret: tOS2ZYZI6aFl4deRTh8VREPioyDJxiswJFy690Sr
+
+These credentials must be stored in the secure vault and rotated quarterly.

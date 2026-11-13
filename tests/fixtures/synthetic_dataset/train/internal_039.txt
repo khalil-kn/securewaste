@@ -1,1 +1,26 @@
-IT support ticket: John Johnson reports issue with Jira. Contact tedoznx@company.org.
+Internal Security Advisory - SEC-2026783
+
+Date: 2026-08-25
+Severity: MEDIUM
+Affected Systems: API Gateway
+Classification: INTERNAL
+
+Summary:
+Vulnerability discovered in...
+
+Technical Details:
+Impact assessment reveals...
+
+Impact Assessment:
+Limited to internal systems
+
+Mitigation Steps:
+1. Rotate credentials
+2. Restrict access
+3. Notify affected users
+
+Workaround (if applicable):
+Manual approval required
+
+Contact: security@company.com for questions
+Reference: CVE-2026-19924

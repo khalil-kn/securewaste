@@ -1,1 +1,1 @@
-Service account: atnavrwovx@sample.co key=5OAIINMK7YYZ6R9I. HIGHLY CONFIDENTIAL
+JWT signing key: 1VLIPOJH4Q498Q1V. Keep secure. HIGHLY CONFIDENTIAL

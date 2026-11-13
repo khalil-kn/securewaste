@@ -1,0 +1,26 @@
+Client Project Proposal - Orion
+
+Client: Globex LLC
+Date: 2026-01-17
+Classification: CONFIDENTIAL
+
+Project Overview:
+Build new API platform
+
+Scope and Deliverables:
+API design
+
+Timeline: 9 months
+Budget: $1,811,780.00
+
+Payment Information:
+Wire transfer to IBAN: DE77 SGD5 WAWG CPNY NT18 4JW7
+Reference: PAY-66429
+
+Technical Integration:
+The client's API requires the following credentials (HIGHLY CONFIDENTIAL):
+API Endpoint: https://api.client.com/v1
+API Key: 2Bh1YrzxAYXhmUZ1esGO15LxaoGU4QQVnKEMkEyGwKLXBRcN
+Webhook Secret: peOl3ZD8DaBzkGoKOc1Qww7iuvZKyTxM3aY0UIjN
+
+These credentials must be stored in the secure vault and rotated quarterly.

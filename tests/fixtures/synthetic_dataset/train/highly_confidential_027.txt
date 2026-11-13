@@ -1,1 +1,1 @@
-JWT signing key: I60Q6GUO8I5JWK6Z. Keep secure. HIGHLY CONFIDENTIAL
+Encryption key: M2JYLCLAZUND5PN6 for analytics. HIGHLY CONFIDENTIAL

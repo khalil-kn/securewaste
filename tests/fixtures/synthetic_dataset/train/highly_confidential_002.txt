@@ -1,1 +1,38 @@
-Service account: nzcqcykf@test.net key=84NL65UJG1SO1ESP. HIGHLY CONFIDENTIAL
+Incident Response Playbook - INC-2026955
+
+Severity: SEV-3
+Detected: 2026-05-11 05:13
+Classification: HIGHLY CONFIDENTIAL
+
+Incident Summary:
+Data exfiltration attempt...
+
+Affected Systems:
+Authentication service
+
+Root Cause Analysis:
+Vulnerable dependency
+
+Compromised Credentials (ROTATE IMMEDIATELY):
+- AWS Keys: AKIAP62J4XYBRXFX3AT2 / 62oDEMAvmFh9RdZU22!e!yRSdbk5liuv
+- Database: app_user / ibu#Ui9ZJQf%8nnPxkZlWOmW50xW#x7S
+- API Tokens: 4jjQYoM3Lkr0QZWnviAfvcy4ICFyE7VYZmcahyv0ZI3II7R7
+- SSH Keys: CI/CD deploy key
+
+Containment Actions Taken:
+Enabled enhanced monitoring
+
+Eradication Steps:
+1. Rotate all compromised credentials
+2. Patch vulnerable systems
+3. Remove unauthorized access
+4. Verify integrity of all systems
+
+Recovery Plan:
+Data restoration from backup
+
+Lessons Learned:
+Enforce least privilege
+
+Report Prepared by: Jane Doe (flgdzzzz@company.org)
+Approved by: Alice Williams (nqthzizwos@company.org)

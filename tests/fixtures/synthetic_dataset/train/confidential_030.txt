@@ -1,1 +1,30 @@
-Financial statement: Account DE96 AT6Y UKJ3 3S42 S87E OX3L balance $583.00. CONFIDENTIAL
+Client Contract - CTR-2026411
+
+Parties: Globex LLC (bnsta@sample.co) and Company Inc.
+Date: 2026-07-21
+Classification: CONFIDENTIAL
+
+Scope of Work:
+License grant for...
+
+Payment Terms:
+Total Amount: $1,323,789.00
+Payment Schedule: Net 30
+Payment Method: Credit Card ending in 7408
+IBAN for Wire Transfer: DE88 L4JY 0DSB CR21 7JZU EPA5
+
+Confidentiality:
+Both parties agree to maintain strict confidentiality of all proprietary information
+exchanged during the term of this agreement. This includes but is not limited to:
+technical specifications, pricing data, customer lists, and trade secrets.
+
+Data Protection:
+Personal data processed under this contract shall comply with GDPR/CCPA requirements.
+Data Processing Addendum attached as Appendix A.
+
+Term and Termination:
+Initial term: 24 months. Auto-renewal unless 30 days written notice.
+
+Signatures:
+Client: _______________________ Date: __________
+Company: _______________________ Date: __________

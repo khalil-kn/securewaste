@@ -1,1 +1,30 @@
-Bank transfer: IBAN DE21 N8QU 1XFU X1US 6QVA 1ALX for $9,402.00. Reference: REF98395. CONFIDENTIAL
+Data Processing Agreement - DPA-2026848
+
+Controller: Wayne Enterprises
+Processor: CloudProvider
+Date: 2026-08-22
+Classification: CONFIDENTIAL
+
+Categories of Personal Data:
+- Customer contact information (email, phone, address)
+- Payment card data (tokenized)
+- National ID numbers (where legally required)
+- Usage analytics and behavioral data
+
+Processing Purposes:
+1. Service delivery and support
+2. Billing and payment processing
+3. Legal compliance and reporting
+4. Security and fraud prevention
+
+Technical Measures:
+- Encryption at rest: AES-256
+- Encryption in transit: TLS 1.3
+- Access controls: RBAC with MFA
+- Audit logging: 7-year retention
+
+Subprocessors:
+SubProcessor C (APAC)
+
+Data Subject Rights:
+Processed per Articles 12-23 GDPR. Contact: dpo@company.com

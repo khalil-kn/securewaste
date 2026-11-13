@@ -1,0 +1,26 @@
+Client Project Proposal - Nexus
+
+Client: Globex Inc
+Date: 2026-10-16
+Classification: CONFIDENTIAL
+
+Project Overview:
+Security audit
+
+Scope and Deliverables:
+Testing
+
+Timeline: 6 months
+Budget: $1,940,479.00
+
+Payment Information:
+Wire transfer to IBAN: DE96 E9W0 A8QZ BXWQ S7WG LJC6
+Reference: PAY-21294
+
+Technical Integration:
+The client's API requires the following credentials (HIGHLY CONFIDENTIAL):
+API Endpoint: https://api.partner.io
+API Key: kmToEYq5sCgXg8SXEsIJckHaz2juZWhK3gBMYsGtGDJwjivf
+Webhook Secret: 1HNDBtPJtdYrlK6H1h9NlgBk8DH0uhYABcGhN8Mb
+
+These credentials must be stored in the secure vault and rotated quarterly.

@@ -1,0 +1,30 @@
+Client Contract - CTR-2026842
+
+Parties: Umbrella Corp (rzywfsfg@sample.co) and Company Inc.
+Date: 2026-07-13
+Classification: CONFIDENTIAL
+
+Scope of Work:
+License grant for...
+
+Payment Terms:
+Total Amount: $3,982,062.00
+Payment Schedule: Milestone-based
+Payment Method: Credit Card ending in 6581
+IBAN for Wire Transfer: DE15 GMFG ESBD 68NC 2UIN SX32
+
+Confidentiality:
+Both parties agree to maintain strict confidentiality of all proprietary information
+exchanged during the term of this agreement. This includes but is not limited to:
+technical specifications, pricing data, customer lists, and trade secrets.
+
+Data Protection:
+Personal data processed under this contract shall comply with GDPR/CCPA requirements.
+Data Processing Addendum attached as Appendix A.
+
+Term and Termination:
+Initial term: 17 months. Auto-renewal unless 30 days written notice.
+
+Signatures:
+Client: _______________________ Date: __________
+Company: _______________________ Date: __________

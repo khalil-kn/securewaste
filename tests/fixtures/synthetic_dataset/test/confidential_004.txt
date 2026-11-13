@@ -1,0 +1,31 @@
+Financial Report - Q4 2026
+
+Prepared by: Jane Doe (znnsla@company.org)
+Date: 2026-06-22
+Classification: CONFIDENTIAL
+
+Revenue Summary:
+Total Revenue: $76,031,292.00
+Recurring Revenue: $25,285,454.00 (67%)
+New Business: $6,955,503.00
+
+Expense Breakdown:
+Personnel: $3,902,267.00
+Infrastructure: $1,063,901.00
+Marketing: $6,250,623.00
+Operations: $4,846,310.00
+
+Key Metrics:
+Gross Margin: 69%
+Customer Acquisition Cost: $429.00
+Lifetime Value: $279,085.00
+Churn Rate: 3%
+
+Payment Processing:
+Cards processed: 124461
+Total volume: $49,957,504.00
+Chargeback rate: 2%
+
+Bank Accounts:
+Primary: DE57 9I4R XGK0 C8QK PXNU 8AOT
+Reserve: DE57 AHS5 L1WW 7TH4 CVFK KWSH

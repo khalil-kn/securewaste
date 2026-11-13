@@ -1,0 +1,26 @@
+Client Project Proposal - Vanguard
+
+Client: Umbrella Corp
+Date: 2026-08-09
+Classification: CONFIDENTIAL
+
+Project Overview:
+Build new API platform
+
+Scope and Deliverables:
+Deployment
+
+Timeline: 6 months
+Budget: $1,318,117.00
+
+Payment Information:
+Wire transfer to IBAN: DE69 R3QA FA1I 6CXL CQXG J4Z5
+Reference: PAY-72674
+
+Technical Integration:
+The client's API requires the following credentials (HIGHLY CONFIDENTIAL):
+API Endpoint: https://api.partner.io
+API Key: RBKXYAA9r1MzqynT8ANy1I2ngDoanyoLOqmDAy1LBkMtQ59t
+Webhook Secret: zSxsfd3dwsqEtTUG2oBHrlYhIhypp3Zk9fpASecO
+
+These credentials must be stored in the secure vault and rotated quarterly.
