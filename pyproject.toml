@@ -23,4 +23,4 @@ select = ["E", "F", "I", "B", "S", "UP"]
 
 [tool.ruff.lint.per-file-ignores]
 "tests/**" = ["S101"]            # assert is the point of a test
-"cloud_api/tests/**" = ["S101"]  # same for the cloud API tests
+"cloud_api/tests/**" = ["S101", "S105"]  # same for the cloud API tests; the test tokens are fake

@@ -1,5 +1,9 @@
-"""SecureWaste cloud metadata API (Sprint 3, SCRUM-27 and SCRUM-28).
+"""SecureWaste cloud metadata API.
 
-This package is a separate service from the local-first scanner in `securewaste/`: it receives
-scan metadata only (counts, classification, risk) and never document content.
+The cloud side receives scan metadata only: never document text, file names, paths or matched
+values (ADR-0006: a raw value never leaves detection).
 """
+
+from cloud_api.app import create_app
+
+__all__ = ["create_app"]
