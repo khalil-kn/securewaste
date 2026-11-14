@@ -280,6 +280,39 @@ def detect_sensitive_patterns(text: str) -> list[ClassificationLabel]:
     for match in re.finditer(r"\b(INTERNAL|CONFIDENTIAL|RESTRICTED)\b", text, re.I):
         detected.add(label_mapping[match.group(1).upper()])
 
+    # Context-aware indicators. These require combinations of terms rather
+    # than treating isolated mentions of "key" or "acquisition" as secrets.
+    # A tutorial is not automatically sensitive, but explicit secret values
+    # detected above are never suppressed by educational wording.
+    educational_context = bool(re.search(
+        r"\b(?:tutorial|beginner\s+guide|educational\s+article|"
+        r"training\s+exercise|how\s+to)\b", text, re.I
+    ))
+
+    critical_key_context = re.search(
+        r"\b(?:root\s+(?:certificate\s+authority|ca)|production|emergency|backup)\b"
+        r".{0,100}\b(?:private\s+(?:signing\s+)?key|signing\s+key|"
+        r"encryption\s+recovery\s+key)\b",
+        text, re.I | re.S,
+    )
+    critical_access_context = re.search(
+        r"\b(?:production|administrator|admin|privileged)\b"
+        r".{0,100}\b(?:recovery\s+codes?|access\s+tokens?|"
+        r"deployment\s+credentials?)\b",
+        text, re.I | re.S,
+    )
+    commercial_context = re.search(
+        r"\b(?:acquisition|merger|takeover)\b"
+        r".{0,100}\b(?:negotiation|purchase\s+price|offer|valuation|agreement)\b",
+        text, re.I | re.S,
+    )
+
+    if not educational_context:
+        if critical_key_context or critical_access_context:
+            detected.add(ClassificationLabel.HIGHLY_CONFIDENTIAL)
+        if commercial_context:
+            detected.add(ClassificationLabel.CONFIDENTIAL)
+
     email_pattern = re.compile(r"\b[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}\b")
     phone_pattern = re.compile(r"\b(?:\+?\d{1,3}[ -]?)?\(?\d{3}\)?[ -]?\d{3}[ -]?\d{4}\b")
     if email_pattern.search(text) or phone_pattern.search(text):
