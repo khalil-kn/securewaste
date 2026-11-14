@@ -7,8 +7,10 @@ Provides predict_classification(text) -> (label, confidence) for Sprint 3 integr
 from __future__ import annotations
 
 import json
+import logging
 import pickle
 from dataclasses import dataclass
+from enum import StrEnum
 from pathlib import Path
 
 import numpy as np
@@ -17,8 +19,8 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.pipeline import Pipeline
 
 from securewaste.core.classifier import ClassificationLabel, ClassifierError
-from securewaste.core.detection.catalogue import Category
-from securewaste.core.detection.models import Finding
+
+log = logging.getLogger(__name__)
 
 # Model configuration
 MODEL_DIR = Path(__file__).parent.parent / "models"
@@ -32,15 +34,15 @@ LABEL_TO_IDX = {label: i for i, label in enumerate(LABELS)}
 # TF-IDF + LogisticRegression hyperparameters (fixed for reproducibility)
 # TF-IDF + LogisticRegression hyperparameters (tuned to prevent overfitting on synthetic data)
 TFIDF_PARAMS = {
-    "max_features": 3000,      # Reduced from 5000
-    "ngram_range": (1, 2),     # Unigrams + bigrams
-    "min_df": 2,               # Increased from 1 - ignore terms in only 1 doc
-    "max_df": 0.9,             # Reduced from 0.95 - ignore very common terms
+    "max_features": 3000,  # Reduced from 5000
+    "ngram_range": (1, 2),  # Unigrams + bigrams
+    "min_df": 2,  # Increased from 1 - ignore terms in only 1 doc
+    "max_df": 0.9,  # Reduced from 0.95 - ignore very common terms
     "sublinear_tf": True,
 }
 
 LR_PARAMS = {
-    "C": 0.7,                  # Reduced from 1.0 - stronger regularization
+    "C": 0.7,  # Reduced from 1.0 - stronger regularization
     "max_iter": 1000,
     "solver": "lbfgs",
     "random_state": 42,
@@ -48,11 +50,9 @@ LR_PARAMS = {
 }
 
 
-from enum import StrEnum
-
-
 class ClassifierSource(StrEnum):
     """Indicates which classifier was used for the prediction."""
+
     ML = "ml"
     RULE_BASED = "rule_based"
     FALLBACK = "fallback"
@@ -61,6 +61,7 @@ class ClassifierSource(StrEnum):
 @dataclass(frozen=True)
 class MLClassificationResult:
     """Result of ML classification with confidence scores."""
+
     label: ClassificationLabel
     """Predicted label."""
 
@@ -86,12 +87,12 @@ class MLClassifier:
         self._is_fitted = pipeline is not None
 
     @classmethod
-    def load(cls, model_path: Path = MODEL_PATH) -> "MLClassifier":
+    def load(cls, model_path: Path = MODEL_PATH) -> MLClassifier:
         """Load trained model from disk."""
         if not model_path.exists():
             raise MLClassifierError(f"Model not found at {model_path}. Run training first.")
         with model_path.open("rb") as f:
-            pipeline = pickle.load(f)
+            pipeline = pickle.load(f)  # noqa: S301 - trusted file shipped in this repo; never load a user-supplied path
         return cls(pipeline)
 
     @classmethod
@@ -101,7 +102,7 @@ class MLClassifier:
         labels: list[str],
         model_path: Path = MODEL_PATH,
         metadata_path: Path = METADATA_PATH,
-    ) -> "MLClassifier":
+    ) -> MLClassifier:
         """Train new classifier and save to disk."""
         # Validate labels
         for label in labels:
@@ -112,10 +113,12 @@ class MLClassifier:
         y = np.array([LABEL_TO_IDX[label] for label in labels])
 
         # Build pipeline
-        pipeline = Pipeline([
-            ("tfidf", TfidfVectorizer(**TFIDF_PARAMS)),
-            ("lr", LogisticRegression(**LR_PARAMS)),
-        ])
+        pipeline = Pipeline(
+            [
+                ("tfidf", TfidfVectorizer(**TFIDF_PARAMS)),
+                ("lr", LogisticRegression(**LR_PARAMS)),
+            ]
+        )
 
         # Train
         pipeline.fit(texts, y)
@@ -194,11 +197,12 @@ def predict_classification(text: str, model_path: Path | None = None) -> Classif
             classifier = MLClassifier.load(path)
             result = classifier.predict(text)
             return result.label
-        except Exception:
-            pass  # Fall back to rule-based
+        except Exception as error:
+            log.warning("ML model unavailable, using rule-based fallback: %s", type(error).__name__)
 
     # Fallback to rule-based classifier
     from securewaste.core.classifier import predict_classification as rule_predict
+
     return rule_predict(text)
 
 
@@ -227,11 +231,12 @@ def predict_classification_with_confidence(text: str, model_path: Path | None = 
                 all_probabilities=result.all_probabilities,
                 classifier_source=ClassifierSource.ML,
             )
-        except Exception:
-            pass
+        except Exception as error:
+            log.warning("ML model unavailable, using rule-based fallback: %s", type(error).__name__)
 
     # Fallback to rule-based classifier
     from securewaste.core.classifier import predict_classification_with_confidence as rule_predict_with_confidence
+
     label, confidence, probs = rule_predict_with_confidence(text)
     return MLClassificationResult(
         label=label,
@@ -251,7 +256,6 @@ def train_and_save_model(
     return MLClassifier.train(train_texts, train_labels, model_path, metadata_path)
 
 
-
 # =============================================================================
 # Hybrid Classification (ML + Rule-based Detection)
 # =============================================================================
@@ -269,23 +273,23 @@ def highest_sensitivity_label(labels: list[ClassificationLabel]) -> Classificati
     """Return the highest sensitivity label from a list."""
     if not labels:
         return ClassificationLabel.PUBLIC
-    return max(labels, key=lambda l: LABEL_HIERARCHY[l])
+    return max(labels, key=lambda lbl: LABEL_HIERARCHY[lbl])
 
 
 def detect_sensitive_patterns(text: str) -> list[ClassificationLabel]:
     """Run lightweight detection to find sensitive patterns.
-    
+
     Returns list of labels corresponding to detected patterns,
     ordered by sensitivity (highest last).
     Includes safeguards against common false positives.
     """
     detected_labels = []
-    
+
     if not text or not text.strip():
         return detected_labels
-    
+
     import re
-    
+
     # Helper: Luhn checksum for payment cards
     def luhn_check(card_num: str) -> bool:
         digits = [int(d) for d in card_num if d.isdigit()]
@@ -297,7 +301,7 @@ def detect_sensitive_patterns(text: str) -> list[ClassificationLabel]:
         for d in even:
             total += sum(divmod(d * 2, 10))
         return total % 10 == 0
-    
+
     # Helper: IBAN mod-97 check
     def iban_check(iban: str) -> bool:
         iban = iban.replace(" ", "").replace("-", "").upper()
@@ -309,14 +313,14 @@ def detect_sensitive_patterns(text: str) -> list[ClassificationLabel]:
         numeric = ""
         for ch in rearranged:
             if ch.isalpha():
-                numeric += str(ord(ch) - ord('A') + 10)
+                numeric += str(ord(ch) - ord("A") + 10)
             else:
                 numeric += ch
         try:
             return int(numeric) % 97 == 1
         except ValueError:
             return False
-    
+
     # High-sensitivity patterns (Highly Confidential)
     secret_pattern = re.compile(
         r"\b(AKIA[0-9A-Z]{16}|api[_-]?key\s*[:=]\s*[\"']?[a-zA-Z0-9_\-]{20,}|"
@@ -328,13 +332,29 @@ def detect_sensitive_patterns(text: str) -> list[ClassificationLabel]:
     # Safeguard: check if content appears in a tutorial/example context
     # Use word boundaries to avoid false matches like "test.com"
     tutorial_indicators = [
-        r"\btutorial\b", r"\bdemo\b", r"\bsample\b", r"\bplaceholder\b",
-        r"\bfake\b", r"\bdummy\b", r"\binvalid\b", r"xxxx", r"yyyy", r"zzzz", r"1234",
-        r"do not use", r"do not commit", r"never hardcode", r"environment variable",
-        r"os\.environ", r"getenv", r"dotenv", r"vault", r"secrets manager",
+        r"\btutorial\b",
+        r"\bdemo\b",
+        r"\bsample\b",
+        r"\bplaceholder\b",
+        r"\bfake\b",
+        r"\bdummy\b",
+        r"\binvalid\b",
+        r"xxxx",
+        r"yyyy",
+        r"zzzz",
+        r"1234",
+        r"do not use",
+        r"do not commit",
+        r"never hardcode",
+        r"environment variable",
+        r"os\.environ",
+        r"getenv",
+        r"dotenv",
+        r"vault",
+        r"secrets manager",
     ]
     is_tutorial_context = any(re.search(indicator, text.lower()) for indicator in tutorial_indicators)
-    
+
     if secret_pattern.search(text):
         # Check if AWS key is present
         aws_match = re.search(r"AKIA[0-9A-Z]{16}", text)
@@ -352,7 +372,7 @@ def detect_sensitive_patterns(text: str) -> list[ClassificationLabel]:
             # Check tutorial context for these too
             if not is_tutorial_context:
                 detected_labels.append(ClassificationLabel.HIGHLY_CONFIDENTIAL)
-    
+
     # Payment card pattern (Confidential) - with Luhn check
     card_pattern = re.compile(r"\b\d{4}[\s\-]?\d{4}[\s\-]?\d{4}[\s\-]?\d{4}\b")
     for match in card_pattern.finditer(text):
@@ -361,7 +381,7 @@ def detect_sensitive_patterns(text: str) -> list[ClassificationLabel]:
         if not is_tutorial_context and luhn_check(card):
             detected_labels.append(ClassificationLabel.CONFIDENTIAL)
             break  # One valid card is enough
-    
+
     # IBAN pattern (Confidential) - with mod-97 check
     iban_pattern = re.compile(
         r"[A-Z]{2}\d{2}[A-Z0-9]{10,30}",
@@ -372,7 +392,7 @@ def detect_sensitive_patterns(text: str) -> list[ClassificationLabel]:
         if not is_tutorial_context and iban_check(iban):
             detected_labels.append(ClassificationLabel.CONFIDENTIAL)
             break
-    
+
     # National ID / Passport patterns (Confidential)
     id_pattern = re.compile(r"\b\d{8}\b")  # 8-digit national ID
     passport_pattern = re.compile(r"\b[A-Z]{1,2}\d{6,9}\b")  # Passport-like
@@ -380,14 +400,14 @@ def detect_sensitive_patterns(text: str) -> list[ClassificationLabel]:
     if not is_tutorial_context:
         if id_pattern.search(text) or passport_pattern.search(text):
             detected_labels.append(ClassificationLabel.CONFIDENTIAL)
-    
+
     # Explicit confidentiality labels (Confidential)
     label_pattern = re.compile(r"(?<!\w)(CONFIDENTIAL|INTERNAL|RESTRICTED)(?!\w)")
     if label_pattern.search(text.upper()):
         # Safeguard: if in tutorial context, don't flag
         if not is_tutorial_context:
             detected_labels.append(ClassificationLabel.CONFIDENTIAL)
-    
+
     # Email/phone/keyword patterns (Internal)
     # Safeguard: emails/phones in tutorials are common, be more conservative
     email_pattern = re.compile(r"\b[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}\b")
@@ -395,44 +415,46 @@ def detect_sensitive_patterns(text: str) -> list[ClassificationLabel]:
     if email_pattern.search(text) or phone_pattern.search(text):
         if not is_tutorial_context:
             detected_labels.append(ClassificationLabel.INTERNAL)
-    
+
     return detected_labels
 
 
-def predict_classification_hybrid(text: str, model_path: Path | None = None) -> tuple[ClassificationLabel, list[ClassificationLabel]]:
+def predict_classification_hybrid_with_detected(
+    text: str, model_path: Path | None = None
+) -> tuple[ClassificationLabel, list[ClassificationLabel]]:
     """Hybrid classification combining ML and rule-based detection.
-    
+
     Implements highest-sensitivity-wins: if any detection finds a higher
     sensitivity than the ML prediction, the higher sensitivity wins.
-    
+
     Args:
         text: Document text to classify
         model_path: Optional path to ML model
-        
+
     Returns:
         Tuple of (final_label, detected_labels)
     """
     # Get ML prediction
     ml_result = predict_classification_with_confidence(text, model_path)
     ml_label = ml_result.label
-    
+
     # Run detection
     detected_labels = detect_sensitive_patterns(text)
-    
+
     # Highest-sensitivity-wins
     all_labels = [ml_label] + detected_labels
     final_label = highest_sensitivity_label(all_labels)
-    
+
     return final_label, detected_labels
 
 
 def predict_classification_hybrid_with_confidence(text: str, model_path: Path | None = None) -> MLClassificationResult:
     """Hybrid classification with confidence scores.
-    
+
     Args:
         text: Document text to classify
         model_path: Optional path to ML model
-        
+
     Returns:
         MLClassificationResult with final label, confidence, and metadata
     """
@@ -440,14 +462,14 @@ def predict_classification_hybrid_with_confidence(text: str, model_path: Path | 
     ml_result = predict_classification_with_confidence(text, model_path)
     ml_label = ml_result.label
     ml_confidence = ml_result.confidence
-    
+
     # Run detection
     detected_labels = detect_sensitive_patterns(text)
-    
+
     # Highest-sensitivity-wins
     all_labels = [ml_label] + detected_labels
     final_label = highest_sensitivity_label(all_labels)
-    
+
     # Determine confidence
     if final_label != ml_label:
         # Detection overrode ML - use rule-based confidence
@@ -458,19 +480,19 @@ def predict_classification_hybrid_with_confidence(text: str, model_path: Path | 
         # ML label matches or exceeds detection
         final_confidence = ml_confidence
         classifier_source = ml_result.classifier_source
-    
+
     # Build combined probabilities
     combined_probs = dict(ml_result.all_probabilities)
     # Boost probability of detected labels
     for det_label in detected_labels:
         if det_label in combined_probs:
             combined_probs[det_label] = max(combined_probs[det_label], 0.9)
-    
+
     # Renormalize
     total = sum(combined_probs.values())
     if total > 0:
         combined_probs = {k: v / total for k, v in combined_probs.items()}
-    
+
     return MLClassificationResult(
         label=final_label,
         confidence=final_confidence,

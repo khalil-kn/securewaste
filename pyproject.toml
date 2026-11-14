@@ -23,3 +23,4 @@ select = ["E", "F", "I", "B", "S", "UP"]
 
 [tool.ruff.lint.per-file-ignores]
 "tests/**" = ["S101"]   # assert is the point of a test
+"scripts/generate_synthetic_dataset.py" = ["S311", "S101", "E501"]  # random/assert are fine for a one-off fake-data script; long sample texts

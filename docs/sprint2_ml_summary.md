@@ -45,10 +45,10 @@ Implemented a local-only document sensitivity classifier for Sprint 2. Delivered
 
 ```python
 from securewaste.core import (
-    predict_classification,              # -> ClassificationLabel (Sprint 3)
+    predict_classification,  # -> ClassificationLabel (Sprint 3)
     predict_classification_with_confidence,  # -> MLClassificationResult
-    predict_classification_dict,         # -> {"label", "confidence", "model_version"} (Sprint 2)
-    train_and_save_model,                # Reproducible training
+    predict_classification_dict,  # -> {"label", "confidence", "model_version"} (Sprint 2)
+    train_and_save_model,  # Reproducible training
 )
 ```
 
@@ -60,11 +60,7 @@ from securewaste.core import (
 
 ```python
 def predict_classification(text: str) -> dict:
-    return {
-        "label": "Confidential",
-        "confidence": 0.78,
-        "model_version": "baseline-v1"
-    }
+    return {"label": "Confidential", "confidence": 0.78, "model_version": "baseline-v1"}
 ```
 
 **Delivered:**

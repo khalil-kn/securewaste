@@ -3,10 +3,12 @@
 from __future__ import annotations
 
 import tempfile
+from dataclasses import FrozenInstanceError
 from pathlib import Path
 
 import pytest
 
+from securewaste.core.classifier import ClassificationLabel
 from securewaste.core.ml_classifier import (
     LABELS,
     MLClassificationResult,
@@ -16,7 +18,6 @@ from securewaste.core.ml_classifier import (
     predict_classification_with_confidence,
     train_and_save_model,
 )
-from securewaste.core.classifier import ClassificationLabel
 
 
 class TestMLClassifier:
@@ -42,13 +43,36 @@ class TestMLClassifier:
             "Credit card 4111 1111 1111 1111 charged",
             "Secret password=SuperSecret123 in config",
         ]
-        
+
         train_labels = [
-            "Public", "Internal", "Confidential", "Highly Confidential",
-            "Public", "Internal", "Confidential", "Highly Confidential",
-            "Public", "Internal", "Confidential", "Highly Confidential",
-            "Public", "Internal", "Confidential", "Highly Confidential",
+            "Public",
+            "Internal",
+            "Confidential",
+            "Highly Confidential",
+            "Public",
+            "Internal",
+            "Confidential",
+            "Highly Confidential",
+            "Public",
+            "Internal",
+            "Confidential",
+            "Highly Confidential",
+            "Public",
+            "Internal",
+            "Confidential",
+            "Highly Confidential",
         ]
+
+        with tempfile.TemporaryDirectory() as tmpdir:
+            model_path = Path(tmpdir) / "test_model.pkl"
+            metadata_path = Path(tmpdir) / "meta.json"
+
+            classifier = MLClassifier.train(train_texts, train_labels, model_path, metadata_path)
+            result = classifier.predict("Team meeting agenda for next week")
+
+            assert model_path.exists()
+            assert isinstance(result.label, ClassificationLabel)
+
     def test_predict_empty_text(self):
         """Empty text defaults to Public."""
         train_texts = [
@@ -69,24 +93,37 @@ class TestMLClassifier:
             "Credit card 4111 1111 1111 1111 charged",
             "Secret password=SuperSecret123 in config",
         ]
-        
+
         train_labels = [
-            "Public", "Internal", "Confidential", "Highly Confidential",
-            "Public", "Internal", "Confidential", "Highly Confidential",
-            "Public", "Internal", "Confidential", "Highly Confidential",
-            "Public", "Internal", "Confidential", "Highly Confidential",
+            "Public",
+            "Internal",
+            "Confidential",
+            "Highly Confidential",
+            "Public",
+            "Internal",
+            "Confidential",
+            "Highly Confidential",
+            "Public",
+            "Internal",
+            "Confidential",
+            "Highly Confidential",
+            "Public",
+            "Internal",
+            "Confidential",
+            "Highly Confidential",
         ]
 
         with tempfile.TemporaryDirectory() as tmpdir:
             model_path = Path(tmpdir) / "test_model.pkl"
             classifier = MLClassifier.train(train_texts, train_labels, model_path, Path(tmpdir) / "meta.json")
-            
+
             result = classifier.predict("")
             assert result.label.value == "Public"
             assert result.confidence == 1.0
-            
+
             result = classifier.predict("   ")
             assert result.label.value == "Public"
+
     def test_predict_confidence_scores(self):
         """Predictions include confidence scores."""
         train_texts = [
@@ -107,20 +144,32 @@ class TestMLClassifier:
             "Credit card 4111 1111 1111 1111 charged",
             "Secret password=SuperSecret123 in config",
         ]
-        
+
         train_labels = [
-            "Public", "Internal", "Confidential", "Highly Confidential",
-            "Public", "Internal", "Confidential", "Highly Confidential",
-            "Public", "Internal", "Confidential", "Highly Confidential",
-            "Public", "Internal", "Confidential", "Highly Confidential",
+            "Public",
+            "Internal",
+            "Confidential",
+            "Highly Confidential",
+            "Public",
+            "Internal",
+            "Confidential",
+            "Highly Confidential",
+            "Public",
+            "Internal",
+            "Confidential",
+            "Highly Confidential",
+            "Public",
+            "Internal",
+            "Confidential",
+            "Highly Confidential",
         ]
 
         with tempfile.TemporaryDirectory() as tmpdir:
             model_path = Path(tmpdir) / "test_model.pkl"
             classifier = MLClassifier.train(train_texts, train_labels, model_path, Path(tmpdir) / "meta.json")
-            
+
             result = classifier.predict("Meeting agenda")
-            
+
             assert isinstance(result.confidence, float)
             assert 0.0 <= result.confidence <= 1.0
             assert isinstance(result.all_probabilities, dict)
@@ -147,25 +196,38 @@ class TestMLClassifier:
             "Credit card 4111 1111 1111 1111 charged",
             "Secret password=SuperSecret123 in config",
         ]
-        
+
         train_labels = [
-            "Public", "Internal", "Confidential", "Highly Confidential",
-            "Public", "Internal", "Confidential", "Highly Confidential",
-            "Public", "Internal", "Confidential", "Highly Confidential",
-            "Public", "Internal", "Confidential", "Highly Confidential",
+            "Public",
+            "Internal",
+            "Confidential",
+            "Highly Confidential",
+            "Public",
+            "Internal",
+            "Confidential",
+            "Highly Confidential",
+            "Public",
+            "Internal",
+            "Confidential",
+            "Highly Confidential",
+            "Public",
+            "Internal",
+            "Confidential",
+            "Highly Confidential",
         ]
 
         with tempfile.TemporaryDirectory() as tmpdir:
             model_path = Path(tmpdir) / "test_model.pkl"
             metadata_path = Path(tmpdir) / "test_metadata.json"
-            
+
             # Train and save
             MLClassifier.train(train_texts, train_labels, model_path, metadata_path)
-            
+
             # Load
             loaded = MLClassifier.load(model_path)
             result = loaded.predict("Team meeting")
             assert result.label.value == "Public"
+
     def test_load_nonexistent_model_raises(self):
         """Loading non-existent model raises error."""
         with pytest.raises(MLClassifierError, match="not found"):
@@ -181,7 +243,7 @@ class TestMLClassifier:
         """Training with invalid label raises error."""
         train_texts = ["test"] * 4
         train_labels = ["InvalidLabel"] * 4
-        
+
         with tempfile.TemporaryDirectory() as tmpdir:
             model_path = Path(tmpdir) / "test_model.pkl"
             with pytest.raises(MLClassifierError, match="Unknown label"):
@@ -207,23 +269,36 @@ class TestMLClassifier:
             "Credit card 4111 1111 1111 1111 charged",
             "Secret password=SuperSecret123 in config",
         ]
-        
+
         train_labels = [
-            "Public", "Internal", "Confidential", "Highly Confidential",
-            "Public", "Internal", "Confidential", "Highly Confidential",
-            "Public", "Internal", "Confidential", "Highly Confidential",
-            "Public", "Internal", "Confidential", "Highly Confidential",
+            "Public",
+            "Internal",
+            "Confidential",
+            "Highly Confidential",
+            "Public",
+            "Internal",
+            "Confidential",
+            "Highly Confidential",
+            "Public",
+            "Internal",
+            "Confidential",
+            "Highly Confidential",
+            "Public",
+            "Internal",
+            "Confidential",
+            "Highly Confidential",
         ]
 
         with tempfile.TemporaryDirectory() as tmpdir:
             model_path = Path(tmpdir) / "test_model.pkl"
             classifier = MLClassifier.train(train_texts, train_labels, model_path, Path(tmpdir) / "meta.json")
-            
+
             texts = ["Meeting tomorrow", "Email john@doe.com"]
             results = classifier.predict_batch(texts)
-            
+
             assert len(results) == 2
             assert all(isinstance(r, MLClassificationResult) for r in results)
+
 
 class TestPredictClassification:
     """Tests for predict_classification convenience function."""
@@ -233,11 +308,11 @@ class TestPredictClassification:
         # Temporarily move model to test fallback
         model_path = Path("securewaste/models/classifier_pipeline.pkl")
         backup_path = Path("securewaste/models/classifier_pipeline.pkl.test_bak")
-        
+
         model_exists = model_path.exists()
         if model_exists:
             model_path.rename(backup_path)
-        
+
         try:
             # These should work with rule-based fallback
             assert predict_classification("").value == "Public"
@@ -256,8 +331,13 @@ class TestPredictClassification:
         if model_path.exists():
             result = predict_classification("Team meeting agenda")
             # Just verify it returns a valid label
-            assert result in [ClassificationLabel.PUBLIC, ClassificationLabel.INTERNAL, 
-                             ClassificationLabel.CONFIDENTIAL, ClassificationLabel.HIGHLY_CONFIDENTIAL]
+            assert result in [
+                ClassificationLabel.PUBLIC,
+                ClassificationLabel.INTERNAL,
+                ClassificationLabel.CONFIDENTIAL,
+                ClassificationLabel.HIGHLY_CONFIDENTIAL,
+            ]
+
 
 class TestMLClassifierDirect:
     """Tests that evaluate MLClassifier directly (not via predict_classification)."""
@@ -282,32 +362,43 @@ class TestMLClassifierDirect:
             "Credit card 4111 1111 1111 1111 charged",
             "Secret password=SuperSecret123 in config",
         ]
-        
+
         train_labels = [
-            "Public", "Internal", "Confidential", "Highly Confidential",
-            "Public", "Internal", "Confidential", "Highly Confidential",
-            "Public", "Internal", "Confidential", "Highly Confidential",
-            "Public", "Internal", "Confidential", "Highly Confidential",
+            "Public",
+            "Internal",
+            "Confidential",
+            "Highly Confidential",
+            "Public",
+            "Internal",
+            "Confidential",
+            "Highly Confidential",
+            "Public",
+            "Internal",
+            "Confidential",
+            "Highly Confidential",
+            "Public",
+            "Internal",
+            "Confidential",
+            "Highly Confidential",
         ]
 
         with tempfile.TemporaryDirectory() as tmpdir:
             model_path = Path(tmpdir) / "test_model.pkl"
             metadata_path = Path(tmpdir) / "meta.json"
-            
+
             classifier = MLClassifier.train(train_texts, train_labels, model_path, metadata_path)
-            
+
             # Test predictions using the trained classifier directly
             result = classifier.predict("Team meeting agenda")
             assert result.label.value == "Public"
-            
+
             result = classifier.predict("Email me at test@company.com")
             assert result.label.value == "Internal"
-            
+
             result = classifier.predict("Payment card 4111111111111111 CONFIDENTIAL")
             assert result.label.value == "Confidential"
             result = classifier.predict("AKIAIOSFODNN7EXAMPLE secret key")
             assert result.label.value == "Highly Confidential"
-
 
     def test_classifier_source_ml(self):
         """Test that ML classifier sets classifier_source to ML."""
@@ -329,23 +420,34 @@ class TestMLClassifierDirect:
             "Credit card 4111 1111 1111 1111 charged",
             "Secret password=SuperSecret123 in config",
         ]
-        
+
         train_labels = [
-            "Public", "Internal", "Confidential", "Highly Confidential",
-            "Public", "Internal", "Confidential", "Highly Confidential",
-            "Public", "Internal", "Confidential", "Highly Confidential",
-            "Public", "Internal", "Confidential", "Highly Confidential",
+            "Public",
+            "Internal",
+            "Confidential",
+            "Highly Confidential",
+            "Public",
+            "Internal",
+            "Confidential",
+            "Highly Confidential",
+            "Public",
+            "Internal",
+            "Confidential",
+            "Highly Confidential",
+            "Public",
+            "Internal",
+            "Confidential",
+            "Highly Confidential",
         ]
 
         with tempfile.TemporaryDirectory() as tmpdir:
             model_path = Path(tmpdir) / "test_model.pkl"
             metadata_path = Path(tmpdir) / "meta.json"
-            
+
             classifier = MLClassifier.train(train_texts, train_labels, model_path, metadata_path)
             result = classifier.predict("Team meeting agenda")
-            
-            from securewaste.core.ml_classifier import ClassifierSource
 
+        assert 0.0 <= result.confidence <= 1.0
 
     def test_predict_classification_with_confidence_classifier_source(self):
         """Test that predict_classification_with_confidence sets classifier_source correctly."""
@@ -355,22 +457,23 @@ class TestMLClassifierDirect:
             "Confidential card 4111111111111111",
             "Highly Confidential key AKIA123",
         ] * 5
-        
-        train_labels = [
-            "Public", "Internal", "Confidential", "Highly Confidential"
-        ] * 5
+
+        train_labels = ["Public", "Internal", "Confidential", "Highly Confidential"] * 5
 
         with tempfile.TemporaryDirectory() as tmpdir:
             model_path = Path(tmpdir) / "test_model.pkl"
             MLClassifier.train(train_texts, train_labels, model_path, Path(tmpdir) / "meta.json")
-            
+
             from securewaste.core.ml_classifier import ClassifierSource
+
             # Test with model
             result = predict_classification_with_confidence("Team meeting", model_path=model_path)
             assert result.classifier_source == ClassifierSource.ML
-            
+
             # Test fallback (non-existent model)
-            fallback_result = predict_classification_with_confidence("CONFIDENTIAL doc", model_path=Path("/nonexistent/model.pkl"))
+            fallback_result = predict_classification_with_confidence(
+                "CONFIDENTIAL doc", model_path=Path("/nonexistent/model.pkl")
+            )
             assert fallback_result.classifier_source == ClassifierSource.RULE_BASED
 
 
@@ -379,71 +482,82 @@ class TestHybridClassification:
 
     def test_highest_sensitivity_wins(self):
         """Test that highest sensitivity label wins."""
-        from securewaste.core.ml_classifier import (
-            highest_sensitivity_label, ClassificationLabel
-        )
-        
+        from securewaste.core.ml_classifier import ClassificationLabel, highest_sensitivity_label
+
         # Highly Confidential should win over others
-        assert highest_sensitivity_label([
-            ClassificationLabel.PUBLIC,
-            ClassificationLabel.INTERNAL,
-            ClassificationLabel.CONFIDENTIAL,
-            ClassificationLabel.HIGHLY_CONFIDENTIAL,
-        ]) == ClassificationLabel.HIGHLY_CONFIDENTIAL
-        
+        assert (
+            highest_sensitivity_label(
+                [
+                    ClassificationLabel.PUBLIC,
+                    ClassificationLabel.INTERNAL,
+                    ClassificationLabel.CONFIDENTIAL,
+                    ClassificationLabel.HIGHLY_CONFIDENTIAL,
+                ]
+            )
+            == ClassificationLabel.HIGHLY_CONFIDENTIAL
+        )
+
         # Confidential should win over Internal and Public
-        assert highest_sensitivity_label([
-            ClassificationLabel.PUBLIC,
-            ClassificationLabel.INTERNAL,
-            ClassificationLabel.CONFIDENTIAL,
-        ]) == ClassificationLabel.CONFIDENTIAL
-        
+        assert (
+            highest_sensitivity_label(
+                [
+                    ClassificationLabel.PUBLIC,
+                    ClassificationLabel.INTERNAL,
+                    ClassificationLabel.CONFIDENTIAL,
+                ]
+            )
+            == ClassificationLabel.CONFIDENTIAL
+        )
+
         # Internal should win over Public
-        assert highest_sensitivity_label([
-            ClassificationLabel.PUBLIC,
-            ClassificationLabel.INTERNAL,
-        ]) == ClassificationLabel.INTERNAL
-        
+        assert (
+            highest_sensitivity_label(
+                [
+                    ClassificationLabel.PUBLIC,
+                    ClassificationLabel.INTERNAL,
+                ]
+            )
+            == ClassificationLabel.INTERNAL
+        )
+
         # Single label returns itself
         assert highest_sensitivity_label([ClassificationLabel.CONFIDENTIAL]) == ClassificationLabel.CONFIDENTIAL
-        
+
         # Empty list returns Public
         assert highest_sensitivity_label([]) == ClassificationLabel.PUBLIC
 
     def test_detect_sensitive_patterns(self):
         """Test detection of sensitive patterns."""
-        from securewaste.core.ml_classifier import (
-            detect_sensitive_patterns, ClassificationLabel
-        )
-        
+        from securewaste.core.ml_classifier import ClassificationLabel, detect_sensitive_patterns
+
         # AWS key detected
         labels = detect_sensitive_patterns("AWS key AKIAIOSFODNN7EXAMPLE")
         assert ClassificationLabel.HIGHLY_CONFIDENTIAL in labels
-        
+
         # Payment card detected
         labels = detect_sensitive_patterns("Card 4111 1111 1111 1111")
         assert ClassificationLabel.CONFIDENTIAL in labels
-        
+
         # IBAN detected
         labels = detect_sensitive_patterns("IBAN DE89370400440532013000")
         assert ClassificationLabel.CONFIDENTIAL in labels
-        
+
         # Confidentiality label detected
         labels = detect_sensitive_patterns("CONFIDENTIAL document")
         assert ClassificationLabel.CONFIDENTIAL in labels
-        
+
         # Email detected
         labels = detect_sensitive_patterns("Contact john@example.com")
         assert ClassificationLabel.INTERNAL in labels
-        
+
         # Phone detected
         labels = detect_sensitive_patterns("Call +1 555 123 4567")
         assert ClassificationLabel.INTERNAL in labels
-        
+
         # Empty text returns empty
         labels = detect_sensitive_patterns("")
         assert labels == []
-        
+
         # Public text returns empty
         labels = detect_sensitive_patterns("Meeting agenda for tomorrow")
         assert labels == []
@@ -456,33 +570,31 @@ class TestHybridClassification:
             "Confidential card 4111111111111111",
             "Highly Confidential key AKIA123",
         ] * 5
-        
-        train_labels = [
-            "Public", "Internal", "Confidential", "Highly Confidential"
-        ] * 5
+
+        train_labels = ["Public", "Internal", "Confidential", "Highly Confidential"] * 5
 
         with tempfile.TemporaryDirectory() as tmpdir:
             model_path = Path(tmpdir) / "test_model.pkl"
             MLClassifier.train(train_texts, train_labels, model_path, Path(tmpdir) / "meta.json")
-            
-            from securewaste.core.ml_classifier import (
-                predict_classification_hybrid, ClassificationLabel
-            )
-            
+
+            from securewaste.core.ml_classifier import ClassificationLabel, predict_classification_hybrid
+
             # ML predicts Public, no detection -> Public
             label = predict_classification_hybrid("Team meeting tomorrow", model_path=model_path)
             assert label == ClassificationLabel.PUBLIC
-            
+
             # ML predicts Internal, email detected -> Internal
             label = predict_classification_hybrid("Email me at john@company.com", model_path=model_path)
             assert label == ClassificationLabel.INTERNAL
-            
+
             # ML predicts Public but AWS key detected -> Highly Confidential (highest-sensitivity-wins)
             label = predict_classification_hybrid("Meeting notes. AKIAIOSFODNN7EXAMPLE", model_path=model_path)
             assert label == ClassificationLabel.HIGHLY_CONFIDENTIAL
-            
+
             # ML predicts Internal but payment card detected -> Confidential
-            label = predict_classification_hybrid("Email john@test.com. Card 4111 1111 1111 1111", model_path=model_path)
+            label = predict_classification_hybrid(
+                "Email john@test.com. Card 4111 1111 1111 1111", model_path=model_path
+            )
             assert label == ClassificationLabel.CONFIDENTIAL
 
     def test_predict_classification_hybrid_with_confidence(self):
@@ -493,24 +605,24 @@ class TestHybridClassification:
             "Confidential card 4111111111111111",
             "Highly Confidential key AKIA123",
         ] * 5
-        
-        train_labels = [
-            "Public", "Internal", "Confidential", "Highly Confidential"
-        ] * 5
+
+        train_labels = ["Public", "Internal", "Confidential", "Highly Confidential"] * 5
 
         with tempfile.TemporaryDirectory() as tmpdir:
             model_path = Path(tmpdir) / "test_model.pkl"
             MLClassifier.train(train_texts, train_labels, model_path, Path(tmpdir) / "meta.json")
-            
+
             from securewaste.core.ml_classifier import (
-                predict_classification_hybrid_with_confidence, ClassifierSource, ClassificationLabel
+                ClassificationLabel,
+                ClassifierSource,
+                predict_classification_hybrid_with_confidence,
             )
-            
+
             # Normal case - ML and detection agree
             result = predict_classification_hybrid_with_confidence("Team meeting agenda", model_path=model_path)
             assert result.classifier_source == ClassifierSource.ML
             assert result.label == ClassificationLabel.PUBLIC
-            
+
             # Detection overrides ML - should be FALLBACK source
             result = predict_classification_hybrid_with_confidence(
                 "Meeting notes with AKIAIOSFODNN7EXAMPLE key", model_path=model_path
@@ -530,19 +642,15 @@ class TestSecurityFocused:
             "Confidential card 4111111111111111",
             "Highly Confidential key AKIA123",
         ] * 5
-        
-        train_labels = [
-            "Public", "Internal", "Confidential", "Highly Confidential"
-        ] * 5
+
+        train_labels = ["Public", "Internal", "Confidential", "Highly Confidential"] * 5
 
         with tempfile.TemporaryDirectory() as tmpdir:
             model_path = Path(tmpdir) / "test_model.pkl"
             MLClassifier.train(train_texts, train_labels, model_path, Path(tmpdir) / "meta.json")
-            
-            from securewaste.core.ml_classifier import (
-                predict_classification_hybrid, ClassificationLabel
-            )
-            
+
+            from securewaste.core.ml_classifier import ClassificationLabel, predict_classification_hybrid
+
             # Mostly internal document with embedded AWS key
             doc = """
             Internal Team Update
@@ -563,7 +671,7 @@ class TestSecurityFocused:
             """
             label = predict_classification_hybrid(doc, model_path=model_path)
             assert label == ClassificationLabel.HIGHLY_CONFIDENTIAL
-            
+
             # Mostly confidential document with embedded API key
             doc = """
             Client Contract - CONFIDENTIAL
@@ -586,19 +694,19 @@ class TestSecurityFocused:
             "Confidential card 4111111111111111",
             "Highly Confidential key AKIA123",
         ] * 5
-        
-        train_labels = [
-            "Public", "Internal", "Confidential", "Highly Confidential"
-        ] * 5
+
+        train_labels = ["Public", "Internal", "Confidential", "Highly Confidential"] * 5
 
         with tempfile.TemporaryDirectory() as tmpdir:
             model_path = Path(tmpdir) / "test_model.pkl"
             MLClassifier.train(train_texts, train_labels, model_path, Path(tmpdir) / "meta.json")
-            
+
             from securewaste.core.ml_classifier import (
-                predict_classification_hybrid_with_confidence, ClassificationLabel, ClassifierSource
+                ClassificationLabel,
+                ClassifierSource,
+                predict_classification_hybrid_with_confidence,
             )
-            
+
             # Document that looks like internal memo but contains production password
             doc = """
             Internal Memo: Q3 Planning
@@ -618,7 +726,7 @@ class TestSecurityFocused:
             # ML might predict Internal but detection should catch the password
             assert result.label == ClassificationLabel.HIGHLY_CONFIDENTIAL
             assert result.classifier_source == ClassifierSource.FALLBACK
-            
+
             # Document with payment card that ML might miss
             doc = """
             Internal Expense Report
@@ -641,19 +749,15 @@ class TestSecurityFocused:
             "Confidential card 4111111111111111",
             "Highly Confidential key AKIA123",
         ] * 5
-        
-        train_labels = [
-            "Public", "Internal", "Confidential", "Highly Confidential"
-        ] * 5
+
+        train_labels = ["Public", "Internal", "Confidential", "Highly Confidential"] * 5
 
         with tempfile.TemporaryDirectory() as tmpdir:
             model_path = Path(tmpdir) / "test_model.pkl"
             MLClassifier.train(train_texts, train_labels, model_path, Path(tmpdir) / "meta.json")
-            
-            from securewaste.core.ml_classifier import (
-                predict_classification_hybrid, ClassificationLabel
-            )
-            
+
+            from securewaste.core.ml_classifier import ClassificationLabel, predict_classification_hybrid
+
             # Tutorial showing bad example with placeholder password
             doc = """
             Public Tutorial: Database Configuration
@@ -678,7 +782,7 @@ class TestSecurityFocused:
             assert label in [ClassificationLabel.PUBLIC, ClassificationLabel.INTERNAL]
             assert label != ClassificationLabel.HIGHLY_CONFIDENTIAL
             assert label != ClassificationLabel.CONFIDENTIAL
-            
+
             # Another tutorial with AWS example key
             doc = """
             Tutorial: AWS S3 Upload
@@ -692,6 +796,7 @@ class TestSecurityFocused:
             assert label in [ClassificationLabel.PUBLIC, ClassificationLabel.INTERNAL]
             assert label != ClassificationLabel.HIGHLY_CONFIDENTIAL
 
+
 class TestPredictClassificationWithConfidence:
     """Tests for predict_classification_with_confidence."""
 
@@ -703,17 +808,15 @@ class TestPredictClassificationWithConfidence:
             "Confidential card 4111111111111111",
             "Highly Confidential key AKIA123",
         ] * 5
-        
-        train_labels = [
-            "Public", "Internal", "Confidential", "Highly Confidential"
-        ] * 5
+
+        train_labels = ["Public", "Internal", "Confidential", "Highly Confidential"] * 5
 
         with tempfile.TemporaryDirectory() as tmpdir:
             model_path = Path(tmpdir) / "test_model.pkl"
             MLClassifier.train(train_texts, train_labels, model_path, Path(tmpdir) / "meta.json")
-            
+
             result = predict_classification_with_confidence("Meeting tomorrow")
-            
+
             assert isinstance(result, MLClassificationResult)
             assert hasattr(result, "label")
             assert hasattr(result, "confidence")
@@ -731,25 +834,24 @@ class TestTrainAndSaveModel:
             "Confidential card 4111111111111111",
             "Highly Confidential key AKIA123",
         ] * 5
-        
-        train_labels = [
-            "Public", "Internal", "Confidential", "Highly Confidential"
-        ] * 5
+
+        train_labels = ["Public", "Internal", "Confidential", "Highly Confidential"] * 5
 
         with tempfile.TemporaryDirectory() as tmpdir:
             model_path = Path(tmpdir) / "custom_model.pkl"
             metadata_path = Path(tmpdir) / "custom_metadata.json"
-            
+
             train_and_save_model(train_texts, train_labels, model_path, metadata_path)
-            
+
             assert model_path.exists()
             assert metadata_path.exists()
-            
+
             # Verify metadata content
             import json
+
             with metadata_path.open() as f:
                 meta = json.load(f)
-            
+
             assert meta["labels"] == LABELS
             assert meta["n_samples"] == 20
             assert "tfidf_params" in meta
@@ -766,6 +868,7 @@ class TestLabels:
     def test_label_to_idx_mapping(self):
         """LABEL_TO_IDX maps correctly."""
         from securewaste.core.ml_classifier import LABEL_TO_IDX
+
         assert LABEL_TO_IDX == {
             "Public": 0,
             "Internal": 1,
@@ -784,7 +887,7 @@ class TestMLClassificationResult:
             confidence=1.0,
             all_probabilities={"Public": 1.0, "Internal": 0.0, "Confidential": 0.0, "Highly Confidential": 0.0},
         )
-        with pytest.raises(Exception):
+        with pytest.raises(FrozenInstanceError):
             result.label = "Internal"  # type: ignore
 
 
@@ -794,18 +897,19 @@ class TestIntegrationWithClassifier:
     def test_synthetic_dataset_evaluation(self):
         """Evaluate on generated synthetic dataset."""
         # This uses the already-generated dataset
-        from securewaste.core.ml_classifier import predict_classification_with_confidence
         from pathlib import Path
-        
+
+        from securewaste.core.ml_classifier import predict_classification_with_confidence
+
         test_dir = Path("tests/fixtures/synthetic_dataset/test")
         labels_file = test_dir / "labels.txt"
-        
+
         if not labels_file.exists():
             pytest.skip("Synthetic dataset not generated")
-        
+
         correct = 0
         total = 0
-        
+
         with labels_file.open() as f:
             for line in f:
                 doc_id, true_label = line.strip().split("\t")
@@ -814,7 +918,7 @@ class TestIntegrationWithClassifier:
                 if result.label.value == true_label:
                     correct += 1
                 total += 1
-        
+
         accuracy = correct / total if total > 0 else 0
         # Should be high accuracy on synthetic data
         assert accuracy >= 0.75  # At least 75% on synthetic data

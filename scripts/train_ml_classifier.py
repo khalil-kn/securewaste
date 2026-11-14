@@ -10,7 +10,7 @@ from __future__ import annotations
 from collections import Counter, defaultdict
 from pathlib import Path
 
-from securewaste.core.ml_classifier import train_and_save_model, predict_classification_with_confidence
+from securewaste.core.ml_classifier import predict_classification_with_confidence, train_and_save_model
 
 
 def load_dataset(split: str) -> tuple[list[str], list[str]]:
@@ -42,11 +42,11 @@ def compute_metrics(y_true: list[str], y_pred: list[str], labels: list[str]) -> 
         tp = confusion[label][label]
         fp = sum(confusion[other][label] for other in labels if other != label)
         fn = sum(confusion[label][other] for other in labels if other != label)
-        
+
         precision = tp / (tp + fp) if (tp + fp) > 0 else 0.0
         recall = tp / (tp + fn) if (tp + fn) > 0 else 0.0
         f1 = 2 * precision * recall / (precision + recall) if (precision + recall) > 0 else 0.0
-        
+
         per_class[label] = {
             "precision": precision,
             "recall": recall,
@@ -64,8 +64,12 @@ def compute_metrics(y_true: list[str], y_pred: list[str], labels: list[str]) -> 
 
     # Weighted averages (by support)
     total_support = sum(m["support"] for m in per_class.values())
-    weighted_precision = sum(m["precision"] * m["support"] for m in per_class.values()) / total_support if total_support > 0 else 0.0
-    weighted_recall = sum(m["recall"] * m["support"] for m in per_class.values()) / total_support if total_support > 0 else 0.0
+    weighted_precision = (
+        sum(m["precision"] * m["support"] for m in per_class.values()) / total_support if total_support > 0 else 0.0
+    )
+    weighted_recall = (
+        sum(m["recall"] * m["support"] for m in per_class.values()) / total_support if total_support > 0 else 0.0
+    )
     weighted_f1 = sum(m["f1"] * m["support"] for m in per_class.values()) / total_support if total_support > 0 else 0.0
 
     # Overall accuracy
@@ -102,6 +106,8 @@ def evaluate_classifier() -> dict:
         y_pred.append(result.label.value)
 
     return compute_metrics(test_labels, y_pred, labels)
+
+
 def main() -> None:
     print("Loading training data...")
     train_texts, train_labels = load_dataset("train")
@@ -137,7 +143,7 @@ def main() -> None:
         print("\nConfusion Matrix (True -> Predicted):")
         labels = ["Public", "Internal", "Confidential", "Highly Confidential"]
         # Print header
-        print("  True \\ Pred:  " + "  ".join(f"{l[:12]:>12}" for l in labels))
+        print("  True \\ Pred:  " + "  ".join(f"{name[:12]:>12}" for name in labels))
         for true_label in labels:
             row = f"  {true_label[:12]:>12}: "
             for pred_label in labels:
