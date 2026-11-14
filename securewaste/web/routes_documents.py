@@ -48,16 +48,17 @@ def upload_document():
     destination = None
 
     try:
+        # Read at most the upload limit plus one byte.
         data = uploaded_file.stream.read(limits.max_bytes + 1)
 
-        # 1. Validate the uploaded file.
+        # Step 1: Validate the uploaded document.
         result = validate_upload(
             filename=uploaded_file.filename,
             data=data,
             limits=limits,
         )
 
-        # 2. Store the file temporarily.
+        # Step 2: Store the document securely.
         storage_dir = Path(config["STORAGE_DIR"]) / "tmp"
         storage_dir.mkdir(parents=True, exist_ok=True)
 
@@ -120,6 +121,7 @@ def upload_document():
         ), 500
 
     finally:
+        # Remove the temporary file after processing.
         if destination is not None:
             try:
                 destination.unlink(missing_ok=True)
