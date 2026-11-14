@@ -3,6 +3,7 @@
 Sprint 2 (SCRUM-19/20/21). The hybrid decision is the highest sensitivity
 between the model prediction and explicit sensitive-content indicators.
 """
+
 from __future__ import annotations
 
 import json
@@ -100,12 +101,12 @@ class MLClassifier:
         self._is_fitted = pipeline is not None
 
     @classmethod
-    def load(cls, model_path: Path = MODEL_PATH) -> "MLClassifier":
+    def load(cls, model_path: Path = MODEL_PATH) -> MLClassifier:
         if not model_path.exists():
             raise MLClassifierError(f"Model not found at {model_path}. Run training first.")
         # Only load locally trained/trusted pickle files; pickle is not safe for untrusted input.
         with model_path.open("rb") as f:
-            pipeline = pickle.load(f)
+            pipeline = pickle.load(f)  # noqa: S301
         return cls(pipeline)
 
     @classmethod
@@ -115,17 +116,19 @@ class MLClassifier:
         labels: list[str],
         model_path: Path = MODEL_PATH,
         metadata_path: Path = METADATA_PATH,
-    ) -> "MLClassifier":
+    ) -> MLClassifier:
         if len(texts) != len(labels) or not texts:
             raise MLClassifierError("Training texts and labels must have equal nonzero lengths")
         for label in labels:
             if label not in LABEL_TO_IDX:
                 raise MLClassifierError(f"Unknown label: {label}. Must be one of {LABELS}")
         y = np.array([LABEL_TO_IDX[label] for label in labels])
-        pipeline = Pipeline([
-            ("tfidf", TfidfVectorizer(**TFIDF_PARAMS)),
-            ("lr", LogisticRegression(**LR_PARAMS)),
-        ])
+        pipeline = Pipeline(
+            [
+                ("tfidf", TfidfVectorizer(**TFIDF_PARAMS)),
+                ("lr", LogisticRegression(**LR_PARAMS)),
+            ]
+        )
         pipeline.fit(texts, y)
         model_path.parent.mkdir(parents=True, exist_ok=True)
         metadata_path.parent.mkdir(parents=True, exist_ok=True)
@@ -146,16 +149,13 @@ class MLClassifier:
         if not self._is_fitted:
             raise MLClassifierError("Model not fitted. Call train() or load() first.")
         if not text or not text.strip():
-            probs = {
-                label: 1.0 if label == ClassificationLabel.PUBLIC else 0.0
-                for label in ClassificationLabel
-            }
+            probs = {label: 1.0 if label == ClassificationLabel.PUBLIC else 0.0 for label in ClassificationLabel}
             return MLClassificationResult(ClassificationLabel.PUBLIC, 1.0, probs)
         proba = self._pipeline.predict_proba([text])[0]
         # Map probabilities using the actual fitted class indices, which may be a subset.
         class_indices = self._pipeline.named_steps["lr"].classes_
         probabilities = {label: 0.0 for label in ClassificationLabel}
-        for idx, p in zip(class_indices, proba):
+        for idx, p in zip(class_indices, proba, strict=True):
             probabilities[ClassificationLabel(LABELS[int(idx)])] = float(p)
         pred_idx = int(class_indices[int(np.argmax(proba))])
         return MLClassificationResult(
@@ -176,12 +176,11 @@ def predict_classification(text: str, model_path: Path | None = None) -> Classif
         except (OSError, ValueError, AttributeError, TypeError, MLClassifierError):
             pass
     from securewaste.core.classifier import predict_classification as rule_predict
+
     return rule_predict(text)
 
 
-def predict_classification_with_confidence(
-    text: str, model_path: Path | None = None
-) -> MLClassificationResult:
+def predict_classification_with_confidence(text: str, model_path: Path | None = None) -> MLClassificationResult:
     path = model_path if model_path is not None else MODEL_PATH
     if path.exists():
         try:
@@ -189,6 +188,7 @@ def predict_classification_with_confidence(
         except (OSError, ValueError, AttributeError, TypeError, MLClassifierError):
             pass
     from securewaste.core.classifier import predict_classification_with_confidence as rule_predict
+
     label, confidence, probs = rule_predict(text)
     return MLClassificationResult(label, confidence, probs, ClassifierSource.RULE_BASED)
 
@@ -260,9 +260,7 @@ def detect_sensitive_patterns(text: str) -> list[ClassificationLabel]:
     # A known public AWS example can be ignored only when the document
     # explicitly identifies itself as instructional/example material.
     # Unknown AWS-key-shaped strings are still flagged in tutorials.
-    instructional_context = bool(re.search(
-        r"\b(?:tutorial|example|sample|dummy|fake)\b", text, re.IGNORECASE
-    ))
+    instructional_context = bool(re.search(r"\b(?:tutorial|example|sample|dummy|fake)\b", text, re.IGNORECASE))
     for match in re.finditer(r"\bAKIA[0-9A-Z]{16}\b", text):
         key = match.group(0)
         if key in KNOWN_EXAMPLE_AWS_KEYS and instructional_context:
@@ -297,10 +295,7 @@ def detect_sensitive_patterns(text: str) -> list[ClassificationLabel]:
 
     # Weak ID patterns can produce false positives; require an identity context.
     id_context = re.search(r"\b(?:national\s+id|identity\s+(?:card|number)|passport)\b", text, re.I)
-    if id_context and (
-        re.search(r"\b\d{8}\b", text)
-        or re.search(r"\b[A-Z]{1,2}\d{6,9}\b", text, re.I)
-    ):
+    if id_context and (re.search(r"\b\d{8}\b", text) or re.search(r"\b[A-Z]{1,2}\d{6,9}\b", text, re.I)):
         detected.add(ClassificationLabel.CONFIDENTIAL)
 
     # Explicit labels: each word maps to its OWN level.
@@ -317,27 +312,34 @@ def detect_sensitive_patterns(text: str) -> list[ClassificationLabel]:
     # than treating isolated mentions of "key" or "acquisition" as secrets.
     # A tutorial is not automatically sensitive, but explicit secret values
     # detected above are never suppressed by educational wording.
-    educational_context = bool(re.search(
-        r"\b(?:tutorial|beginner\s+guide|educational\s+article|"
-        r"training\s+exercise|how\s+to)\b", text, re.I
-    ))
+    educational_context = bool(
+        re.search(
+            r"\b(?:tutorial|beginner\s+guide|educational\s+article|"
+            r"training\s+exercise|how\s+to)\b",
+            text,
+            re.I,
+        )
+    )
 
     critical_key_context = re.search(
         r"\b(?:root\s+(?:certificate\s+authority|ca)|production|emergency|backup)\b"
         r".{0,100}\b(?:private\s+(?:signing\s+)?key|signing\s+key|"
         r"encryption\s+recovery\s+key)\b",
-        text, re.I | re.S,
+        text,
+        re.I | re.S,
     )
     critical_access_context = re.search(
         r"\b(?:production|administrator|admin|privileged)\b"
         r".{0,100}\b(?:recovery\s+codes?|access\s+tokens?|"
         r"deployment\s+credentials?)\b",
-        text, re.I | re.S,
+        text,
+        re.I | re.S,
     )
     commercial_context = re.search(
         r"\b(?:acquisition|merger|takeover)\b"
         r".{0,100}\b(?:negotiation|purchase\s+price|offer|valuation|agreement)\b",
-        text, re.I | re.S,
+        text,
+        re.I | re.S,
     )
 
     if not educational_context:
@@ -354,9 +356,7 @@ def detect_sensitive_patterns(text: str) -> list[ClassificationLabel]:
     return sorted(detected, key=lambda label: LABEL_HIERARCHY[label])
 
 
-def predict_classification_hybrid_with_confidence(
-    text: str, model_path: Path | None = None
-) -> MLClassificationResult:
+def predict_classification_hybrid_with_confidence(text: str, model_path: Path | None = None) -> MLClassificationResult:
     """Combine ML and sensitive-content rules, then apply review policy.
 
     On rule override, confidence=0.0 means unavailable, not zero
@@ -365,9 +365,7 @@ def predict_classification_hybrid_with_confidence(
     ml_result = predict_classification_with_confidence(text, model_path)
     detected = detect_sensitive_patterns(text)
 
-    final_label = highest_sensitivity_label(
-        [ml_result.label, *detected]
-    )
+    final_label = highest_sensitivity_label([ml_result.label, *detected])
 
     if final_label != ml_result.label:
         result = MLClassificationResult(
@@ -380,9 +378,9 @@ def predict_classification_hybrid_with_confidence(
         result = ml_result
 
     return apply_review_policy(result)
-def predict_classification_hybrid(
-    text: str, model_path: Path | None = None
-) -> ClassificationLabel:
+
+
+def predict_classification_hybrid(text: str, model_path: Path | None = None) -> ClassificationLabel:
     """Hybrid label-only entry point (Sprint 3 contract)."""
     return predict_classification_hybrid_with_confidence(text, model_path).label
 
@@ -399,9 +397,18 @@ def predict_classification_dict(text: str) -> dict:
 
 
 __all__ = [
-    "MLClassifier", "MLClassificationResult", "MLClassifierError", "ClassifierSource",
-    "predict_classification", "predict_classification_with_confidence",
-    "predict_classification_hybrid", "predict_classification_hybrid_with_confidence",
-    "detect_sensitive_patterns", "highest_sensitivity_label",
-    "predict_classification_dict", "train_and_save_model", "LABELS", "MODEL_PATH",
+    "MLClassifier",
+    "MLClassificationResult",
+    "MLClassifierError",
+    "ClassifierSource",
+    "predict_classification",
+    "predict_classification_with_confidence",
+    "predict_classification_hybrid",
+    "predict_classification_hybrid_with_confidence",
+    "detect_sensitive_patterns",
+    "highest_sensitivity_label",
+    "predict_classification_dict",
+    "train_and_save_model",
+    "LABELS",
+    "MODEL_PATH",
 ]

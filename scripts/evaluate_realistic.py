@@ -1,4 +1,3 @@
-
 """
 Secure Waste - Independent Classifier Evaluation
 
@@ -18,7 +17,6 @@ from securewaste.core.ml_classifier import (
     predict_classification,
     predict_classification_hybrid,
 )
-
 
 LABELS = [
     "Public",
@@ -42,7 +40,6 @@ CASES = [
     ("Public", "This educational article explains the format of an IBAN."),
     ("Public", "The weather forecast predicts rain and strong winds tomorrow."),
     ("Public", "An introductory guide to detecting phishing emails and malicious links."),
-
     # INTERNAL
     ("Internal", "The engineering team will review sprint progress on Thursday."),
     ("Internal", "Please update the project board before the weekly planning meeting."),
@@ -54,7 +51,6 @@ CASES = [
     ("Internal", "The QA team identified three bugs in the staging environment."),
     ("Internal", "Our employee onboarding checklist has been updated."),
     ("Internal", "The product team will discuss next quarter's feature priorities."),
-
     # CONFIDENTIAL
     ("Confidential", "Customer billing records contain account balances and transaction histories."),
     ("Confidential", "The acquisition negotiation proposes a purchase price of 42 million dollars."),
@@ -66,18 +62,23 @@ CASES = [
     ("Confidential", "The unreleased product strategy includes confidential pricing negotiations."),
     ("Confidential", "The HR investigation report includes private employee complaints."),
     ("Confidential", "The supplier contract includes non-public negotiated discounts and payment terms."),
-
     # HIGHLY CONFIDENTIAL
     ("Highly Confidential", "Production database password: D7v!q9Lz#2Kp."),
     ("Highly Confidential", "AWS access key ID: AKIAQWERTYUIOPASDFGH."),
     ("Highly Confidential", "Production API token: sk_live_51Qm7T9xP2zA8bC6dE4fG."),
-    ("Highly Confidential", "-----BEGIN PRIVATE KEY-----\nFictionalKeyMaterialForSecurityTesting\n-----END PRIVATE KEY-----"),
+    (
+        "Highly Confidential",
+        "-----BEGIN PRIVATE KEY-----\nFictionalKeyMaterialForSecurityTesting\n-----END PRIVATE KEY-----",
+    ),
     ("Highly Confidential", "The administrator recovery codes are 7842-9911 and 3810-6625."),
     ("Highly Confidential", "DATABASE_URL=postgresql://root:V3ryS3cret!@db.internal:5432/production"),
     ("Highly Confidential", "The signing secret used by our authentication service is: 8dF!2gH@9jK#4mN."),
     ("Highly Confidential", "An exposed deployment credential grants administrator access to production systems."),
     ("Highly Confidential", "Our emergency root certificate authority private signing key is stored in this document."),
-    ("Highly Confidential", "The production backup encryption recovery key is included in the sealed disaster recovery instructions."),
+    (
+        "Highly Confidential",
+        "The production backup encryption recovery key is included in the sealed disaster recovery instructions.",
+    ),
 ]
 
 
@@ -143,9 +144,7 @@ def main():
         underclassified = []
         overclassified = []
 
-        for index, (expected, predicted) in enumerate(
-            zip(actual, predictions), start=1
-        ):
+        for index, (expected, predicted) in enumerate(zip(actual, predictions, strict=True), start=1):
             if SEVERITY[predicted] < SEVERITY[expected]:
                 underclassified.append(index)
             elif SEVERITY[predicted] > SEVERITY[expected]:
@@ -156,9 +155,7 @@ def main():
 
         print("\nMISCLASSIFIED DOCUMENTS")
 
-        for index, (expected, predicted) in enumerate(
-            zip(actual, predictions), start=1
-        ):
+        for index, (expected, predicted) in enumerate(zip(actual, predictions, strict=True), start=1):
             if expected != predicted:
                 print(f"\nCase {index}")
                 print("Expected:", expected)
