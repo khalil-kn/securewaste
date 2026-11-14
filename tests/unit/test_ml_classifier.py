@@ -820,5 +820,25 @@ class TestIntegrationWithClassifier:
         assert accuracy >= 0.75  # At least 75% on synthetic data
 
 
+class TestHybridDictionaryContract:
+    """Regression tests for the Sprint 3 dictionary classification interface."""
+
+    def test_dict_contract_internal_label(self):
+        from securewaste.core.ml_classifier import predict_classification_dict
+
+        result = predict_classification_dict("Internal team meeting notes.")
+
+        assert result["label"] == "Internal"
+        assert set(result) == {"label", "confidence", "model_version"}
+
+    def test_dict_contract_confidential_label(self):
+        from securewaste.core.ml_classifier import predict_classification_dict
+
+        result = predict_classification_dict("Confidential financial report.")
+
+        assert result["label"] == "Confidential"
+        assert 0.0 <= result["confidence"] <= 1.0
+
+
 if __name__ == "__main__":
     pytest.main([__file__, "-v"])
