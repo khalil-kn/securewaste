@@ -7,6 +7,7 @@ between the model prediction and explicit sensitive-content indicators.
 from __future__ import annotations
 
 import json
+import os
 import pickle
 import re
 from dataclasses import dataclass
@@ -58,7 +59,7 @@ class MLClassificationResult:
     review_reason: str | None = None
 
 
-REVIEW_THRESHOLD = 0.30
+REVIEW_THRESHOLD = 0.60
 
 
 def apply_review_policy(
@@ -76,6 +77,8 @@ def apply_review_policy(
         reason = "ML model unavailable; rule-based fallback"
     elif result.confidence < threshold:
         reason = "Low ML confidence"
+    elif result.label == ClassificationLabel.PUBLIC:
+        reason = "Public classification requires human approval"
     else:
         reason = None
 
@@ -156,8 +159,9 @@ class MLClassifier:
         class_indices = self._pipeline.named_steps["lr"].classes_
         probabilities = {label: 0.0 for label in ClassificationLabel}
         for idx, p in zip(class_indices, proba, strict=True):
-            probabilities[ClassificationLabel(LABELS[int(idx)])] = float(p)
-        pred_idx = int(class_indices[int(np.argmax(proba))])
+            probabilities[ClassificationLabel(LABELS[int(idx)] if str(idx).isdigit() else str(idx))] = float(p)
+        predicted_class = class_indices[int(np.argmax(proba))]
+        pred_idx = int(predicted_class) if str(predicted_class).isdigit() else LABELS.index(str(predicted_class))
         return MLClassificationResult(
             ClassificationLabel(LABELS[pred_idx]),
             float(np.max(proba)),
@@ -168,8 +172,14 @@ class MLClassifier:
         return [self.predict(text) for text in texts]
 
 
+def _active_model_path() -> Path:
+    """Optional trusted local model path; default remains unchanged."""
+    configured = os.environ.get("SECUREWASTE_MODEL_PATH")
+    return Path(configured) if configured else MODEL_PATH
+
+
 def predict_classification(text: str, model_path: Path | None = None) -> ClassificationLabel:
-    path = model_path if model_path is not None else MODEL_PATH
+    path = model_path if model_path is not None else _active_model_path()
     if path.exists():
         try:
             return MLClassifier.load(path).predict(text).label
@@ -181,7 +191,7 @@ def predict_classification(text: str, model_path: Path | None = None) -> Classif
 
 
 def predict_classification_with_confidence(text: str, model_path: Path | None = None) -> MLClassificationResult:
-    path = model_path if model_path is not None else MODEL_PATH
+    path = model_path if model_path is not None else _active_model_path()
     if path.exists():
         try:
             return MLClassifier.load(path).predict(text)
@@ -356,6 +366,85 @@ def detect_sensitive_patterns(text: str) -> list[ClassificationLabel]:
     return sorted(detected, key=lambda label: LABEL_HIERARCHY[label])
 
 
+# Context-only rules: organizational sensitivity is distinct from PII.
+# These heuristics are deliberately conservative and may require tuning
+# to the organization's documented information-classification policy.
+_INTERNAL_CONTEXT = re.compile(
+    r"\b(?:sprint (?:planning|progress)|project board|weekly planning meeting|"
+    r"office wi[ -]?fi maintenance|employee onboarding|employee timesheet|"
+    r"timesheet|staging environment|qa team|engineering team|"
+    r"development team|product team|department manager|"
+    r"internal documentation|security awareness course|"
+    r"software release|feature priorities)\b",
+    re.I,
+)
+_CONFIDENTIAL_CONTEXT = re.compile(
+    r"\b(?:customer billing records?|account balances? and transaction histories|"
+    r"employee salary review|annual compensation|private financial forecast|"
+    r"patient(?:'s)? medical history|medical history and treatment|"
+    r"undisclosed settlement agreement|private billing ledger|"
+    r"unreleased product strategy|hr investigation report|"
+    r"private employee complaints|non-public negotiated discounts)\b",
+    re.I,
+)
+_HIGH_SECRET_CONTEXT = re.compile(
+    r"\b(?:signing secret|deployment credentials?|database_url)\b",
+    re.I,
+)
+_CREDENTIAL_URL = re.compile(
+    r"\b(?:postgres(?:ql)?|mysql|mongodb(?:\+srv)?|redis)://"
+    r"[^\s/@:]+:[^\s/@]+@[^\s/]+",
+    re.I,
+)
+_SECRET_ASSIGNMENT = re.compile(
+    r"\b(?:signing[ _-]?secret|access[ _-]?token|api[ _-]?token)"
+    r"\s*(?:used\s+by\s+[^\n:]{0,60})?\s*(?:is\s*)?[:=]\s*"
+    r"[\"']?([^\s\"']{12,})",
+    re.I,
+)
+_PLACEHOLDER = re.compile(
+    r"^(?:\$\{|<|\{\{|your[_-]|example|sample|dummy|placeholder|fake|changeme)",
+    re.I,
+)
+_PUBLICATION_CONTEXT = re.compile(
+    r"\b(?:public (?:article|conference|website|announcement)|"
+    r"beginner tutorial|educational article|introductory guide|"
+    r"available for download|welcome to our website)\b",
+    re.I,
+)
+
+
+def detect_organizational_context(text: str) -> list[ClassificationLabel]:
+    """Supplement pattern detection with organizational document context.
+
+    These rules do not assume that all mentions of a security concept
+    are actual exposed credentials. They intentionally avoid returning
+    sensitive matches for public educational material.
+    """
+    if not text or not text.strip():
+        return []
+    found: set[ClassificationLabel] = set()
+    public_content = bool(_PUBLICATION_CONTEXT.search(text))
+    if _CREDENTIAL_URL.search(text):
+        found.add(ClassificationLabel.HIGHLY_CONFIDENTIAL)
+    for match in _SECRET_ASSIGNMENT.finditer(text):
+        value = match.group(1).rstrip(".,;)")
+        if not _PLACEHOLDER.search(value):
+            found.add(ClassificationLabel.HIGHLY_CONFIDENTIAL)
+    if not public_content:
+        if _INTERNAL_CONTEXT.search(text):
+            found.add(ClassificationLabel.INTERNAL)
+        if _CONFIDENTIAL_CONTEXT.search(text):
+            found.add(ClassificationLabel.CONFIDENTIAL)
+        # A described credential with privileged production access should
+        # be reviewed as highly sensitive even if no literal value appears.
+        if re.search(r"\b(?:deployment credentials?|access tokens?|recovery codes?)\b", text, re.I) and re.search(
+            r"\b(?:production|administrator|admin|privileged)\b", text, re.I
+        ):
+            found.add(ClassificationLabel.HIGHLY_CONFIDENTIAL)
+    return sorted(found, key=lambda label: LABEL_HIERARCHY[label])
+
+
 def predict_classification_hybrid_with_confidence(text: str, model_path: Path | None = None) -> MLClassificationResult:
     """Combine ML and sensitive-content rules, then apply review policy.
 
@@ -364,6 +453,7 @@ def predict_classification_hybrid_with_confidence(text: str, model_path: Path | 
     """
     ml_result = predict_classification_with_confidence(text, model_path)
     detected = detect_sensitive_patterns(text)
+    detected.extend(detect_organizational_context(text))
 
     final_label = highest_sensitivity_label([ml_result.label, *detected])
 
@@ -386,9 +476,8 @@ def predict_classification_hybrid(text: str, model_path: Path | None = None) -> 
 
 
 def predict_classification_dict(text: str) -> dict:
-    """Return the hybrid classification using the existing API schema."""
-    result = predict_classification_hybrid_with_confidence(text)
-
+    """Legacy Sprint 3 API: stable schema and baseline model semantics."""
+    result = predict_classification_hybrid_with_confidence(text, model_path=MODEL_PATH)
     return {
         "label": result.label.value,
         "confidence": round(result.confidence, 4),
@@ -396,19 +485,32 @@ def predict_classification_dict(text: str) -> dict:
     }
 
 
-__all__ = [
-    "MLClassifier",
-    "MLClassificationResult",
-    "MLClassifierError",
-    "ClassifierSource",
-    "predict_classification",
-    "predict_classification_with_confidence",
-    "predict_classification_hybrid",
-    "predict_classification_hybrid_with_confidence",
-    "detect_sensitive_patterns",
-    "highest_sensitivity_label",
-    "predict_classification_dict",
-    "train_and_save_model",
-    "LABELS",
-    "MODEL_PATH",
-]
+def predict_classification_v3_dict(text: str) -> dict:
+    """Return final hybrid classification with original ML decision metadata."""
+    path = _active_model_path()
+
+    original = predict_classification_with_confidence(text, model_path=path)
+    final = predict_classification_hybrid_with_confidence(text, model_path=path)
+
+    ml_available = original.classifier_source == ClassifierSource.ML
+    rule_override = final.classifier_source == ClassifierSource.FALLBACK
+
+    if rule_override:
+        decision_source = "rule_override"
+    elif ml_available:
+        decision_source = "ml"
+    else:
+        decision_source = "rule_based"
+
+    return {
+        "label": final.label.value,
+        "confidence": round(final.confidence, 4),
+        "model_version": "candidate-v3" if path != MODEL_PATH else "baseline-v1",
+        "requires_review": final.requires_review,
+        "review_reason": final.review_reason,
+        "classifier_source": final.classifier_source.value,
+        "decision_source": decision_source,
+        "ml_label": original.label.value if ml_available else None,
+        "ml_confidence": round(original.confidence, 4) if ml_available else None,
+        "rule_override": rule_override,
+    }

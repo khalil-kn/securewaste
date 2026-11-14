@@ -40,3 +40,10 @@ docs/diagrams/tools/
 .DS_Store
 Thumbs.db
 desktop.ini
+
+# Local Python development
+.venv-ci/
+*.pyc
+
+# Local ML experiments and training datasets
+/experiments/
