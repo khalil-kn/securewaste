@@ -2,15 +2,17 @@
 """Train ML classifier on synthetic dataset (Sprint 2: SCRUM-19/20/21).
 
 Loads synthetic dataset, trains TF-IDF + LogisticRegression,
-saves model to securewaste/models/, and evaluates on test set.
+saves model to securewaste/models/, and evaluates on validation by default.
+The held-out test split is evaluated only with --final-test.
 """
 
 from __future__ import annotations
 
+import argparse
 from collections import Counter, defaultdict
 from pathlib import Path
 
-from securewaste.core.ml_classifier import train_and_save_model, predict_classification_with_confidence
+from securewaste.core.ml_classifier import MLClassifier, train_and_save_model
 
 
 def load_dataset(split: str) -> tuple[list[str], list[str]]:
@@ -42,11 +44,11 @@ def compute_metrics(y_true: list[str], y_pred: list[str], labels: list[str]) -> 
         tp = confusion[label][label]
         fp = sum(confusion[other][label] for other in labels if other != label)
         fn = sum(confusion[label][other] for other in labels if other != label)
-        
+
         precision = tp / (tp + fp) if (tp + fp) > 0 else 0.0
         recall = tp / (tp + fn) if (tp + fn) > 0 else 0.0
         f1 = 2 * precision * recall / (precision + recall) if (precision + recall) > 0 else 0.0
-        
+
         per_class[label] = {
             "precision": precision,
             "recall": recall,
@@ -64,8 +66,12 @@ def compute_metrics(y_true: list[str], y_pred: list[str], labels: list[str]) -> 
 
     # Weighted averages (by support)
     total_support = sum(m["support"] for m in per_class.values())
-    weighted_precision = sum(m["precision"] * m["support"] for m in per_class.values()) / total_support if total_support > 0 else 0.0
-    weighted_recall = sum(m["recall"] * m["support"] for m in per_class.values()) / total_support if total_support > 0 else 0.0
+    weighted_precision = (
+        sum(m["precision"] * m["support"] for m in per_class.values()) / total_support if total_support > 0 else 0.0
+    )
+    weighted_recall = (
+        sum(m["recall"] * m["support"] for m in per_class.values()) / total_support if total_support > 0 else 0.0
+    )
     weighted_f1 = sum(m["f1"] * m["support"] for m in per_class.values()) / total_support if total_support > 0 else 0.0
 
     # Overall accuracy
@@ -91,33 +97,40 @@ def compute_metrics(y_true: list[str], y_pred: list[str], labels: list[str]) -> 
     }
 
 
-def evaluate_classifier() -> dict:
-    """Evaluate trained classifier on test set."""
-    test_texts, test_labels = load_dataset("test")
+def evaluate_classifier(classifier: MLClassifier, split: str = "val") -> dict:
+    """Evaluate the in-memory trained classifier on the selected split."""
+    if split not in {"val", "test"}:
+        raise ValueError("split must be 'val' or 'test'")
+
+    texts, true_labels = load_dataset(split)
     labels = ["Public", "Internal", "Confidential", "Highly Confidential"]
+    predictions = [classifier.predict(text).label.value for text in texts]
+    return compute_metrics(true_labels, predictions, labels)
 
-    y_pred = []
-    for text in test_texts:
-        result = predict_classification_with_confidence(text)
-        y_pred.append(result.label.value)
 
-    return compute_metrics(test_labels, y_pred, labels)
 def main() -> None:
+    parser = argparse.ArgumentParser(description="Train and evaluate the SecureWaste ML classifier.")
+    parser.add_argument(
+        "--final-test",
+        action="store_true",
+        help="Evaluate on the held-out test split. Use only once after model choices are frozen.",
+    )
+    args = parser.parse_args()
+
     print("Loading training data...")
     train_texts, train_labels = load_dataset("train")
     print(f"Train samples: {len(train_texts)}")
-
-    # Verify class balance
     print(f"Train class distribution: {Counter(train_labels)}")
 
-    print("\nTraining TF-IDF + LogisticRegression classifier...")
-    _ = train_and_save_model(train_texts, train_labels)
+    print("\\nTraining TF-IDF + LogisticRegression classifier...")
+    classifier = train_and_save_model(train_texts, train_labels)
     print("Model saved to securewaste/models/")
 
-    print("\nEvaluating on test set...")
-    metrics = evaluate_classifier()
+    evaluation_split = "test" if args.final_test else "val"
+    print(f"\\nEvaluating on {evaluation_split} set...")
+    metrics = evaluate_classifier(classifier, evaluation_split)
 
-    print("\n=== Test Set Results ===")
+    print(f"\\n=== {evaluation_split.title()} Set Results ===")
     print(f"Overall Accuracy: {metrics['accuracy']:.2%} ({metrics['correct']}/{metrics['total']})")
     print(f"Macro Precision: {metrics['macro_precision']:.2%}")
     print(f"Macro Recall: {metrics['macro_recall']:.2%}")
@@ -125,7 +138,8 @@ def main() -> None:
     print(f"Weighted Precision: {metrics['weighted_precision']:.2%}")
     print(f"Weighted Recall: {metrics['weighted_recall']:.2%}")
     print(f"Weighted F1: {metrics['weighted_f1']:.2%}")
-    print("\nPer-Class Metrics:")
+
+    print("\\nPer-Class Metrics:")
     for label, stats in metrics["per_class"].items():
         print(f"  {label}:")
         print(f"    Precision: {stats['precision']:.2%}")
@@ -134,10 +148,9 @@ def main() -> None:
         print(f"    Support: {stats['support']}")
 
     if metrics["confusion_matrix"]:
-        print("\nConfusion Matrix (True -> Predicted):")
+        print("\\nConfusion Matrix (True -> Predicted):")
         labels = ["Public", "Internal", "Confidential", "Highly Confidential"]
-        # Print header
-        print("  True \\ Pred:  " + "  ".join(f"{l[:12]:>12}" for l in labels))
+        print("  True \\\\ Pred:  " + "  ".join(f"{label[:12]:>12}" for label in labels))
         for true_label in labels:
             row = f"  {true_label[:12]:>12}: "
             for pred_label in labels:
@@ -145,24 +158,13 @@ def main() -> None:
                 row += f"{count:>12} "
             print(row)
 
-    # Error examples
-    print("\nError Examples:")
-    test_texts, test_labels = load_dataset("test")
-    errors_shown = 0
-    for text, true_label in zip(test_texts, test_labels, strict=True):
-        result = predict_classification_with_confidence(text)
-        if result.label.value != true_label and errors_shown < 5:
-            print(f"  True: {true_label}, Pred: {result.label.value} (conf: {result.confidence:.2f})")
-            print(f"  Text: {text[:100]}...")
-            errors_shown += 1
-
-    print("\n=== Limitations ===")
+    print("\\n=== Limitations ===")
     print("- Synthetic data performance does NOT prove real-world accuracy")
-    print("- Model trained on 160 synthetic samples (50 per class)")
-    print("- Rule-based fallback used for patterns not captured by TF-IDF")
+    print(f"- Model trained on {len(train_texts)} synthetic training samples")
+    print("- Validation data is used during development; test data is reserved for final evaluation")
+    print("- The previously inspected 40-case evaluation is not treated as a blind test set")
     print("- No external data, no cloud transmission, fully local")
-
-    print("\nDone!")
+    print("\\nDone!")
 
 
 if __name__ == "__main__":

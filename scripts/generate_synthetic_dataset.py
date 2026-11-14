@@ -12,6 +12,8 @@ All data is synthetic/fictional - no real company or personal data.
 
 from __future__ import annotations
 
+# ruff: noqa: S311, E501  # Reproducible synthetic data; long example strings.
+import argparse
 import random
 import string
 from dataclasses import dataclass
@@ -48,7 +50,6 @@ PUBLIC_TEMPLATES = [
     "The office will be closed next Friday for the company holiday. Enjoy the long weekend!",
     "Lunch and learn session this Thursday at noon - topic: 'Intro to GraphQL'. Pizza provided.",
     "Welcome aboard Sarah! Your desk is on the 3rd floor, badge access already configured.",
-    
     # Meeting notes & agendas
     """Meeting Notes - Project Atlas Sync - {date}
 
@@ -68,7 +69,6 @@ Action Items:
 - {action_owner_1}: finalize API spec by {action_date_1}
 - {action_owner_2}: schedule load test for payment service
 - {action_owner_3}: update runbook for new deployment process""",
-    
     """Quarterly All-Hands - Q{quarter} {year} Highlights
 
 Company Metrics:
@@ -90,7 +90,6 @@ People:
 - Promotions: {promotions} engineers to Senior/Staff
 - Learning budget: ${learning_budget:,.0f} utilized
 - Hackathon winners: {hackathon_winners}""",
-    
     # Tutorials & documentation
     """Getting Started with {technology}
 
@@ -136,7 +135,6 @@ Next Steps:
 - Read the full API reference at docs.example.com
 - Join our Discord community for support
 - Check out the examples repository on GitHub""",
-    
     # Blog posts & articles
     """{title}
 
@@ -157,7 +155,6 @@ Key Takeaways:
 
 Tags: {tags}
 ---""",
-    
     # Policies & announcements
     """Company Policy Update: {policy_name}
 
@@ -177,7 +174,6 @@ Contact {contact_team} at {contact_email} or visit the internal wiki.
 
 ---
 This is an automated notification from {sender}.""",
-    
     # Technical blog / engineering posts
     """How We {achievement} at {company_name}
 
@@ -203,25 +199,24 @@ What's Next:
 
 ---
 {author} is a {role} at {company_name}. Connect on LinkedIn/Twitter.""",
-    
     # Release notes
     """Release Notes: {product_name} v{version}
 
 Released: {release_date}
 
-🎉 New Features:
+ðŸŽ‰ New Features:
 {new_features}
 
-🐛 Bug Fixes:
+ðŸ› Bug Fixes:
 {bug_fixes}
 
-🔧 Improvements:
+ðŸ”§ Improvements:
 {improvements}
 
-⚠️ Breaking Changes:
+âš ï¸ Breaking Changes:
 {breaking_changes}
 
-📦 Dependencies:
+ðŸ“¦ Dependencies:
 - Updated: {updated_deps}
 - Added: {added_deps}
 
@@ -238,7 +233,6 @@ INTERNAL_TEMPLATES = [
     "Quick sync on the API rate limiting issue? I'm free after 3pm.",
     "The new hire laptop arrived. Can IT set it up before Monday?",
     "Expense report for AWS re:Invent submitted. Receipt attached.",
-    
     # HR & onboarding
     """Welcome to the Team - {employee_name}
 
@@ -262,8 +256,7 @@ Resources:
 - Engineering handbook: handbook.company.internal
 - Onboarding checklist: onboarding.company.internal/{employee_id}
 
-Welcome aboard! 🎉""",
-    
+Welcome aboard! ðŸŽ‰""",
     """Performance Review - {employee_name} ({review_cycle})
 
 Role: {role} | Level: {level} | Manager: {manager_name}
@@ -287,7 +280,6 @@ Recommended adjustment: {adjustment_pct}%
 Signatures:
 Employee: _____________________ Date: _______
 Manager: _____________________ Date: _______""",
-    
     # IT & Security
     """IT Security Advisory - {advisory_id}
 
@@ -316,7 +308,6 @@ References:
 - Internal ticket: {ticket_id}
 
 Contact: security@company.internal | #security-alerts on Slack""",
-    
     """Incident Retrospective - INC-{incident_id}
 
 Date: {date} | Duration: {duration_min} minutes | Severity: SEV-{severity}
@@ -329,7 +320,7 @@ Root Cause:
 
 Impact:
 - Users affected: {users_affected:,}
-- Revenue impact: \${revenue_impact:,.0f}
+- Revenue impact: ${revenue_impact:,.0f}
 - SLA breach: {sla_breach}
 
 What Went Well:
@@ -339,10 +330,9 @@ What Went Wrong:
 {went_wrong}
 
 Action Items:
-{action_items}
+{incident_action_items}
 
 Follow-up: {followup_date}""",
-    
     # Project & Finance
     """Project Proposal: {project_name}
 
@@ -362,8 +352,8 @@ Resource Request:
 - Engineering: {eng_fte} FTEs ({eng_cost:,.0f}/month)
 - Design: {design_fte} FTEs ({design_cost:,.0f}/month)
 - PM: {pm_fte} FTE ({pm_cost:,.0f}/month)
-- Infrastructure: \${infra_cost:,.0f}/month
-Total: \${total_cost:,.0f} over {duration_months} months
+- Infrastructure: ${infra_cost:,.0f}/month
+Total: ${total_cost:,.0f} over {duration_months} months
 
 Success Metrics:
 {success_metrics}
@@ -372,24 +362,22 @@ Risks & Mitigations:
 {risks_mitigations}
 
 Approval Required: {approvers}""",
-    
     """Quarterly Budget Review - {department} - Q{quarter} {year}
 
-Budget Allocated: \${allocated:,.0f}
-Budget Spent: \${spent:,.0f} ({spent_pct}%)
-Variance: \${variance:,.0f} ({variance_pct}%)
+Budget Allocated: ${allocated:,.0f}
+Budget Spent: ${spent:,.0f} ({spent_pct}%)
+Variance: ${variance:,.0f} ({variance_pct}%)
 
 Top Expenses:
-1. {expense_1}: \${amt_1:,.0f}
-2. {expense_2}: \${amt_2:,.0f}
-3. {expense_3}: \${amt_3:,.0f}
+1. {expense_1}: ${amt_1:,.0f}
+2. {expense_2}: ${amt_2:,.0f}
+3. {expense_3}: ${amt_3:,.0f}
 
 Forecast Next Quarter:
 {forecast}
 
 Decisions Needed:
-{decisions}""",
-    
+{budget_decisions}""",
     # Team communications
     """Team Sync Notes - {team_sync_name} - {date}
 
@@ -407,11 +395,10 @@ Decisions:
 {decisions}
 
 Action Items:
-{action_items}
+{team_action_items}
 
 Parking Lot:
 {parking_lot}""",
-    
     """Engineering Design Review - {feature_name}
 
 Author: {author_name} | Reviewers: {reviewers}
@@ -456,7 +443,6 @@ CONFIDENTIAL_TEMPLATES = [
     "Travel booking: Passport {passport} for {name}. CONFIDENTIAL",
     "Financial statement: Account {iban} balance {amount}. CONFIDENTIAL",
     "Audit trail: Transaction {card} verified. CONFIDENTIAL",
-    
     # Legal contracts & agreements
     """Master Services Agreement - {msa_id}
 
@@ -503,7 +489,6 @@ Termination for cause: 30 days cure period.
 Signatures:
 Client: _________________________ Date: __________
 Vendor: _________________________ Date: __________""",
-    
     """Non-Disclosure Agreement - {nda_id}
 
 Parties: {party_a} and {party_b}
@@ -536,9 +521,8 @@ Jurisdiction: {jurisdiction}
 Signatures:
 {party_a}: _________________________ Date: __________
 {party_b}: _________________________ Date: __________""",
-    
     # Financial reports
-    """Quarterly Financial Report - {entity_name} - Q{quarter} {year}
+    """Quarterly Financial Report - {financial_entity_name} - Q{quarter} {year}
 
 Prepared by: {preparer_name} | Date: {date}
 Classification: CONFIDENTIAL
@@ -581,10 +565,9 @@ Bank Accounts:
 Primary Operating: {iban_primary}
 Reserve: {iban_reserve}
 Payroll: {iban_payroll}""",
-    
     """Payroll Register - {pay_period} - CONFIDENTIAL
 
-Entity: {entity_name} | EIN: {ein}
+Entity: {payroll_entity_name} | EIN: {ein}
 Processed by: {payroll_processor} | Date: {process_date}
 Classification: CONFIDENTIAL - HR & Finance Only
 
@@ -611,11 +594,10 @@ Local: ${local_tax:,.2f} (Due: {local_due})
 Benefits Deductions:
 401(k): ${k401:,.2f} | Health: ${health:,.2f} | HSA: ${hsa:,.2f}
 
-Bank: {bank_name} | Account: {payroll_account} | Routing: {payroll_routing}""",
-    
+Bank: {payroll_bank_name} | Account: {payroll_account} | Routing: {payroll_routing}""",
     """Vendor Contract - {vendor_contract_id}
 
-Vendor: {vendor_name} ({vendor_tax_id})
+Vendor: {contract_vendor_name} ({vendor_tax_id})
 Address: {vendor_address}
 Contact: {vendor_contact} ({vendor_email})
 Classification: CONFIDENTIAL
@@ -626,7 +608,7 @@ Auto-renewal: {auto_renewal}
 
 Pricing:
 {pricing_details}
-Payment Terms: {payment_terms}
+Payment Terms: {contract_payment_terms}
 
 SLAs:
 - Availability: {availability_sla}%
@@ -761,7 +743,7 @@ Kafka: {kafka_brokers}
 
 Cache Layer:
 Redis: {redis_host}:{redis_port}
-  Password: {redis_password}
+  Password: {infra_redis_password}
   Cluster Mode: {redis_cluster}
 
 Secrets Management:
@@ -1087,6 +1069,7 @@ Approved by: {approver_name} ({approver_email})
 # Synthetic Value Generators
 # =============================================================================
 
+
 def gen_email() -> str:
     domains = ["example.com", "company.org", "test.net", "demo.io", "sample.co"]
     name = "".join(random.choices(string.ascii_lowercase, k=random.randint(5, 10)))
@@ -1095,7 +1078,9 @@ def gen_email() -> str:
 
 def gen_phone() -> str:
     formats = [
-        lambda: f"+{random.randint(1, 99)} {random.randint(100, 999)} {random.randint(100, 999)} {random.randint(1000, 9999)}",
+        lambda: (
+            f"+{random.randint(1, 99)} {random.randint(100, 999)} {random.randint(100, 999)} {random.randint(1000, 9999)}"
+        ),
         lambda: f"({random.randint(100, 999)}) {random.randint(100, 999)}-{random.randint(1000, 9999)}",
         lambda: f"{random.randint(100, 999)}-{random.randint(100, 999)}-{random.randint(1000, 9999)}",
     ]
@@ -1106,7 +1091,7 @@ def gen_payment_card() -> str:
     prefix = "4"
     body = "".join(random.choices(string.digits, k=14))
     partial = prefix + body
-    
+
     def luhn_checksum(num):
         digits = [int(d) for d in num]
         odd = digits[-1::-2]
@@ -1115,6 +1100,7 @@ def gen_payment_card() -> str:
         for d in even:
             total += sum(divmod(d * 2, 10))
         return (10 - (total % 10)) % 10
+
     check = luhn_checksum(partial + "0")
     return partial + str(check)
 
@@ -1168,6 +1154,7 @@ def gen_webhook_secret() -> str:
 # Document Generation
 # =============================================================================
 
+
 @dataclass
 class SyntheticDocument:
     text: str
@@ -1176,12 +1163,27 @@ class SyntheticDocument:
 
 
 def gen_public() -> SyntheticDocument:
-    template = random.choice(PUBLIC_TEMPLATES)
+    template_index = random.randrange(len(PUBLIC_TEMPLATES))
+    template = PUBLIC_TEMPLATES[template_index]
     text = template.format(
         # Common
         date=f"2026-{random.randint(1, 12):02d}-{random.randint(1, 28):02d}",
         # Meeting/agenda templates
-        attendees=", ".join(random.sample(["John Smith", "Jane Doe", "Bob Johnson", "Alice Williams", "Mike Brown", "Sarah Davis", "Chris Wilson", "Lisa Anderson"], k=random.randint(3, 6))),
+        attendees=", ".join(
+            random.sample(
+                [
+                    "John Smith",
+                    "Jane Doe",
+                    "Bob Johnson",
+                    "Alice Williams",
+                    "Mike Brown",
+                    "Sarah Davis",
+                    "Chris Wilson",
+                    "Lisa Anderson",
+                ],
+                k=random.randint(3, 6),
+            )
+        ),
         action_owner_1=random.choice(["John Smith", "Jane Doe", "Bob Johnson", "Alice Williams"]),
         action_date_1=f"2026-{random.randint(1, 12):02d}-{random.randint(1, 28):02d}",
         action_owner_2=random.choice(["Mike Brown", "Sarah Davis", "Chris Wilson"]),
@@ -1204,77 +1206,273 @@ def gen_public() -> SyntheticDocument:
         learning_budget=random.randint(50000, 500000),
         hackathon_winners=random.choice(["Team Alpha", "Team Beta", "Team Gamma", "Innovation Squad"]),
         # Tutorial templates
-        technology=random.choice(["Docker", "Kubernetes", "Terraform", "Ansible", "Prometheus", "Grafana", "Kafka", "Redis", "PostgreSQL", "React", "Vue", "TypeScript", "Go", "Rust", "Python"]),
-        concept=random.choice(["container orchestration", "infrastructure as code", "observability", "CI/CD", "microservices", "event-driven architecture"]),
-        prereq_1=random.choice(["Python 3.8+", "Node.js 16+", "Go 1.18+", "Docker installed", "Kubernetes cluster", "Cloud account"]),
-        prereq_2=random.choice(["Git configured", "Cloud account", "IDE setup", "Basic CLI knowledge", "YAML familiarity"]),
-        package_name=random.choice(["awesome-lib", "super-tool", "mega-framework", "data-processor", "api-client", "config-manager"]),
-        module_name=random.choice(["awesome_lib", "super_tool", "mega_framework", "data_processor", "api_client", "config_manager"]),
+        technology=random.choice(
+            [
+                "Docker",
+                "Kubernetes",
+                "Terraform",
+                "Ansible",
+                "Prometheus",
+                "Grafana",
+                "Kafka",
+                "Redis",
+                "PostgreSQL",
+                "React",
+                "Vue",
+                "TypeScript",
+                "Go",
+                "Rust",
+                "Python",
+            ]
+        ),
+        concept=random.choice(
+            [
+                "container orchestration",
+                "infrastructure as code",
+                "observability",
+                "CI/CD",
+                "microservices",
+                "event-driven architecture",
+            ]
+        ),
+        prereq_1=random.choice(
+            ["Python 3.8+", "Node.js 16+", "Go 1.18+", "Docker installed", "Kubernetes cluster", "Cloud account"]
+        ),
+        prereq_2=random.choice(
+            ["Git configured", "Cloud account", "IDE setup", "Basic CLI knowledge", "YAML familiarity"]
+        ),
+        package_name=random.choice(
+            ["awesome-lib", "super-tool", "mega-framework", "data-processor", "api-client", "config-manager"]
+        ),
+        module_name=random.choice(
+            ["awesome_lib", "super_tool", "mega_framework", "data_processor", "api_client", "config_manager"]
+        ),
         CONFIG_PREFIX=random.choice(["APP", "MYAPP", "PROJECT", "SERVICE", "PLATFORM"]),
         # Blog/article templates
-        title=random.choice(["How We Scaled to 1M Users", "Lessons from Our Migration to Kubernetes", "Building a Type-Safe API Layer", "Database Sharding Strategies", "Observability at Scale", "Securing Microservices", "CI/CD Pipeline Best Practices", "From Monolith to Microservices"]),
-        author=random.choice(["Sarah Chen", "Marcus Johnson", "Priya Patel", "Alex Rodriguez", "Emma Thompson", "David Kim", "Lisa Wang", "James Okafor"]),
+        title=random.choice(
+            [
+                "How We Scaled to 1M Users",
+                "Lessons from Our Migration to Kubernetes",
+                "Building a Type-Safe API Layer",
+                "Database Sharding Strategies",
+                "Observability at Scale",
+                "Securing Microservices",
+                "CI/CD Pipeline Best Practices",
+                "From Monolith to Microservices",
+            ]
+        ),
+        author=random.choice(
+            [
+                "Sarah Chen",
+                "Marcus Johnson",
+                "Priya Patel",
+                "Alex Rodriguez",
+                "Emma Thompson",
+                "David Kim",
+                "Lisa Wang",
+                "James Okafor",
+            ]
+        ),
         read_time=random.randint(5, 15),
-        intro_paragraph=random.choice(["When we started this journey...", "Last quarter, our team faced...", "After months of planning...", "The challenge was clear:...", "We've all been there:..."]),
-        main_paragraph_1=random.choice(["First, we identified the bottlenecks...", "The key insight came from...", "Our approach was unconventional...", "We started by measuring..."]),
-        main_paragraph_2=random.choice(["The results exceeded expectations...", "Surprisingly, the simplest solution...", "Team adoption was faster than...", "Edge cases taught us..."]),
-        takeaway_1=random.choice(["Measure before optimizing", "Invest in developer experience", "Automate the boring stuff", "Design for failure"]),
-        takeaway_2=random.choice(["Simplicity scales, complexity fails", "Documentation is a feature", "Feedback loops drive improvement"]),
-        takeaway_3=random.choice(["Culture eats strategy for breakfast", "Technical debt is a choice", "Your team is your greatest asset"]),
-        conclusion=random.choice(["We're hiring! Check out our careers page.", "Try it yourself and let us know.", "The full code is on GitHub.", "Stay tuned for part 2."]),
-        tags=random.choice(["engineering, scaling, kubernetes", "api, typescript, architecture", "security, microservices, observability", "database, performance, sharding"]),
+        intro_paragraph=random.choice(
+            [
+                "When we started this journey...",
+                "Last quarter, our team faced...",
+                "After months of planning...",
+                "The challenge was clear:...",
+                "We've all been there:...",
+            ]
+        ),
+        main_paragraph_1=random.choice(
+            [
+                "First, we identified the bottlenecks...",
+                "The key insight came from...",
+                "Our approach was unconventional...",
+                "We started by measuring...",
+            ]
+        ),
+        main_paragraph_2=random.choice(
+            [
+                "The results exceeded expectations...",
+                "Surprisingly, the simplest solution...",
+                "Team adoption was faster than...",
+                "Edge cases taught us...",
+            ]
+        ),
+        takeaway_1=random.choice(
+            [
+                "Measure before optimizing",
+                "Invest in developer experience",
+                "Automate the boring stuff",
+                "Design for failure",
+            ]
+        ),
+        takeaway_2=random.choice(
+            ["Simplicity scales, complexity fails", "Documentation is a feature", "Feedback loops drive improvement"]
+        ),
+        takeaway_3=random.choice(
+            ["Culture eats strategy for breakfast", "Technical debt is a choice", "Your team is your greatest asset"]
+        ),
+        conclusion=random.choice(
+            [
+                "We're hiring! Check out our careers page.",
+                "Try it yourself and let us know.",
+                "The full code is on GitHub.",
+                "Stay tuned for part 2.",
+            ]
+        ),
+        tags=random.choice(
+            [
+                "engineering, scaling, kubernetes",
+                "api, typescript, architecture",
+                "security, microservices, observability",
+                "database, performance, sharding",
+            ]
+        ),
         # Policy/announcement templates
-        policy_name=random.choice(["Remote Work Policy", "Security Training Requirements", "Expense Reimbursement", "Code Review Standards", "Incident Response Procedures", "Data Retention Policy"]),
+        policy_name=random.choice(
+            [
+                "Remote Work Policy",
+                "Security Training Requirements",
+                "Expense Reimbursement",
+                "Code Review Standards",
+                "Incident Response Procedures",
+                "Data Retention Policy",
+            ]
+        ),
         effective_date=f"2026-{random.randint(1, 12):02d}-01",
-        policy_summary=random.choice(["Updated guidelines for...", "New requirements for...", "Clarification on...", "Streamlined process for..."]),
-        changes_list=random.choice(["- Change 1\n- Change 2\n- Change 3", "- Updated thresholds\n- New approval flow\n- Simplified documentation"]),
-        action_items=random.choice(["- Review by Friday\n- Acknowledge in HR system", "- Attend training session\n- Update local config", "- No action required\n- For awareness only"]),
+        policy_summary=random.choice(
+            [
+                "Updated guidelines for...",
+                "New requirements for...",
+                "Clarification on...",
+                "Streamlined process for...",
+            ]
+        ),
+        changes_list=random.choice(
+            [
+                "- Change 1\n- Change 2\n- Change 3",
+                "- Updated thresholds\n- New approval flow\n- Simplified documentation",
+            ]
+        ),
+        action_items=random.choice(
+            [
+                "- Review by Friday\n- Acknowledge in HR system",
+                "- Attend training session\n- Update local config",
+                "- No action required\n- For awareness only",
+            ]
+        ),
         contact_team=random.choice(["PeopleOps", "Security", "Finance", "Engineering", "Legal"]),
-        contact_email=random.choice(["peopleops@company.com", "security@company.com", "finance@company.com", "eng@company.com", "legal@company.com"]),
+        contact_email=random.choice(
+            [
+                "peopleops@company.com",
+                "security@company.com",
+                "finance@company.com",
+                "eng@company.com",
+                "legal@company.com",
+            ]
+        ),
         sender=random.choice(["PeopleOps Team", "Security Team", "Engineering Leadership", "Executive Team"]),
         # Engineering blog templates
-        company_name=random.choice(["TechCorp", "DataFlow", "CloudScale", "APIHub", "DevTools Inc", "SecureNet", "PayFlow", "StreamLine"]),
-        achievement=random.choice(["Reduced Latency by 80%", "Scaled to 1M Requests/sec", "Achieved Zero Downtime Deploys", "Cut Cloud Costs by 40%", "Improved Developer Velocity"]),
-        background_context=random.choice(["As our user base grew...", "Our legacy architecture...", "The previous system..."]),
-        challenge_description=random.choice(["Handling traffic spikes...", "Maintaining consistency...", "Debugging distributed systems..."]),
-        approach_details=random.choice(["We implemented a new caching layer...", "We adopted event sourcing...", "We migrated to a service mesh..."]),
+        company_name=random.choice(
+            ["TechCorp", "DataFlow", "CloudScale", "APIHub", "DevTools Inc", "SecureNet", "PayFlow", "StreamLine"]
+        ),
+        achievement=random.choice(
+            [
+                "Reduced Latency by 80%",
+                "Scaled to 1M Requests/sec",
+                "Achieved Zero Downtime Deploys",
+                "Cut Cloud Costs by 40%",
+                "Improved Developer Velocity",
+            ]
+        ),
+        background_context=random.choice(
+            ["As our user base grew...", "Our legacy architecture...", "The previous system..."]
+        ),
+        challenge_description=random.choice(
+            ["Handling traffic spikes...", "Maintaining consistency...", "Debugging distributed systems..."]
+        ),
+        approach_details=random.choice(
+            [
+                "We implemented a new caching layer...",
+                "We adopted event sourcing...",
+                "We migrated to a service mesh...",
+            ]
+        ),
         metric_1=random.choice(["P99 latency", "Error rate", "Deploy frequency", "MTTR"]),
         value_1=random.choice(["< 50ms", "< 0.1%", "50+/day", "< 5 min"]),
         metric_2=random.choice(["Developer satisfaction", "Incident count", "On-call burden"]),
         value_2=random.choice(["+40%", "-60%", "-80%"]),
         metric_3=random.choice(["Cloud costs", "Build time", "Test coverage"]),
         value_3=random.choice(["-40%", "-50%", "+25%"]),
-        lessons_learned=random.choice(["Start with metrics", "Involve the team early", "Automate everything", "Plan for rollback"]),
+        lessons_learned=random.choice(
+            ["Start with metrics", "Involve the team early", "Automate everything", "Plan for rollback"]
+        ),
         next_steps=random.choice(["Expand to other services", "Open source the tooling", "Write a follow-up post"]),
         role=random.choice(["Staff Engineer", "Engineering Manager", "Principal Engineer", "Tech Lead"]),
         # Release notes templates
-        product_name=random.choice(["API Gateway", "Analytics Platform", "Auth Service", "Payment Gateway", "Notification Service", "Search Engine"]),
+        product_name=random.choice(
+            [
+                "API Gateway",
+                "Analytics Platform",
+                "Auth Service",
+                "Payment Gateway",
+                "Notification Service",
+                "Search Engine",
+            ]
+        ),
         version=f"{random.randint(1, 5)}.{random.randint(0, 9)}.{random.randint(0, 9)}",
         release_date=f"2026-{random.randint(1, 12):02d}-{random.randint(1, 28):02d}",
-        new_features=random.choice(["- Feature A\n- Feature B\n- Feature C", "- New dashboard\n- Enhanced API\n- Improved performance"]),
-        bug_fixes=random.choice(["- Fixed memory leak\n- Resolved race condition\n- Corrected edge case", "- Patch for CVE-2026-XXXXX\n- Fixed timeout issue"]),
-        improvements=random.choice(["- Better error messages\n- Faster startup\n- Reduced memory usage", "- Enhanced logging\n- Improved validation"]),
-        breaking_changes=random.choice(["- Removed deprecated v1 API\n- Changed config format", "- Updated authentication flow", "- None"]),
-        updated_deps=random.choice(["React 18.2, TypeScript 5.1", "Kubernetes 1.28, Go 1.21", "PostgreSQL 16, Redis 7.2"]),
+        new_features=random.choice(
+            ["- Feature A\n- Feature B\n- Feature C", "- New dashboard\n- Enhanced API\n- Improved performance"]
+        ),
+        bug_fixes=random.choice(
+            [
+                "- Fixed memory leak\n- Resolved race condition\n- Corrected edge case",
+                "- Patch for CVE-2026-XXXXX\n- Fixed timeout issue",
+            ]
+        ),
+        improvements=random.choice(
+            [
+                "- Better error messages\n- Faster startup\n- Reduced memory usage",
+                "- Enhanced logging\n- Improved validation",
+            ]
+        ),
+        breaking_changes=random.choice(
+            ["- Removed deprecated v1 API\n- Changed config format", "- Updated authentication flow", "- None"]
+        ),
+        updated_deps=random.choice(
+            ["React 18.2, TypeScript 5.1", "Kubernetes 1.28, Go 1.21", "PostgreSQL 16, Redis 7.2"]
+        ),
         added_deps=random.choice(["OpenTelemetry SDK", "New caching library", "None"]),
         changelog_url="https://github.com/example/project/blob/main/CHANGELOG.md",
         upgrade_guide_url="https://docs.example.com/upgrade-guide",
     )
-    return SyntheticDocument(text=text, label="Public", metadata={})
+    return SyntheticDocument(
+        text=text,
+        label="Public",
+        metadata={"template_group": f"Public:{template_index}"},
+    )
 
 
 def gen_internal() -> SyntheticDocument:
-    template = random.choice(INTERNAL_TEMPLATES)
+    template_index = random.randrange(len(INTERNAL_TEMPLATES))
+    template = INTERNAL_TEMPLATES[template_index]
     name = f"{random.choice(['John', 'Jane', 'Bob', 'Alice', 'Mike', 'Sarah', 'Chris', 'Lisa', 'David', 'Emma'])} {random.choice(['Smith', 'Doe', 'Johnson', 'Williams', 'Brown', 'Davis', 'Wilson', 'Anderson', 'Taylor', 'Thomas'])}"
     text = template.format(
         name=name,
+        employee_id=f"EMP-{random.randint(1000, 9999)}",
+        review_cycle="2026 Annual",
+        year=2026,
         email=gen_email(),
         phone=gen_phone(),
         date=f"2026-{random.randint(1, 12):02d}-{random.randint(1, 28):02d}",
         role=random.choice(["Engineer", "Manager", "Analyst", "Designer", "Lead", "Architect", "Principal"]),
         system=random.choice(["Jira", "GitLab", "Confluence", "Slack", "VPN", "CI/CD", "Datadog", "PagerDuty"]),
         keyword=random.choice(["confidential", "internal", "budget", "roadmap", "strategy", "restricted"]),
-        topic=random.choice(["sprint planning", "architecture", "security", "deployment", "incident review", "design review"]),
+        topic=random.choice(
+            ["sprint planning", "architecture", "security", "deployment", "incident review", "design review"]
+        ),
         # HR & onboarding
         employee_name=name,
         team_name=random.choice(["Platform", "Backend", "Frontend", "Security", "Data", "ML", "DevOps", "QA"]),
@@ -1299,9 +1497,17 @@ def gen_internal() -> SyntheticDocument:
         review_date=f"2026-{random.randint(1, 12):02d}-{random.randint(1, 28):02d}",
         # Performance review
         level=random.choice(["L3", "L4", "L5", "L6", "L7"]),
-        achievements=random.choice(["Delivered Project X on time", "Mentored 3 junior engineers", "Reduced latency by 40%", "Led migration to Kubernetes"]),
-        strengths=random.choice(["Technical leadership", "Cross-team collaboration", "Code quality advocacy", "Mentoring"]),
-        growth_areas=random.choice(["Public speaking", "Strategic planning", "Delegation", "Documentation"]),
+        achievements=random.choice(
+            [
+                "Delivered Project X on time",
+                "Mentored 3 junior engineers",
+                "Reduced latency by 40%",
+                "Led migration to Kubernetes",
+            ]
+        ),
+        strengths=random.choice(
+            ["Technical leadership", "Cross-team collaboration", "Code quality advocacy", "Mentoring"]
+        ),
         growth_areas=random.choice(["Public speaking", "Strategic planning", "Delegation", "Documentation"]),
         next_goals=random.choice(["Lead Project Y", "Get promoted to L6", "Present at conference", "Build new team"]),
         current_comp=random.randint(150000, 400000),
@@ -1311,34 +1517,73 @@ def gen_internal() -> SyntheticDocument:
         advisory_id=f"SEC-{random.randint(2026001, 2026999)}",
         severity=random.choice(["CRITICAL", "HIGH", "MEDIUM", "LOW"]),
         status=random.choice(["Open", "In Progress", "Resolved", "Monitoring"]),
-        affected_systems=random.choice(["Auth Service", "API Gateway", "Database", "Message Queue", "Cache Layer", "Load Balancer"]),
-        summary=random.choice(["Vulnerability in dependency", "Misconfigured IAM role", "Exposed debug endpoint", "Weak encryption detected"]),
-        technical_details=random.choice(["CVE-2026-XXXXX in library v1.2.3", "Security group allows 0.0.0.0/0", "Debug endpoint returns stack traces", "TLS 1.0 still enabled on legacy endpoint"]),
-        impact_assessment=random.choice(["Potential data exposure", "Service disruption risk", "Compliance violation", "Low - internal only"]),
-        action_1=random.choice(["Patch library to v1.2.4", "Restrict security group", "Disable debug endpoint", "Enable TLS 1.2+"]),
+        affected_systems=random.choice(
+            ["Auth Service", "API Gateway", "Database", "Message Queue", "Cache Layer", "Load Balancer"]
+        ),
+        summary=random.choice(
+            [
+                "Vulnerability in dependency",
+                "Misconfigured IAM role",
+                "Exposed debug endpoint",
+                "Weak encryption detected",
+            ]
+        ),
+        technical_details=random.choice(
+            [
+                "CVE-2026-XXXXX in library v1.2.3",
+                "Security group allows 0.0.0.0/0",
+                "Debug endpoint returns stack traces",
+                "TLS 1.0 still enabled on legacy endpoint",
+            ]
+        ),
+        impact_assessment=random.choice(
+            ["Potential data exposure", "Service disruption risk", "Compliance violation", "Low - internal only"]
+        ),
+        action_1=random.choice(
+            ["Patch library to v1.2.4", "Restrict security group", "Disable debug endpoint", "Enable TLS 1.2+"]
+        ),
         owner_1=random.choice(["Platform Team", "Security Team", "Backend Team"]),
         due_1=f"2026-{random.randint(1, 12):02d}-{random.randint(1, 28):02d}",
-        action_2=random.choice(["Rotate affected credentials", "Run vulnerability scan", "Update firewall rules", "Enable WAF"]),
+        action_2=random.choice(
+            ["Rotate affected credentials", "Run vulnerability scan", "Update firewall rules", "Enable WAF"]
+        ),
         owner_2=random.choice(["Security Team", "Infra Team", "Backend Team"]),
         due_2=f"2026-{random.randint(1, 12):02d}-{random.randint(1, 28):02d}",
-        action_3=random.choice(["Deploy WAF rules", "Monitor for anomalies", "Schedule follow-up scan", "Update runbook"]),
+        action_3=random.choice(
+            ["Deploy WAF rules", "Monitor for anomalies", "Schedule follow-up scan", "Update runbook"]
+        ),
         owner_3=random.choice(["Platform Team", "Security Team"]),
         due_3=f"2026-{random.randint(1, 12):02d}-{random.randint(1, 28):02d}",
-        workaround=random.choice(["Use alternative endpoint", "Disable feature temporarily", "Manual approval required", "Route via VPN"]),
+        workaround=random.choice(
+            ["Use alternative endpoint", "Disable feature temporarily", "Manual approval required", "Route via VPN"]
+        ),
         cve_year=2026,
         cve_id=random.randint(10000, 99999),
         ticket_id=f"SEC-{random.randint(1000, 9999)}",
         # Incident retrospective
         incident_id=f"{random.randint(1000, 9999)}",
         duration_min=random.randint(15, 480),
-        timeline=random.choice(["T+0m: Alert fired\nT+5m: On-call acknowledged\nT+15m: Root cause identified\nT+45m: Fix deployed\nT+60m: All clear"]),
-        root_cause=random.choice(["Database connection pool exhaustion", "Memory leak in new release", "Third-party API rate limit", "Configuration drift"]),
+        timeline=random.choice(
+            [
+                "T+0m: Alert fired\nT+5m: On-call acknowledged\nT+15m: Root cause identified\nT+45m: Fix deployed\nT+60m: All clear"
+            ]
+        ),
+        root_cause=random.choice(
+            [
+                "Database connection pool exhaustion",
+                "Memory leak in new release",
+                "Third-party API rate limit",
+                "Configuration drift",
+            ]
+        ),
         users_affected=random.randint(100, 100000),
         revenue_impact=random.randint(1000, 100000),
         sla_breach=random.choice(["Yes - 99.9% availability", "No - within SLA", "Partial degradation"]),
         went_well=random.choice(["Fast detection via alerting", "Clear communication", "Rollback worked smoothly"]),
         went_wrong=random.choice(["Slow initial diagnosis", "Missing runbook", "Communication gaps"]),
-        action_items=random.choice(["- Add connection pool monitoring\n- Improve runbook\n- Add integration test"]),
+        incident_action_items=random.choice(
+            ["- Add connection pool monitoring\n- Improve runbook\n- Add integration test"]
+        ),
         followup_date=f"2026-{random.randint(1, 12):02d}-{random.randint(1, 28):02d}",
         # Project & Finance
         project_name=random.choice(["Atlas", "Orion", "Phoenix", "Nexus", "Vanguard", "Horizon", "Apex"]),
@@ -1346,9 +1591,30 @@ def gen_internal() -> SyntheticDocument:
         author_email=gen_email(),
         sponsor_name=f"{random.choice(['Alice', 'Bob', 'Carol'])} {random.choice(['Smith', 'Jones'])}",
         sponsor_email=gen_email(),
-        exec_summary=random.choice(["New payment processing service", "Migration to cloud-native architecture", "Real-time analytics platform", "Customer-facing API v2"]),
-        problem_statement=random.choice(["Current system doesn't scale", "High operational overhead", "Vendor lock-in risk", "Technical debt slowing delivery"]),
-        solution_description=random.choice(["Build new service with event-driven architecture", "Migrate to Kubernetes with GitOps", "Adopt serverless for variable workloads", "Implement CDC for real-time sync"]),
+        exec_summary=random.choice(
+            [
+                "New payment processing service",
+                "Migration to cloud-native architecture",
+                "Real-time analytics platform",
+                "Customer-facing API v2",
+            ]
+        ),
+        problem_statement=random.choice(
+            [
+                "Current system doesn't scale",
+                "High operational overhead",
+                "Vendor lock-in risk",
+                "Technical debt slowing delivery",
+            ]
+        ),
+        solution_description=random.choice(
+            [
+                "Build new service with event-driven architecture",
+                "Migrate to Kubernetes with GitOps",
+                "Adopt serverless for variable workloads",
+                "Implement CDC for real-time sync",
+            ]
+        ),
         eng_fte=random.randint(3, 15),
         eng_cost=random.randint(15000, 25000),
         design_fte=random.randint(1, 3),
@@ -1358,8 +1624,17 @@ def gen_internal() -> SyntheticDocument:
         infra_cost=random.randint(5000, 50000),
         total_cost=random.randint(500000, 5000000),
         duration_months=random.randint(6, 18),
-        success_metrics=random.choice(["99.99% availability, <50ms p99", "Process 1M events/sec", "Reduce deployment time to <10min", "Zero-downtime deployments"]),
-        risks_mitigations=random.choice(["Risk: Vendor dependency\nMit: Multi-cloud strategy\nRisk: Team bandwidth\nMit: Hire 2 contractors"]),
+        success_metrics=random.choice(
+            [
+                "99.99% availability, <50ms p99",
+                "Process 1M events/sec",
+                "Reduce deployment time to <10min",
+                "Zero-downtime deployments",
+            ]
+        ),
+        risks_mitigations=random.choice(
+            ["Risk: Vendor dependency\nMit: Multi-cloud strategy\nRisk: Team bandwidth\nMit: Hire 2 contractors"]
+        ),
         approvers=random.choice(["VP Engineering, CTO", "Director, VP Engineering", "CTO, CFO"]),
         # Budget review
         department=random.choice(["Engineering", "Product", "Security", "Data", "Platform"]),
@@ -1375,35 +1650,82 @@ def gen_internal() -> SyntheticDocument:
         amt_2=random.randint(50000, 2000000),
         expense_3=random.choice(["Personnel", "Cloud Infrastructure", "Software Licenses", "Contractors"]),
         amt_3=random.randint(25000, 1000000),
-        forecast=random.choice(["Expect 10% increase due to hiring", "Stable with optimization", "Decrease after migration"]),
-        decisions=random.choice(["Approve Q3 hiring plan", "Fund migration project", "Optimize cloud spend"]),
+        forecast=random.choice(
+            ["Expect 10% increase due to hiring", "Stable with optimization", "Decrease after migration"]
+        ),
+        budget_decisions=random.choice(["Approve Q3 hiring plan", "Fund migration project", "Optimize cloud spend"]),
         # Team sync
         team_sync_name=random.choice(["Platform", "Backend", "Frontend", "Security", "Data", "ML", "DevOps", "QA"]),
-        attendees=", ".join(random.sample(["John Smith", "Jane Doe", "Bob Johnson", "Alice Williams", "Mike Brown", "Sarah Davis", "Chris Wilson", "Lisa Anderson"], k=random.randint(4, 8))),
+        attendees=", ".join(
+            random.sample(
+                [
+                    "John Smith",
+                    "Jane Doe",
+                    "Bob Johnson",
+                    "Alice Williams",
+                    "Mike Brown",
+                    "Sarah Davis",
+                    "Chris Wilson",
+                    "Lisa Anderson",
+                ],
+                k=random.randint(4, 8),
+            )
+        ),
         updates=random.choice(["Sprint on track, 80% complete\nNew hire started Monday\nSecurity patch deployed"]),
         discussion_1=random.choice(["Technical debt in auth service", "Q3 planning timeline", "New hiring targets"]),
-        discussion_2=random.choice(["Architecture review for Project X", "Incident response improvements", "Tool evaluation"]),
+        discussion_2=random.choice(
+            ["Architecture review for Project X", "Incident response improvements", "Tool evaluation"]
+        ),
         discussion_3=random.choice(["On-call rotation changes", "Documentation standards", "CI/CD pipeline upgrades"]),
         decisions=random.choice(["Proceed with Option A\nSchedule follow-up for Option B"]),
-        action_items=random.choice(["- John: Draft RFC by Friday\n- Jane: Schedule architecture review\n- Bob: Update runbook"]),
+        team_action_items=random.choice(
+            ["- John: Draft RFC by Friday\n- Jane: Schedule architecture review\n- Bob: Update runbook"]
+        ),
         parking_lot=random.choice(["Long-term: Microservices migration", "Future: Rust adoption"]),
         # Design review
-        feature_name=random.choice(["Real-time Notifications", "Payment Processing v2", "Audit Logging", "Rate Limiting", "Feature Flags"]),
-        reviewers=", ".join(random.sample(["John Smith", "Jane Doe", "Bob Johnson", "Alice Williams"], k=random.randint(2, 4))),
-        context=random.choice(["Current system uses polling", "Legacy payment gateway deprecated", "No centralized audit trail", "Rate limiting at LB only"]),
-        design_description=random.choice(["Event-driven with Kafka\nWebSocket for real-time\nIdempotent consumers", "New payment abstraction\nProvider-agnostic interface\nWebhook retry with backoff"]),
+        feature_name=random.choice(
+            ["Real-time Notifications", "Payment Processing v2", "Audit Logging", "Rate Limiting", "Feature Flags"]
+        ),
+        reviewers=", ".join(
+            random.sample(["John Smith", "Jane Doe", "Bob Johnson", "Alice Williams"], k=random.randint(2, 4))
+        ),
+        context=random.choice(
+            [
+                "Current system uses polling",
+                "Legacy payment gateway deprecated",
+                "No centralized audit trail",
+                "Rate limiting at LB only",
+            ]
+        ),
+        design_description=random.choice(
+            [
+                "Event-driven with Kafka\nWebSocket for real-time\nIdempotent consumers",
+                "New payment abstraction\nProvider-agnostic interface\nWebhook retry with backoff",
+            ]
+        ),
         alternatives=random.choice(["Polling with Redis\nSSE instead of WebSocket\nThird-party notification service"]),
         tradeoffs=random.choice(["Complexity vs real-time\nCost vs latency\nBuild vs buy"]),
-        security_considerations=random.choice(["Encrypt PII in events\nValidate webhook signatures\nRate limit per tenant"]),
-        testing_strategy=random.choice(["Unit: 80% coverage\nIntegration: contract tests\nLoad: 2x peak traffic\nChaos: dependency failure"]),
+        security_considerations=random.choice(
+            ["Encrypt PII in events\nValidate webhook signatures\nRate limit per tenant"]
+        ),
+        testing_strategy=random.choice(
+            ["Unit: 80% coverage\nIntegration: contract tests\nLoad: 2x peak traffic\nChaos: dependency failure"]
+        ),
         rollout_plan=random.choice(["Canary 5% -> 25% -> 100%\nFeature flag per tenant\nRollback in <2min"]),
-        open_questions=random.choice(["Event ordering guarantees?\nSchema evolution strategy?\nCross-region replication?"]),
+        open_questions=random.choice(
+            ["Event ordering guarantees?\nSchema evolution strategy?\nCross-region replication?"]
+        ),
     )
-    return SyntheticDocument(text=text, label="Internal", metadata={})
+    return SyntheticDocument(
+        text=text,
+        label="Internal",
+        metadata={"template_group": f"Internal:{template_index}"},
+    )
 
 
 def gen_confidential() -> SyntheticDocument:
-    template = random.choice(CONFIDENTIAL_TEMPLATES)
+    template_index = random.randrange(len(CONFIDENTIAL_TEMPLATES))
+    template = CONFIDENTIAL_TEMPLATES[template_index]
     name = f"{random.choice(['John', 'Jane', 'Bob', 'Alice'])} {random.choice(['Smith', 'Doe'])}"
     text = template.format(
         # Short templates
@@ -1421,7 +1743,9 @@ def gen_confidential() -> SyntheticDocument:
         client_name=f"{random.choice(['Acme', 'Globex', 'Wayne', 'Stark', 'Umbrella', 'Apex', 'Nexus'])} {random.choice(['Corp', 'Inc', 'LLC', 'Ltd', 'Group'])}",
         vendor_name=f"{random.choice(['DataFlow', 'CloudScale', 'SecureNet', 'PayTech', 'APIHub'])} {random.choice(['Inc', 'LLC', 'Corp'])}",
         effective_date=f"2026-{random.randint(1, 12):02d}-01",
-        service_description=random.choice(["Payment processing", "Data analytics", "Security auditing", "Cloud migration", "API development"]),
+        service_description=random.choice(
+            ["Payment processing", "Data analytics", "Security auditing", "Cloud migration", "API development"]
+        ),
         total_value=random.randint(100000, 10000000),
         payment_terms=random.choice(["Net 30", "Net 45", "Monthly", "Quarterly", "Milestone-based"]),
         invoicing_schedule=random.choice(["Monthly in arrears", "Quarterly in advance", "Per milestone", "Per usage"]),
@@ -1434,13 +1758,17 @@ def gen_confidential() -> SyntheticDocument:
         nda_id=f"NDA-{random.randint(2026001, 2026999)}",
         party_a=f"{random.choice(['Acme', 'Globex', 'Wayne'])} Corp",
         party_b=f"{random.choice(['DataFlow', 'CloudScale', 'SecureNet'])} Inc",
-        purpose=random.choice(["Technical evaluation", "Partnership discussion", "Acquisition due diligence", "Vendor assessment"]),
+        purpose=random.choice(
+            ["Technical evaluation", "Partnership discussion", "Acquisition due diligence", "Vendor assessment"]
+        ),
         term_years=random.randint(2, 5),
         survival_years=random.randint(3, 7),
         governing_law=random.choice(["Delaware", "California", "New York", "England & Wales"]),
-        jurisdiction=random.choice(["Delaware Chancery Court", "SF Superior Court", "NY Commercial Division", "London High Court"]),
+        jurisdiction=random.choice(
+            ["Delaware Chancery Court", "SF Superior Court", "NY Commercial Division", "London High Court"]
+        ),
         # Financial reports
-        entity_name=random.choice(["TechCorp Inc", "DataFlow Ltd", "SecureNet Group", "PayTech Solutions"]),
+        financial_entity_name=random.choice(["TechCorp Inc", "DataFlow Ltd", "SecureNet Group", "PayTech Solutions"]),
         quarter=random.randint(1, 4),
         year=2026,
         preparer_name=f"{random.choice(['John', 'Jane', 'Bob', 'Alice'])} {random.choice(['Smith', 'Doe', 'Johnson', 'Williams'])}",
@@ -1483,8 +1811,23 @@ def gen_confidential() -> SyntheticDocument:
         iban_reserve=gen_iban(),
         iban_payroll=gen_iban(),
         # Payroll
-        pay_period=random.choice(["2026-01", "2026-02", "2026-03", "2026-04", "2026-05", "2026-06", "2026-07", "2026-08", "2026-09", "2026-10", "2026-11", "2026-12"]),
-        entity_name=random.choice(["TechCorp Inc", "DataFlow Ltd", "SecureNet Group"]),
+        pay_period=random.choice(
+            [
+                "2026-01",
+                "2026-02",
+                "2026-03",
+                "2026-04",
+                "2026-05",
+                "2026-06",
+                "2026-07",
+                "2026-08",
+                "2026-09",
+                "2026-10",
+                "2026-11",
+                "2026-12",
+            ]
+        ),
+        payroll_entity_name=random.choice(["TechCorp Inc", "DataFlow Ltd", "SecureNet Group"]),
         ein=f"{random.randint(10, 99)}-{random.randint(1000000, 9999999)}",
         payroll_processor=random.choice(["ADP", "Gusto", "Rippling", "Paylocity", "Workday"]),
         process_date=f"2026-{random.randint(1, 12):02d}-{random.randint(1, 28):02d}",
@@ -1518,12 +1861,12 @@ def gen_confidential() -> SyntheticDocument:
         k401=random.randint(500000, 20000000),
         health=random.randint(1000000, 30000000),
         hsa=random.randint(50000, 2000000),
-        bank_name=random.choice(["Chase", "Wells Fargo", "Bank of America", "Citi"]),
+        payroll_bank_name=random.choice(["Chase", "Wells Fargo", "Bank of America", "Citi"]),
         payroll_account=f"{random.randint(1000000000, 9999999999)}",
         payroll_routing=f"{random.randint(100000000, 999999999)}",
         # Vendor contract
         vendor_contract_id=f"VC-{random.randint(2026001, 2026999)}",
-        vendor_name=f"{random.choice(['DataFlow', 'CloudScale', 'SecureNet', 'PayTech', 'APIHub'])} {random.choice(['Inc', 'LLC', 'Corp'])}",
+        contract_vendor_name=f"{random.choice(['DataFlow', 'CloudScale', 'SecureNet', 'PayTech', 'APIHub'])} {random.choice(['Inc', 'LLC', 'Corp'])}",
         vendor_tax_id=f"{random.randint(10, 99)}-{random.randint(1000000, 9999999)}",
         vendor_address=f"{random.randint(100, 9999)} {random.choice(['Main', 'Market', 'Mission', 'Howard', 'Folsom'])} St, {random.choice(['San Francisco', 'New York', 'Seattle', 'Austin', 'Boston'])} {random.choice(['CA', 'NY', 'WA', 'TX', 'MA'])} {random.randint(10000, 99999)}",
         vendor_contact=f"{random.choice(['Alex', 'Sam', 'Jordan'])} {random.choice(['Chen', 'Lee', 'Park'])}",
@@ -1531,25 +1874,56 @@ def gen_confidential() -> SyntheticDocument:
         contract_start=f"2026-{random.randint(1, 6):02d}-01",
         contract_end=f"2026-{random.randint(7, 12):02d}-31",
         auto_renewal=random.choice(["Yes", "No"]),
-        services_description=random.choice(["Managed Kubernetes platform", "Security monitoring", "Payment processing", "Data warehousing", "API gateway"]),
-        pricing_details=random.choice(["$50K/month base + $0.01/transaction", "$200K/year enterprise", "Usage-based: $0.001/request", "Tiered: $10K-$500K/month"]),
-        payment_terms=random.choice(["Net 30", "Net 45", "Monthly in advance"]),
+        services_description=random.choice(
+            [
+                "Managed Kubernetes platform",
+                "Security monitoring",
+                "Payment processing",
+                "Data warehousing",
+                "API gateway",
+            ]
+        ),
+        pricing_details=random.choice(
+            [
+                "$50K/month base + $0.01/transaction",
+                "$200K/year enterprise",
+                "Usage-based: $0.001/request",
+                "Tiered: $10K-$500K/month",
+            ]
+        ),
+        contract_payment_terms=random.choice(["Net 30", "Net 45", "Monthly in advance"]),
         availability_sla=random.randint(99, 100),
         response_time_sla=random.choice(["15 min", "1 hour", "4 hours"]),
         resolution_time_sla=random.choice(["1 hour", "4 hours", "8 hours", "24 hours"]),
-        data_categories=random.choice(["Customer PII, Transaction data", "Application logs, Metrics", "Source code, Build artifacts", "HR data, Payroll"]),
+        data_categories=random.choice(
+            [
+                "Customer PII, Transaction data",
+                "Application logs, Metrics",
+                "Source code, Build artifacts",
+                "HR data, Payroll",
+            ]
+        ),
         processing_location=random.choice(["US-East", "US-West", "EU-Central", "Multi-region"]),
-        subprocessors_list=random.choice(["AWS (US), CloudFlare (Global)", "GCP (US), Datadog (US)", "Azure (EU), Snowflake (US)"]),
-        certifications=random.choice(["SOC 2 Type II, ISO 27001", "SOC 2 Type II, HIPAA", "ISO 27001, PCI DSS", "SOC 2 Type II"]),
+        subprocessors_list=random.choice(
+            ["AWS (US), CloudFlare (Global)", "GCP (US), Datadog (US)", "Azure (EU), Snowflake (US)"]
+        ),
+        certifications=random.choice(
+            ["SOC 2 Type II, ISO 27001", "SOC 2 Type II, HIPAA", "ISO 27001, PCI DSS", "SOC 2 Type II"]
+        ),
         notice_period=random.randint(30, 90),
         transition_days=random.randint(30, 90),
         data_return_days=random.randint(30, 60),
     )
-    return SyntheticDocument(text=text, label="Confidential", metadata={})
+    return SyntheticDocument(
+        text=text,
+        label="Confidential",
+        metadata={"template_group": f"Confidential:{template_index}"},
+    )
 
 
 def gen_highly_confidential() -> SyntheticDocument:
-    template = random.choice(HIGHLY_CONFIDENTIAL_TEMPLATES)
+    template_index = random.randrange(len(HIGHLY_CONFIDENTIAL_TEMPLATES))
+    template = HIGHLY_CONFIDENTIAL_TEMPLATES[template_index]
     text = template.format(
         # Short templates
         key=gen_aws_key(),
@@ -1563,11 +1937,22 @@ def gen_highly_confidential() -> SyntheticDocument:
         date=f"2026-{random.randint(1, 12):02d}-{random.randint(1, 28):02d}",
         # Deployment runbook
         deployment_id=f"DEP-{random.randint(2026001, 2026999)}",
-        service_name=random.choice(["API Gateway", "Auth Service", "Payment Service", "Notification Service", "Search Service", "Analytics Pipeline"]),
+        service_name=random.choice(
+            [
+                "API Gateway",
+                "Auth Service",
+                "Payment Service",
+                "Notification Service",
+                "Search Service",
+                "Analytics Pipeline",
+            ]
+        ),
         version=f"{random.randint(1, 5)}.{random.randint(0, 9)}.{random.randint(0, 9)}",
         window_start=f"{random.randint(0, 23):02d}:00",
         window_end=f"{random.randint(0, 23):02d}:00",
-        oncall_name=random.choice(["John Smith", "Jane Doe", "Bob Johnson", "Alice Williams", "Mike Brown", "Sarah Davis"]),
+        oncall_name=random.choice(
+            ["John Smith", "Jane Doe", "Bob Johnson", "Alice Williams", "Mike Brown", "Sarah Davis"]
+        ),
         oncall_phone=gen_phone(),
         pagerduty_escalation=f"PAGERDUTY-{random.randint(1000, 9999)}",
         aws_key=gen_aws_key(),
@@ -1576,7 +1961,7 @@ def gen_highly_confidential() -> SyntheticDocument:
         redis_password=gen_secret(),
         api_keys=", ".join([gen_api_token() for _ in range(random.randint(3, 8))]),
         jwt_key=gen_jwt_key(),
-        encryption_keys=", ".join([gen_encryption_key() for _ in range(random.randint(3, 6))]),
+        deployment_encryption_keys=", ".join([gen_encryption_key() for _ in range(random.randint(3, 6))]),
         cert_pem=gen_private_key_fragment(),
         canary_namespace=random.choice(["canary", "staging-canary", "prod-canary"]),
         pagerduty_service=random.choice(["api-gateway", "auth-service", "payment-service", "platform"]),
@@ -1584,87 +1969,206 @@ def gen_highly_confidential() -> SyntheticDocument:
         infra_email="infra@company.com",
         mgmt_email="management@company.com",
         # Incident response
+        affected_systems="API Gateway, Database",
+        incident_summary="Synthetic incident involving exposed credentials",
         incident_id=f"INC-{random.randint(2026001, 2026999)}",
         severity=random.randint(1, 3),
         status=random.choice(["Investigating", "Identified", "Monitoring", "Resolved"]),
         detection_time=f"2026-{random.randint(1, 12):02d}-{random.randint(1, 28):02d} {random.randint(0, 23):02d}:{random.randint(0, 59):02d}",
-        reporter=random.choice(["Datadog Alert", "PagerDuty", "Customer Report", "Internal Monitoring", "Security Team"]),
-        affected_services=random.choice(["API Gateway, Auth Service", "Payment Service, Notification Service", "Database Cluster, Cache Layer", "Search Service, Analytics Pipeline", "All Services (cascading)"]),
+        reporter=random.choice(
+            ["Datadog Alert", "PagerDuty", "Customer Report", "Internal Monitoring", "Security Team"]
+        ),
+        affected_services=random.choice(
+            [
+                "API Gateway, Auth Service",
+                "Payment Service, Notification Service",
+                "Database Cluster, Cache Layer",
+                "Search Service, Analytics Pipeline",
+                "All Services (cascading)",
+            ]
+        ),
         users_impacted=random.randint(100, 1000000),
         impact_pct=random.randint(1, 100),
         revenue_at_risk=random.randint(10000, 10000000),
         sla_breach=random.choice(["Yes - 99.9% availability", "No - within SLA", "Partial - degraded performance"]),
-        timeline=random.choice(["T+0m: Alert fired\nT+5m: On-call acknowledged\nT+15m: Root cause identified\nT+45m: Fix deployed\nT+60m: All clear", "T+0m: SEV-1 declared\nT+10m: War room started\nT+30m: DB failover\nT+120m: Recovery complete"]),
-        root_cause=random.choice(["Database connection pool exhaustion", "Memory leak in v2.3.1 release", "Third-party API rate limit exceeded", "Configuration drift in Kubernetes", "Bad deploy: missing migration", "Certificate expiration", "DNS misconfiguration"]),
+        timeline=random.choice(
+            [
+                "T+0m: Alert fired\nT+5m: On-call acknowledged\nT+15m: Root cause identified\nT+45m: Fix deployed\nT+60m: All clear",
+                "T+0m: SEV-1 declared\nT+10m: War room started\nT+30m: DB failover\nT+120m: Recovery complete",
+            ]
+        ),
+        root_cause=random.choice(
+            [
+                "Database connection pool exhaustion",
+                "Memory leak in v2.3.1 release",
+                "Third-party API rate limit exceeded",
+                "Configuration drift in Kubernetes",
+                "Bad deploy: missing migration",
+                "Certificate expiration",
+                "DNS misconfiguration",
+            ]
+        ),
         compromised_aws_key=gen_aws_key(),
         compromised_aws_secret=gen_secret(),
         compromised_db_user=random.choice(["admin", "app_user", "readonly", "replication", "backup_user"]),
         compromised_db_password=gen_secret(),
         compromised_api_tokens=", ".join([gen_api_token() for _ in range(random.randint(2, 6))]),
-        compromised_ssh_keys=random.choice(["bastion host key", "CI/CD deploy key", "backup server key", "developer laptop key", "monitoring agent key"]),
+        compromised_ssh_keys=random.choice(
+            [
+                "bastion host key",
+                "CI/CD deploy key",
+                "backup server key",
+                "developer laptop key",
+                "monitoring agent key",
+            ]
+        ),
         compromised_certs=random.choice(["*.api.company.com", "internal CA", "mTLS client certs", "wildcard cert"]),
-        containment_actions=random.choice(["Revoked all API keys", "Blocked malicious IPs", "Failed over to standby DB", "Disabled compromised feature", "Rotated all credentials", "Isolated affected namespace"]),
-        patch_details=random.choice(["Upgrade library to v2.3.2", "Apply Kubernetes security patch", "Fix connection pool config", "Update certificate", "Rollback to v2.3.0"]),
-        access_removal=random.choice(["Removed SSH keys", "Revoked IAM roles", "Deleted service accounts", "Rotated SSH certificates"]),
-        integrity_checks=random.choice(["DB checksum verification", "File integrity monitoring", "Log analysis complete", "No tampering detected"]),
-        forensic_details=random.choice(["Logs preserved in S3", "Memory dumps captured", "Network captures saved", "Timeline documented"]),
-        recovery_plan=random.choice(["Full credential rotation", "System rebuild from clean images", "Data restoration from backup", "Gradual service restoration"]),
+        containment_actions=random.choice(
+            [
+                "Revoked all API keys",
+                "Blocked malicious IPs",
+                "Failed over to standby DB",
+                "Disabled compromised feature",
+                "Rotated all credentials",
+                "Isolated affected namespace",
+            ]
+        ),
+        patch_details=random.choice(
+            [
+                "Upgrade library to v2.3.2",
+                "Apply Kubernetes security patch",
+                "Fix connection pool config",
+                "Update certificate",
+                "Rollback to v2.3.0",
+            ]
+        ),
+        access_removal=random.choice(
+            ["Removed SSH keys", "Revoked IAM roles", "Deleted service accounts", "Rotated SSH certificates"]
+        ),
+        integrity_checks=random.choice(
+            ["DB checksum verification", "File integrity monitoring", "Log analysis complete", "No tampering detected"]
+        ),
+        forensic_details=random.choice(
+            ["Logs preserved in S3", "Memory dumps captured", "Network captures saved", "Timeline documented"]
+        ),
+        recovery_plan=random.choice(
+            [
+                "Full credential rotation",
+                "System rebuild from clean images",
+                "Data restoration from backup",
+                "Gradual service restoration",
+            ]
+        ),
         recovery_eta=random.choice(["2 hours", "4 hours", "8 hours", "24 hours"]),
-        lessons_learned=random.choice(["Add connection pool monitoring", "Automate dependency scanning", "Improve runbook accuracy", "Add chaos testing", "Implement circuit breakers", "Enhance alerting thresholds"]),
+        lessons_learned=random.choice(
+            [
+                "Add connection pool monitoring",
+                "Automate dependency scanning",
+                "Improve runbook accuracy",
+                "Add chaos testing",
+                "Implement circuit breakers",
+                "Enhance alerting thresholds",
+            ]
+        ),
         postmortem_due=f"2026-{random.randint(1, 12):02d}-{random.randint(1, 28):02d}",
         postmortem_owner=random.choice(["John Smith", "Jane Doe", "Bob Johnson", "Alice Williams"]),
         review_date=f"2026-{random.randint(1, 12):02d}-{random.randint(1, 28):02d}",
-        responder_name=random.choice(["John Smith", "Jane Doe", "Bob Johnson", "Alice Williams", "Mike Brown", "Sarah Davis"]),
+        responder_name=random.choice(
+            ["John Smith", "Jane Doe", "Bob Johnson", "Alice Williams", "Mike Brown", "Sarah Davis"]
+        ),
         responder_email=gen_email(),
         approver_name=random.choice(["Alice Williams", "Mike Brown", "Sarah Davis", "Chris Wilson"]),
         approver_email=gen_email(),
         # Infrastructure config
+        vault_key_paths="secret/data/prod",
+        redis_host="redis.internal",
+        redis_port=6379,
+        redis_cluster="enabled",
         config_id=f"CFG-{random.randint(2026001, 2026999)}",
         environment=random.choice(["PRODUCTION", "STAGING", "DR"]),
         region=random.choice(["us-east-1", "us-west-2", "eu-west-1", "ap-southeast-1"]),
         account_id=f"{random.randint(100000000000, 999999999999)}",
-        primary_db_host=random.choice(["prod-db-primary.cluster-xyz.us-east-1.rds.amazonaws.com", "prod-db-primary.cluster-abc.eu-west-1.rds.amazonaws.com"]),
+        primary_db_host=random.choice(
+            [
+                "prod-db-primary.cluster-xyz.us-east-1.rds.amazonaws.com",
+                "prod-db-primary.cluster-abc.eu-west-1.rds.amazonaws.com",
+            ]
+        ),
         primary_az=random.choice(["us-east-1a", "us-east-1b", "us-west-2a", "eu-west-1a"]),
         primary_db_port=5432,
         primary_db_user=random.choice(["app_user", "service_account", "admin"]),
         primary_db_password=gen_secret(),
-        primary_connection_string=random.choice(["postgresql://app_user:xxx@prod-db-primary.cluster-xyz.us-east-1.rds.amazonaws.com:5432/app", "postgresql://service_account:xxx@prod-db-primary.cluster-abc.eu-west-1.rds.amazonaws.com:5432/app"]),
+        primary_connection_string=random.choice(
+            [
+                "postgresql://app_user:xxx@prod-db-primary.cluster-xyz.us-east-1.rds.amazonaws.com:5432/app",
+                "postgresql://service_account:xxx@prod-db-primary.cluster-abc.eu-west-1.rds.amazonaws.com:5432/app",
+            ]
+        ),
         db_engine=random.choice(["PostgreSQL", "MySQL", "Aurora PostgreSQL"]),
         db_version=random.choice(["14.9", "15.4", "16.0", "8.0.35"]),
         db_encryption=random.choice(["AES-256", "AES-256-GCM"]),
         backup_retention=random.randint(7, 35),
         replica_count=random.randint(1, 3),
         replication_mode=random.choice(["sync", "async", "semi-sync"]),
-        replica_db_host=random.choice(["prod-db-replica1.cluster-xyz.us-east-1.rds.amazonaws.com", "prod-db-replica2.cluster-xyz.us-east-1.rds.amazonaws.com"]),
+        replica_db_host=random.choice(
+            [
+                "prod-db-replica1.cluster-xyz.us-east-1.rds.amazonaws.com",
+                "prod-db-replica2.cluster-xyz.us-east-1.rds.amazonaws.com",
+            ]
+        ),
         replica_az=random.choice(["us-east-1c", "us-west-2b", "eu-west-1b"]),
         replica_db_port=5432,
         replica_db_user=random.choice(["app_user", "readonly", "replication"]),
         replica_db_password=gen_secret(),
-        redis_endpoint=random.choice(["prod-redis.xyz.use1.cache.amazonaws.com", "prod-redis-cluster.abc.euw1.cache.amazonaws.com"]),
+        redis_endpoint=random.choice(
+            ["prod-redis.xyz.use1.cache.amazonaws.com", "prod-redis-cluster.abc.euw1.cache.amazonaws.com"]
+        ),
         redis_nodes=random.randint(3, 12),
-        redis_password=gen_secret(),
+        infra_redis_password=gen_secret(),
         redis_encryption=random.choice(["in-transit", "at-rest", "both"]),
         redis_eviction=random.choice(["allkeys-lru", "volatile-lru", "noeviction"]),
         redis_backup_schedule=random.choice(["daily", "hourly", "continuous"]),
-        kafka_brokers=random.choice(["b-1.prod-kafka.xyz.us-east-1.amazonaws.com:9092,b-2.prod-kafka.xyz.us-east-1.amazonaws.com:9092", "kafka-prod.internal:9092"]),
+        kafka_brokers=random.choice(
+            [
+                "b-1.prod-kafka.xyz.us-east-1.amazonaws.com:9092,b-2.prod-kafka.xyz.us-east-1.amazonaws.com:9092",
+                "kafka-prod.internal:9092",
+            ]
+        ),
         kafka_user=random.choice(["app_producer", "app_consumer", "admin"]),
         kafka_password=gen_secret(),
-        kafka_topics=random.choice(["orders, payments, notifications", "events, logs, metrics", "transactions, audit, analytics"]),
+        kafka_topics=random.choice(
+            ["orders, payments, notifications", "events, logs, metrics", "transactions, audit, analytics"]
+        ),
         kafka_retention=random.randint(24, 168),
         rabbitmq_host=random.choice(["prod-rabbitmq.internal", "rabbitmq-prod.xyz.us-east-1.amazonaws.com"]),
         rabbitmq_user=random.choice(["app_user", "admin", "monitoring"]),
         rabbitmq_password=gen_secret(),
         rabbitmq_queues=random.choice(["orders, payments, notifications, dlq", "events, tasks, webhooks, retries"]),
-        vault_addr=random.choice(["https://vault.company.internal", "https://vault-prod.company.internal", "https://vault.company.com:8200"]),
+        vault_addr=random.choice(
+            ["https://vault.company.internal", "https://vault-prod.company.internal", "https://vault.company.com:8200"]
+        ),
         vault_namespace=random.choice(["prod/", "prod/platform/", "prod/infra/"]),
         vault_token=gen_secret(),
         vault_ttl=random.choice(["1h", "4h", "24h", "7d"]),
         vault_mounts=random.choice(["secret/data, secret/metadata, kv/data", "secret/, kv/, transit/"]),
         vault_audit_enabled=random.choice(["true", "false"]),
-        aws_sm_arns=random.choice(["arn:aws:secretsmanager:us-east-1:123456789012:secret:prod/*", "arn:aws:secretsmanager:us-west-2:123456789012:secret:prod/*"]),
+        aws_sm_arns=random.choice(
+            [
+                "arn:aws:secretsmanager:us-east-1:123456789012:secret:prod/*",
+                "arn:aws:secretsmanager:us-west-2:123456789012:secret:prod/*",
+            ]
+        ),
         aws_sm_rotation=random.choice(["30d", "60d", "90d", "manual"]),
-        prometheus_url=random.choice(["https://prometheus.company.internal", "https://monitoring.company.internal", "https://prometheus.company.com"]),
-        grafana_url=random.choice(["https://grafana.company.internal", "https://dashboards.company.internal", "https://grafana.company.com"]),
+        prometheus_url=random.choice(
+            [
+                "https://prometheus.company.internal",
+                "https://monitoring.company.internal",
+                "https://prometheus.company.com",
+            ]
+        ),
+        grafana_url=random.choice(
+            ["https://grafana.company.internal", "https://dashboards.company.internal", "https://grafana.company.com"]
+        ),
         grafana_admin=random.choice(["admin", "grafana_admin", "platform_admin"]),
         grafana_password=gen_secret(),
         alertmanager_url=random.choice(["https://alertmanager.company.internal", "https://alerts.company.internal"]),
@@ -1678,39 +2182,115 @@ def gen_highly_confidential() -> SyntheticDocument:
         # Key ceremony
         ceremony_id=f"CER-{random.randint(2026001, 2026999)}",
         location=random.choice(["Secure Room A (HSM)", "Air-gapped Lab", "Bank Vault Room", "Colocation Cage"]),
-        participants=", ".join(random.sample(["John Smith", "Jane Doe", "Bob Johnson", "Alice Williams", "Mike Brown", "Sarah Davis", "Chris Wilson", "Lisa Anderson"], k=random.randint(4, 8))),
-        witnesses=", ".join(random.sample(["Auditor A", "Auditor B", "Legal Counsel", "Compliance Officer"], k=random.randint(2, 4))),
+        participants=", ".join(
+            random.sample(
+                [
+                    "John Smith",
+                    "Jane Doe",
+                    "Bob Johnson",
+                    "Alice Williams",
+                    "Mike Brown",
+                    "Sarah Davis",
+                    "Chris Wilson",
+                    "Lisa Anderson",
+                ],
+                k=random.randint(4, 8),
+            )
+        ),
+        witnesses=", ".join(
+            random.sample(["Auditor A", "Auditor B", "Legal Counsel", "Compliance Officer"], k=random.randint(2, 4))
+        ),
         key_type=random.choice(["RSA", "ECDSA", "Ed25519", "X25519"]),
         system_name=random.choice(["Auth Service", "Payment Gateway", "Data Pipeline", "API Platform", "Internal CA"]),
-        compliance_frameworks=random.choice(["SOC 2, PCI DSS", "ISO 27001, FedRAMP", "HIPAA, GDPR", "All of the above"]),
+        compliance_frameworks=random.choice(
+            ["SOC 2, PCI DSS", "ISO 27001, FedRAMP", "HIPAA, GDPR", "All of the above"]
+        ),
         algorithm=random.choice(["RSA-4096", "ECDSA-P384", "Ed25519", "X25519"]),
         key_size=random.choice([256, 384, 4096, 521]),
-        entropy_source=random.choice(["HSM (FIPS 140-2 Level 3)", "Cloud KMS (Cloud HSM)", "Hardware RNG (TRNG)", "Multiple sources mixed"]),
-        entropy_validation=random.choice(["FIPS 140-2 validated", "NIST SP 800-90B", "AIS 31 PTG.2", "Common Criteria EAL4+"]),
+        entropy_source=random.choice(
+            ["HSM (FIPS 140-2 Level 3)", "Cloud KMS (Cloud HSM)", "Hardware RNG (TRNG)", "Multiple sources mixed"]
+        ),
+        entropy_validation=random.choice(
+            ["FIPS 140-2 validated", "NIST SP 800-90B", "AIS 31 PTG.2", "Common Criteria EAL4+"]
+        ),
         kdf_algorithm=random.choice(["HKDF-SHA256", "PBKDF2-SHA256", "Argon2id"]),
         kdf_iterations=random.randint(100000, 1000000),
+        distribution_plan="Synthetic offline key ceremony distribution",
         root_ca_key=gen_private_key_fragment(),
+        intermediate_ca_key=gen_private_key_fragment(),
         intermediate_ca_keys=", ".join([gen_private_key_fragment() for _ in range(random.randint(2, 4))]),
         leaf_certificates=", ".join([f"cert-{i}" for i in range(random.randint(10, 50))]),
-        encryption_keys=", ".join([gen_encryption_key() for _ in range(random.randint(5, 20))]),
+        ceremony_encryption_keys=", ".join([gen_encryption_key() for _ in range(random.randint(5, 20))]),
         signing_keys=", ".join([gen_jwt_key() for _ in range(random.randint(3, 10))]),
-        hsm_partitions=random.choice(["Partition 1 (Root CA), Partition 2 (Intermediate)", "Partition 1 (Keys), Partition 2 (Certs)", "Separate HSMs per environment"]),
-        distribution_method=random.choice(["HSM import (PKCS#11)", "Secure courier (tamper-evident)", "Encrypted email (PGP)", "Key ceremony (in-person)"]),
-        recipients=", ".join(random.sample(["Platform Team", "Security Team", "Infra Team", "App Teams", "External Auditors"], k=random.randint(2, 5))),
-        verification_method=random.choice(["Fingerprint verification", "Checksum validation", "HSM attestation", "Ceremony witness signatures"]),
-        offline_backup_location=random.choice(["Offsite vault (geographically separate)", "Bank safe deposit box", "Air-gapped HSM", "Multiple locations"]),
+        hsm_partitions=random.choice(
+            [
+                "Partition 1 (Root CA), Partition 2 (Intermediate)",
+                "Partition 1 (Keys), Partition 2 (Certs)",
+                "Separate HSMs per environment",
+            ]
+        ),
+        distribution_method=random.choice(
+            [
+                "HSM import (PKCS#11)",
+                "Secure courier (tamper-evident)",
+                "Encrypted email (PGP)",
+                "Key ceremony (in-person)",
+            ]
+        ),
+        recipients=", ".join(
+            random.sample(
+                ["Platform Team", "Security Team", "Infra Team", "App Teams", "External Auditors"],
+                k=random.randint(2, 5),
+            )
+        ),
+        verification_method=random.choice(
+            ["Fingerprint verification", "Checksum validation", "HSM attestation", "Ceremony witness signatures"]
+        ),
+        offline_backup_location=random.choice(
+            ["Offsite vault (geographically separate)", "Bank safe deposit box", "Air-gapped HSM", "Multiple locations"]
+        ),
         escrow_agent=random.choice(["Iron Mountain", "EscrowTech", "NCC Group", "Legal Firm A"]),
-        escrow_conditions=random.choice(["Bankruptcy", "Acquisition/Merger", "Key personnel loss", "Regulatory action", "All of the above"]),
+        escrow_conditions=random.choice(
+            ["Bankruptcy", "Acquisition/Merger", "Key personnel loss", "Regulatory action", "All of the above"]
+        ),
         escrow_verification_schedule=random.choice(["Annual", "Quarterly", "Semi-annual", "On-demand"]),
-        revocation_procedure=random.choice(["CRL publication (daily)", "OCSP stapling", "Automated (ACME)", "Manual (emergency only)"]),
-        crl_ocsp_endpoints=random.choice(["https://pki.company.com/crl, https://pki.company.com/ocsp", "https://ca.company.com/ocsp"]),
-        emergency_revocation_contact=random.choice(["Security On-call: security-oncall@company.com", "PKI Admin: pki-admin@company.com", "24/7 Hotline: +1-800-XXX-XXXX"]),
-        signatures=", ".join(random.sample(["John Smith", "Jane Doe", "Bob Johnson", "Alice Williams", "Mike Brown", "Sarah Davis", "Chris Wilson", "Lisa Anderson"], k=random.randint(4, 8))),
+        revocation_procedure=random.choice(
+            ["CRL publication (daily)", "OCSP stapling", "Automated (ACME)", "Manual (emergency only)"]
+        ),
+        crl_ocsp_endpoints=random.choice(
+            ["https://pki.company.com/crl, https://pki.company.com/ocsp", "https://ca.company.com/ocsp"]
+        ),
+        emergency_revocation_contact=random.choice(
+            [
+                "Security On-call: security-oncall@company.com",
+                "PKI Admin: pki-admin@company.com",
+                "24/7 Hotline: +1-800-XXX-XXXX",
+            ]
+        ),
+        signatures=", ".join(
+            random.sample(
+                [
+                    "John Smith",
+                    "Jane Doe",
+                    "Bob Johnson",
+                    "Alice Williams",
+                    "Mike Brown",
+                    "Sarah Davis",
+                    "Chris Wilson",
+                    "Lisa Anderson",
+                ],
+                k=random.randint(4, 8),
+            )
+        ),
         notarized=random.choice(["true", "false"]),
         notary_name=random.choice(["Notary Public A", "Notary Public B", "Mobile Notary Service"]),
         notary_commission=random.choice(["Commission #123456", "Commission #789012", "Valid through 2028"]),
     )
-    return SyntheticDocument(text=text, label="Highly Confidential", metadata={})
+    return SyntheticDocument(
+        text=text,
+        label="Highly Confidential",
+        metadata={"template_group": f"Highly Confidential:{template_index}"},
+    )
 
 
 def gen_mixed_sensitivity() -> SyntheticDocument:
@@ -1749,13 +2329,17 @@ def gen_mixed_sensitivity() -> SyntheticDocument:
         aws_key=gen_aws_key(),
         aws_secret=gen_secret(),
         client_name=f"{random.choice(['Acme', 'Globex', 'Wayne', 'Stark', 'Umbrella'])} {random.choice(['Corp', 'Inc', 'LLC', 'Ltd'])}",
-        project_overview=random.choice(["Build new API platform", "Migrate to cloud", "Security audit", "Performance optimization"]),
+        project_overview=random.choice(
+            ["Build new API platform", "Migrate to cloud", "Security audit", "Performance optimization"]
+        ),
         scope_deliverables=random.choice(["API design", "Implementation", "Testing", "Documentation", "Deployment"]),
         timeline=random.choice(["3 months", "6 months", "9 months", "12 months"]),
         budget=random.randint(100000, 2000000),
         iban=gen_iban(),
         payment_ref=f"PAY-{random.randint(10000, 99999)}",
-        api_endpoint=random.choice(["https://api.client.com/v1", "https://api.partner.io", "https://integration.client.net"]),
+        api_endpoint=random.choice(
+            ["https://api.client.com/v1", "https://api.partner.io", "https://integration.client.net"]
+        ),
         client_api_key=gen_api_token(),
         webhook_secret=gen_webhook_secret(),
         review_id=f"SEC-REV-{random.randint(2026001, 2026999)}",
@@ -1763,11 +2347,22 @@ def gen_mixed_sensitivity() -> SyntheticDocument:
         reviewer_email=gen_email(),
         system_name=random.choice(["Auth Service", "Payment Gateway", "Data Pipeline", "API Platform"]),
         posture=random.choice(["Strong", "Acceptable", "Needs Improvement"]),
-        finding_1=random.choice(["Missing rate limiting", "Weak password policy", "Insufficient logging", "Outdated dependencies"]),
+        finding_1=random.choice(
+            ["Missing rate limiting", "Weak password policy", "Insufficient logging", "Outdated dependencies"]
+        ),
         severity_1=random.choice(["HIGH", "MEDIUM", "LOW"]),
-        finding_2=random.choice(["CORS misconfiguration", "Missing security headers", "Weak encryption", "Exposed debug endpoint"]),
+        finding_2=random.choice(
+            ["CORS misconfiguration", "Missing security headers", "Weak encryption", "Exposed debug endpoint"]
+        ),
         severity_2=random.choice(["HIGH", "MEDIUM", "LOW"]),
-        finding_3=random.choice(["Insufficient input validation", "Missing authorization checks", "Weak session management", "Information disclosure"]),
+        finding_3=random.choice(
+            [
+                "Insufficient input validation",
+                "Missing authorization checks",
+                "Weak session management",
+                "Information disclosure",
+            ]
+        ),
         severity_3=random.choice(["HIGH", "MEDIUM", "LOW"]),
         found_aws_key=gen_aws_key(),
         found_github_token="".join(random.choices(string.ascii_letters + string.digits, k=36)),
@@ -1775,7 +2370,15 @@ def gen_mixed_sensitivity() -> SyntheticDocument:
         approver_name=f"{random.choice(['Alice', 'Mike', 'Sarah'])} {random.choice(['Williams', 'Brown', 'Davis'])}",
         approver_email=gen_email(),
         topic=random.choice(["Database Setup", "API Security", "Docker Basics", "Kubernetes Intro", "CI/CD Pipeline"]),
-        objective=random.choice(["connect to PostgreSQL", "secure your API", "containerize your app", "deploy to Kubernetes", "set up CI/CD"]),
+        objective=random.choice(
+            [
+                "connect to PostgreSQL",
+                "secure your API",
+                "containerize your app",
+                "deploy to Kubernetes",
+                "set up CI/CD",
+            ]
+        ),
         prereq_1=random.choice(["Python 3.8+", "Node.js 16+", "Go 1.18+", "Docker installed"]),
         prereq_2=random.choice(["Git configured", "Cloud account", "IDE setup"]),
     )
@@ -1789,14 +2392,19 @@ GENERATORS = {
     "Highly Confidential": gen_highly_confidential,
 }
 
+
 def generate_dataset(samples_per_class: int = SAMPLES_PER_CLASS) -> list[SyntheticDocument]:
     """Generate balanced synthetic dataset."""
     documents = []
     for label in CLASSIFICATION_LABELS:
-        for i in range(samples_per_class):
-            doc = GENERATORS[label]()
+        class_documents = [GENERATORS[label]() for _ in range(samples_per_class)]
+        while len({doc.metadata["template_group"] for doc in class_documents}) < 3:
+            class_documents[-1] = GENERATORS[label]()
+
+        for index, doc in enumerate(class_documents):
             doc.metadata = {
-                "id": f"{label.lower().replace(' ', '_')}_{i:03d}",
+                **doc.metadata,
+                "id": f"{label.lower().replace(' ', '_')}_{index:03d}",
                 "generator": "synthetic",
                 "seed": SEED,
             }
@@ -1806,61 +2414,106 @@ def generate_dataset(samples_per_class: int = SAMPLES_PER_CLASS) -> list[Synthet
 
 
 def train_val_test_split(
-    documents: list[SyntheticDocument], 
-    train_ratio: float = 0.7, 
-    val_ratio: float = 0.15, 
-    test_ratio: float = 0.15
-) -> tuple[list, list, list]:
-    """Split dataset into train/val/test maintaining class balance.
-    
-    Args:
-        documents: List of synthetic documents
-        train_ratio: Proportion for training (default 0.7)
-        val_ratio: Proportion for validation (default 0.15)
-        test_ratio: Proportion for testing (default 0.15)
-    
-    Returns:
-        Tuple of (train, val, test) document lists
+    documents: list[SyntheticDocument],
+    train_ratio: float = 0.7,
+    val_ratio: float = 0.15,
+    test_ratio: float = 0.15,
+) -> tuple[list[SyntheticDocument], list[SyntheticDocument], list[SyntheticDocument]]:
+    """Split by source template so a template never appears in multiple splits.
+
+    The generator stores a ``template_group`` in each document's metadata.
+    Documents without that metadata are assigned their own group, which keeps
+    this function safe for callers that construct SyntheticDocument manually.
     """
-    assert abs(train_ratio + val_ratio + test_ratio - 1.0) < 1e-6, "Ratios must sum to 1.0"
-    
-    by_label = {label: [] for label in CLASSIFICATION_LABELS}
-    for doc in documents:
-        by_label[doc.label].append(doc)
-    
-    train, val, test = [], [], []
-    for label in CLASSIFICATION_LABELS:
-        random.shuffle(by_label[label])
-        n = len(by_label[label])
-        train_end = int(n * train_ratio)
-        val_end = train_end + int(n * val_ratio)
-        
-        train.extend(by_label[label][:train_end])
-        val.extend(by_label[label][train_end:val_end])
-        test.extend(by_label[label][val_end:])
-    
-    random.shuffle(train)
-    random.shuffle(val)
-    random.shuffle(test)
-    return train, val, test
+    ratios = (train_ratio, val_ratio, test_ratio)
+    if any(ratio <= 0 for ratio in ratios) or abs(sum(ratios) - 1.0) >= 1e-6:
+        raise ValueError("Split ratios must be positive and sum to 1.0")
+
+    by_label: dict[str, dict[str, list[SyntheticDocument]]] = {label: {} for label in CLASSIFICATION_LABELS}
+    for index, doc in enumerate(documents):
+        if doc.label not in by_label:
+            raise ValueError(f"Unknown classification label: {doc.label}")
+        group = doc.metadata.get("template_group", f"single-document:{index}")
+        by_label[doc.label].setdefault(group, []).append(doc)
+
+    splits: list[list[SyntheticDocument]] = [[], [], []]
+    split_ratios = (train_ratio, val_ratio, test_ratio)
+
+    for label, groups in by_label.items():
+        group_items = list(groups.items())
+        if len(group_items) < 3:
+            raise ValueError(
+                f"Label {label!r} needs at least 3 independent template groups "
+                "to create train, validation, and test splits."
+            )
+
+        random.shuffle(group_items)
+        total = sum(len(items) for _, items in group_items)
+        targets = [total * ratio for ratio in split_ratios]
+
+        # Choose one independent group for validation and one for testing.
+        # The remaining groups are used for training. Pick the pair whose sizes
+        # best approximate the requested holdout proportions.
+        best_pair = None
+        best_error = float("inf")
+        for val_index in range(len(group_items)):
+            for test_index in range(len(group_items)):
+                if val_index == test_index:
+                    continue
+                val_size = len(group_items[val_index][1])
+                test_size = len(group_items[test_index][1])
+                error = abs(val_size - targets[1]) + abs(test_size - targets[2])
+                if error < best_error:
+                    best_error = error
+                    best_pair = (val_index, test_index)
+
+        if best_pair is None:
+            raise RuntimeError(f"Could not allocate template groups for label {label!r}.")
+        val_index, test_index = best_pair
+        for group_index, (_, group_docs) in enumerate(group_items):
+            if group_index == val_index:
+                splits[1].extend(group_docs)
+            elif group_index == test_index:
+                splits[2].extend(group_docs)
+            else:
+                splits[0].extend(group_docs)
+
+    for split_docs in splits:
+        random.shuffle(split_docs)
+
+    # Defensive assertion: no template group may cross a split boundary.
+    group_sets = [
+        {doc.metadata["template_group"] for doc in split_docs if "template_group" in doc.metadata}
+        for split_docs in splits
+    ]
+    if (group_sets[0] & group_sets[1]) or (group_sets[0] & group_sets[2]) or (group_sets[1] & group_sets[2]):
+        raise RuntimeError("Template leakage detected between dataset splits.")
+
+    return splits[0], splits[1], splits[2]
 
 
 def save_dataset(documents: list[SyntheticDocument], split: str) -> None:
     """Save dataset as text files with labels."""
     split_dir = OUTPUT_DIR / split
     split_dir.mkdir(parents=True, exist_ok=True)
-    
+
     labels_file = split_dir / "labels.txt"
     with labels_file.open("w") as f:
         for doc in documents:
             text_file = split_dir / f"{doc.metadata['id']}.txt"
             text_file.write_text(doc.text, encoding="utf-8")
             f.write(f"{doc.metadata['id']}\t{doc.label}\n")
-def generate_readme() -> None:
+
+
+def generate_readme(
+    samples_per_class: int,
+    train_count: int,
+    val_count: int,
+    test_count: int,
+    seed: int,
+) -> None:
     """Generate README for the synthetic dataset."""
-    total = SAMPLES_PER_CLASS * 4
-    train_count = int(total * 0.8)
-    test_count = total - train_count
+    total = samples_per_class * len(CLASSIFICATION_LABELS)
     readme = f"""# SecureWaste Synthetic Classification Dataset
 
 Generated for Sprint 2 (SCRUM-19, SCRUM-20, SCRUM-21) - AI/ML document classification.
@@ -1883,11 +2536,15 @@ or credentials are included.**
 ## Dataset Statistics
 
 - **Total samples**: {total}
-- **Samples per class**: {SAMPLES_PER_CLASS}
-- **Train/Test split**: 80/20 (stratified)
-- **Train samples**: {train_count}
-- **Test samples**: {test_count}
-- **Random seed**: {SEED} (reproducible)
+- **Samples per class**: {samples_per_class}
+- **Train/Validation/Test samples**: {train_count}/{val_count}/{test_count}
+- **Split policy**: grouped by source template to prevent template leakage
+- **Random seed**: {seed} (reproducible)
+
+## Split Integrity
+
+Documents generated from the same source template are kept in exactly one split.
+This reduces template leakage between training, validation, and test data.
 
 ## Features for Classification
 
@@ -1921,15 +2578,15 @@ Priority order: Highly Confidential > Confidential > Internal > Public
 
 ```
 synthetic_dataset/
-├── train/
-│   ├── labels.txt          # id\\tlabel mapping
-│   ├── public_000.txt
-│   ├── internal_001.txt
-│   └── ...
-└── test/
-    ├── labels.txt
-    ├── confidential_000.txt
-    └── ...
+â”œâ”€â”€ train/
+â”‚   â”œâ”€â”€ labels.txt          # id\\tlabel mapping
+â”‚   â”œâ”€â”€ public_000.txt
+â”‚   â”œâ”€â”€ internal_001.txt
+â”‚   â””â”€â”€ ...
+â””â”€â”€ test/
+    â”œâ”€â”€ labels.txt
+    â”œâ”€â”€ confidential_000.txt
+    â””â”€â”€ ...
 ```
 
 ## Usage
@@ -1966,27 +2623,60 @@ but these are not real payment instruments.
     (OUTPUT_DIR / "README.md").write_text(readme, encoding="utf-8")
 
 
-def main():
-    print(f"Generating synthetic dataset ({SAMPLES_PER_CLASS} samples per class)...")
-    
-    documents = generate_dataset(SAMPLES_PER_CLASS)
+def main() -> None:
+    global OUTPUT_DIR, SEED
+    parser = argparse.ArgumentParser(description="Generate the SecureWaste synthetic classification dataset.")
+    parser.add_argument(
+        "--samples-per-class",
+        type=int,
+        default=SAMPLES_PER_CLASS,
+        help=f"Number of documents to generate per class (default: {SAMPLES_PER_CLASS}).",
+    )
+    parser.add_argument(
+        "--output-dir",
+        type=Path,
+        default=OUTPUT_DIR,
+        help=f"Dataset output directory (default: {OUTPUT_DIR}).",
+    )
+    parser.add_argument(
+        "--seed",
+        type=int,
+        default=SEED,
+        help=f"Random seed for reproducible generation and splitting (default: {SEED}).",
+    )
+    args = parser.parse_args()
+
+    if args.samples_per_class < 3:
+        parser.error("--samples-per-class must be at least 3.")
+    random.seed(args.seed)
+    SEED = args.seed
+
+    OUTPUT_DIR = args.output_dir
+
+    print(f"Generating synthetic dataset ({args.samples_per_class} samples per class)...")
+    documents = generate_dataset(args.samples_per_class)
     train, val, test = train_val_test_split(documents, train_ratio=0.7, val_ratio=0.15, test_ratio=0.15)
-    
+
     print(f"Train: {len(train)} samples")
     print(f"Val: {len(val)} samples")
     print(f"Test: {len(test)} samples")
-    
-    # Verify balance
+
     for split_name, split_docs in [("train", train), ("val", val), ("test", test)]:
-        counts = {label: sum(1 for d in split_docs if d.label == label) for label in CLASSIFICATION_LABELS}
+        counts = {label: sum(1 for doc in split_docs if doc.label == label) for label in CLASSIFICATION_LABELS}
         print(f"  {split_name}: {counts}")
-    
+
     save_dataset(train, "train")
     save_dataset(val, "val")
     save_dataset(test, "test")
-    generate_readme()
-    
-    print(f"\nDataset saved to {OUTPUT_DIR}")
+    generate_readme(
+        samples_per_class=args.samples_per_class,
+        train_count=len(train),
+        val_count=len(val),
+        test_count=len(test),
+        seed=args.seed,
+    )
+
+    print(f"\\nDataset saved to {OUTPUT_DIR}")
     print("Done!")
 
 
