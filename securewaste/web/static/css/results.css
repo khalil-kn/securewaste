@@ -19,3 +19,8 @@
 .sr-empty{padding:42px 24px;text-align:center;background:#f6fafb;border:1px dashed #b8d5db;border-radius:14px}.sr-empty h3{margin-top:0}.sr-footnote{font-size:.8rem;margin:24px 0}
 .sr-upload-shell{max-width:650px;padding-top:32px}.sr-upload-form{margin-top:25px}
 @media(max-width:800px){.sr-stats{grid-template-columns:repeat(3,minmax(0,1fr))}}@media(max-width:540px){.sr-heading{align-items:flex-start;flex-direction:column}.sr-stats{grid-template-columns:repeat(2,minmax(0,1fr))}.sr-item{padding:16px}}
+/* Document classification card (ML label, risk level, explanation, recommendation). */
+.sr-class{border:1px solid #dce7ec;border-left:6px solid #8bbbc2;background:#fff;border-radius:15px;padding:22px;margin-bottom:34px;box-shadow:0 5px 20px #102d3e0b;overflow-wrap:anywhere}
+.sr-class-top{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap}.sr-class h3{margin:6px 0 0;font-size:1.5rem}
+.sr-class-informational,.sr-class-low{border-left-color:#276642}.sr-class-medium{border-left-color:#875b0c}.sr-class-high,.sr-class-critical{border-left-color:#a52d2d}
+.sr-class-unavailable{margin-bottom:24px}

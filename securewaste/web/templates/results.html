@@ -24,6 +24,25 @@
     <div class="sr-stat"><strong>{{ counts.keyword }}</strong><span>Keyword occurrences</span></div>
   </div>
 
+  {% if classification %}
+    <section class="sr-class sr-class-{{ classification.level }}" aria-labelledby="sr-class-title">
+      <div class="sr-class-top">
+        <div>
+          <span class="sr-field-label">Document classification &middot; automated estimate</span>
+          <h3 id="sr-class-title">{{ classification.label }}</h3>
+        </div>
+        <div class="sr-tags">
+          <span class="sr-tag sr-severity-{{ classification.level }}">Risk level: {{ classification.level|title }}</span>
+          <span class="sr-tag">{{ classification.confidence_pct }}% confidence</span>
+        </div>
+      </div>
+      <p class="sr-explanation">{{ classification.explanation }}</p>
+      <div class="sr-recommendation"><strong>Recommended action</strong><p>{{ classification.recommendation }}</p></div>
+    </section>
+  {% else %}
+    <p class="sr-muted sr-class-unavailable">Document classification is unavailable for this scan. The findings below are still valid.</p>
+  {% endif %}
+
   {% if findings %}
     <div class="sr-section-title"><h3>Detected information</h3><span>{{ findings|length }} finding(s)</span></div>
     <div class="sr-list">
@@ -61,5 +80,5 @@
 {% endif %}
 
 
-  <p class="sr-footnote">Review status is displayed only. Changing status and calculating a document risk score require the separate review and risk features.</p>
+  <p class="sr-footnote">The classification is an automated estimate and can be wrong. Review status is displayed only. Changing status and the rule-based document risk score require the separate review and risk features.</p>
 </section>

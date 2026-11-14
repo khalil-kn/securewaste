@@ -11,6 +11,7 @@ from securewaste.core.upload import (
     UploadRejected,
     validate_upload,
 )
+from securewaste.services.classify_service import classify_document
 from securewaste.services.detect_service import scan_file
 
 bp = Blueprint("documents", __name__)
@@ -74,7 +75,7 @@ def upload_document():
 
         # Step 3: Extract text and detect sensitive information.
         try:
-            findings, _pages = scan_file(
+            findings, pages = scan_file(
                 destination,
                 destination.suffix.lower().lstrip("."),
                 limits,
@@ -95,10 +96,14 @@ def upload_document():
                 error=message,
             ), 422
 
-        # Step 4: Display masked detection results.
+        # Step 4: Classify the document (None if the classifier is unavailable).
+        classification = classify_document(pages, findings)
+
+        # Step 5: Display masked detection results and the classification.
         return render_template(
             "detect.html",
             findings=findings,
+            classification=classification,
             error=None,
         ), 200
 
