@@ -9,7 +9,7 @@ values never leave the local scanner (ADR-0006).
 | File | Purpose |
 | --- | --- |
 | `schema.sql` | The `scan_events` table and its indexes. The only place the DDL is written. |
-| `db.py` | Connection handling, schema application, insert and read of one scan event. |
+| `db.py` | Connection handling, insert and read of one scan event. |
 | `config.py` | Settings read from environment variables. |
 
 ## Local database
@@ -27,8 +27,7 @@ export CLOUD_DATABASE_URL=postgresql://postgres:postgres@localhost:5432/securewa
 
 A local PostgreSQL installation works the same way; only the URL changes.
 
-The schema is applied automatically when the API starts (`db.apply_schema`) and by the test
-fixture, so no manual migration step is needed. To apply it by hand instead:
+The schema is a migration script: apply it before starting the API or running the tests.
 
 ```bash
 podman exec -i sw-pg psql -U postgres -d securewaste_cloud < cloud_api/schema.sql

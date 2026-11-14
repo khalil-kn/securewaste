@@ -48,6 +48,10 @@ jobs:
         run: |
           ruff check .
           ruff format --check .
+      - name: Apply cloud API schema
+        run: >-
+          docker exec -i ${{ job.services.postgres.id }}
+          psql -U postgres -d securewaste_cloud_ci < cloud_api/schema.sql
       - name: Tests with coverage
         run: pytest --cov=securewaste --cov-report=term-missing
       - name: Dependency vulnerability audit

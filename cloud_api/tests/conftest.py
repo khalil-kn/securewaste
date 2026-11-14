@@ -6,21 +6,30 @@ import os
 
 import pytest
 
-from cloud_api.db import apply_schema, connect
+from cloud_api.db import SCHEMA_PATH, open_connection
 
 
 @pytest.fixture(scope="session")
 def database_url() -> str:
-    """The PostgreSQL URL of the test run, or skip when no database is configured."""
+    """The PostgreSQL URL of the test database. The tests are skipped without it."""
     url = os.environ.get("CLOUD_DATABASE_URL", "").strip()
     if not url:
-        pytest.skip("CLOUD_DATABASE_URL is not set: there is no PostgreSQL to test against")
+        pytest.skip("CLOUD_DATABASE_URL is not set")
     return url
 
 
-@pytest.fixture()
-def db_connection(database_url: str):
-    """A connection to a database that already carries the schema."""
-    with connect(database_url) as connection:
-        apply_schema(connection)
+@pytest.fixture(scope="session")
+def migrated_database(database_url: str) -> str:
+    """Fail with an instruction when the migration has not been applied yet."""
+    with open_connection(database_url) as connection:
+        row = connection.execute("SELECT to_regclass('scan_events') AS table_name").fetchone()
+    if row is None or row["table_name"] is None:
+        pytest.fail(f"scan_events is missing: apply {SCHEMA_PATH} before running these tests")
+    return database_url
+
+
+@pytest.fixture
+def db_connection(migrated_database: str):
+    """A connection to the migrated test database."""
+    with open_connection(migrated_database) as connection:
         yield connection

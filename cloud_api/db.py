@@ -6,13 +6,17 @@ and matched values never reach this module (ADR-0006: a raw value never leaves d
 
 from __future__ import annotations
 
+from collections.abc import Iterator
+from contextlib import contextmanager
 from datetime import datetime
 from pathlib import Path
-from typing import Any, LiteralString, cast
+from typing import Any
 
 import psycopg
 from psycopg.rows import dict_row
 
+# The migration script of this service. It is applied by the operator (CI and the local setup in
+# cloud_api/README.md), so the DDL lives in exactly one place.
 SCHEMA_PATH = Path(__file__).with_name("schema.sql")
 
 
@@ -25,14 +29,14 @@ def connect(database_url: str) -> psycopg.Connection[dict[str, Any]]:
     return psycopg.Connection[dict[str, Any]].connect(database_url, row_factory=dict_row)
 
 
-def apply_schema(connection: psycopg.Connection[dict[str, Any]], schema_path: Path = SCHEMA_PATH) -> None:
-    """Create the tables if they do not exist yet. Safe to run on every start.
-
-    The script is a file of this repository, not user input. psycopg only accepts literal
-    queries, so the cast states that this query is trusted.
-    """
-    connection.execute(cast("LiteralString", schema_path.read_text(encoding="utf-8")))
-    connection.commit()
+@contextmanager
+def open_connection(database_url: str) -> Iterator[psycopg.Connection[dict[str, Any]]]:
+    """Open a connection and close it when the block ends."""
+    connection = connect(database_url)
+    try:
+        yield connection
+    finally:
+        connection.close()
 
 
 def insert_scan_event(
