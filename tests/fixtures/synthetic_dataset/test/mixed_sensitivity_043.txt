@@ -1,0 +1,26 @@
+Client Project Proposal - Orion
+
+Client: Stark Corp
+Date: 2026-09-11
+Classification: CONFIDENTIAL
+
+Project Overview:
+Security audit
+
+Scope and Deliverables:
+Implementation
+
+Timeline: 3 months
+Budget: $211,942.00
+
+Payment Information:
+Wire transfer to IBAN: DE27 3ZOI ULRN JMYN OIE8 LI4H
+Reference: PAY-73475
+
+Technical Integration:
+The client's API requires the following credentials (HIGHLY CONFIDENTIAL):
+API Endpoint: https://integration.client.net
+API Key: H7sW8xXzYzHvPUKsmY9OWOdmTngbEZ7ZqMLFS1HwiEbWZJ6z
+Webhook Secret: Id6WxdRKlGMVhpRZBN8ExuH43jiVS4FQNXM811k0
+
+These credentials must be stored in the secure vault and rotated quarterly.

@@ -1,0 +1,26 @@
+Client Project Proposal - Nexus
+
+Client: Globex Corp
+Date: 2026-04-13
+Classification: CONFIDENTIAL
+
+Project Overview:
+Migrate to cloud
+
+Scope and Deliverables:
+Documentation
+
+Timeline: 9 months
+Budget: $265,060.00
+
+Payment Information:
+Wire transfer to IBAN: DE22 0CKG YV3E E16Y LF0M H9M8
+Reference: PAY-99796
+
+Technical Integration:
+The client's API requires the following credentials (HIGHLY CONFIDENTIAL):
+API Endpoint: https://integration.client.net
+API Key: nGNtW5PCS6hEipHyWHVrjMCX6YmBsNrgb9wwPT6dAOKisEs7
+Webhook Secret: bDiJRv1kiirVvxMYactz1DsRZUkQ5xuV86UjspHg
+
+These credentials must be stored in the secure vault and rotated quarterly.

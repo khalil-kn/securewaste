@@ -1,0 +1,1 @@
+JWT signing key: 6PVRTJ69RNEUF1KN. Keep secure. HIGHLY CONFIDENTIAL

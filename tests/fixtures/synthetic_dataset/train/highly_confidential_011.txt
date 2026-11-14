@@ -1,0 +1,34 @@
+Infrastructure Configuration - CFG-2026049
+
+Environment: DR
+Last Updated: 2026-02-07
+Classification: HIGHLY CONFIDENTIAL
+
+Database Clusters:
+Primary: db-primary-3:1433
+  Credentials: admin / j46Ki2BCwdvdX%jYOpOpq#YyXlqAk$LH
+  Connection String: mysql://...
+Replica: db-replica-2:5432
+  Credentials: replication / 4GArNNkWYXbpbBrgLR3Ndvb$YsS5Swbv
+
+Message Queues:
+RabbitMQ: mq-3
+  Credentials: app_user / 9FlddqrMphei!5anrATHs@ATGntszzaj
+Kafka: kafka-prod:9092
+  SASL Credentials: admin / WZ51rjLKmIoQx50TNsuMZhbAZw$zUCL@
+
+Cache Layer:
+Redis: redis-1:6379
+  Password: oXCAJEk3LqqzrO6IYooP$qyX7AIJxm14
+  Cluster Mode: enabled
+
+Secrets Management:
+Vault Address: https://vault-prod.company.com
+Vault Token: VcfPO3u$sGTR5cY@c$Eeu3A5M@pz0cnU
+Key Paths: secret/data/app
+
+Monitoring:
+Prometheus: https://monitoring.company.com
+Grafana: https://dashboards.company.com
+  Admin: admin / 8A8Wgd5b2VH7CQ7c5918H1EEeW@MgvEp
+Alertmanager: https://alertmanager.company.com

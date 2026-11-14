@@ -1,0 +1,39 @@
+Production Deployment Runbook - DEP-2026003
+
+Date: 2026-10-10
+Environment: PRODUCTION
+Classification: HIGHLY CONFIDENTIAL
+
+Pre-deployment Checklist:
+- [ ] All tests passing in staging
+- [ ] Security scan clean
+- [ ] Database migration reviewed
+- [ ] Rollback plan documented
+- [ ] On-call engineer confirmed: John Smith (939-843-1507)
+
+Secrets Required:
+AWS Access Key: AKIAKRDFV37SNLES1D3Q
+AWS Secret Key: $64Yn0TpPcT1Nm8e@zyvuzQL$TSSY0A6
+Database Password: wvoWZ4hMabCzh615SmfzbUtUzFNItpU6
+API Keys: 18uuXqWxlWlbm2HYtR7KxdR1TQFUGcgNl86GqgXy421L1jUL, 2LQs6ekXr0uZLK5Dvy0UE6dN6v18BeQgWroEDxEwJQmh7qLD, DKDuB8YbLuP5HMQ3m5GxKzrhPxqHAF9y2GDAJe7hQucSMLQW, qrCCwqTDzduCOIrdtfML5xaBkI2oz6Lh4IOHDaSwgJPnXM9y, 6Z59DVVYYf8WezzTT0zzooImHo6iXiQMAbpyYrEbtyq7ppIu
+JWT Signing Key: ggCk4O0R1M34kabPkbpxbNyAzc5L2lWtXaq75NuQRjAz0OkB47J0XoZB0tjfqXB7
+Encryption Keys: zZPkJZSwTraetN693PNwip9w3wAdYXnV, r8CkqPeLYFk93hsnun2NZvSYh9PAUaRF
+
+Deployment Steps:
+1. Create pre-deployment snapshot
+2. Apply database migrations
+3. Deploy application containers
+4. Run smoke tests
+5. Update DNS records
+6. Monitor error rates for 30 minutes
+
+Rollback Procedure:
+1. Revert DNS
+2. Restore database snapshot
+3. Redeploy previous container version
+4. Notify stakeholders
+
+Emergency Contacts:
+Security: security@company.com
+Infrastructure: infra@company.com
+Management: management@company.com

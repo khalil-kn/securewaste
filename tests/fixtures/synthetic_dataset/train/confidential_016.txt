@@ -1,0 +1,31 @@
+Financial Report - H1 2026
+
+Prepared by: Jane Smith (ustkr@sample.co)
+Date: 2026-01-05
+Classification: CONFIDENTIAL
+
+Revenue Summary:
+Total Revenue: $11,064,387.00
+Recurring Revenue: $11,607,739.00 (88%)
+New Business: $8,644,273.00
+
+Expense Breakdown:
+Personnel: $13,089,949.00
+Infrastructure: $4,768,580.00
+Marketing: $6,597,256.00
+Operations: $3,412,564.00
+
+Key Metrics:
+Gross Margin: 79%
+Customer Acquisition Cost: $2,324.00
+Lifetime Value: $113,488.00
+Churn Rate: 3%
+
+Payment Processing:
+Cards processed: 4775
+Total volume: $21,575,246.00
+Chargeback rate: 1%
+
+Bank Accounts:
+Primary: DE46 GW36 YDA3 0JVB QDSJ DN7D
+Reserve: DE85 PVSG PIA7 PJ61 815V X9SN

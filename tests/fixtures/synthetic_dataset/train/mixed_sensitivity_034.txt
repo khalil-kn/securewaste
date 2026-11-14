@@ -1,0 +1,26 @@
+Client Project Proposal - Atlas
+
+Client: Umbrella Corp
+Date: 2026-06-23
+Classification: CONFIDENTIAL
+
+Project Overview:
+Build new API platform
+
+Scope and Deliverables:
+Deployment
+
+Timeline: 6 months
+Budget: $1,381,608.00
+
+Payment Information:
+Wire transfer to IBAN: DE69 U4PZ YMAC UHYC OO09 YB5S
+Reference: PAY-93773
+
+Technical Integration:
+The client's API requires the following credentials (HIGHLY CONFIDENTIAL):
+API Endpoint: https://integration.client.net
+API Key: k6QIEU8Np2HRrEmHjrk8UbuDZ5HgklwiCogJuzeSSuhXqaFk
+Webhook Secret: CrTWp3HVVbtcCFFKJsNySEDWDIy1oezRroEYIBgO
+
+These credentials must be stored in the secure vault and rotated quarterly.

@@ -1,0 +1,26 @@
+Employee Compensation Review - H1 2026
+
+Employee: Jane Smith
+Role: Lead
+Department: Sales
+Manager: Bob Johnson (boqcg@example.com)
+National ID: 75691948
+Classification: CONFIDENTIAL
+
+Current Compensation:
+Base Salary: $102,180.00
+Bonus Target: 17%
+Equity Grant: 34170 shares
+Benefits Value: $34,567.00/year
+
+Performance Rating: 4/5
+Market Position: 46th percentile
+
+Proposed Changes:
+Salary Increase: 16%
+New Base: $346,141.00
+Bonus Adjustment: -5%
+Additional Equity: 4568 shares
+
+Effective Date: 2026-05-01
+Approvals Required: Manager -> Director -> VP

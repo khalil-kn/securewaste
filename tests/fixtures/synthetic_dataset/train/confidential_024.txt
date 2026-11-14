@@ -1,0 +1,30 @@
+Client Contract - CTR-2026396
+
+Parties: Stark Ltd (xxpel@test.net) and Company Inc.
+Date: 2026-11-21
+Classification: CONFIDENTIAL
+
+Scope of Work:
+License grant for...
+
+Payment Terms:
+Total Amount: $1,217,495.00
+Payment Schedule: Net 45
+Payment Method: Credit Card ending in 5096
+IBAN for Wire Transfer: DE54 AYHO G5YM NAAS 01AL 1BFN
+
+Confidentiality:
+Both parties agree to maintain strict confidentiality of all proprietary information
+exchanged during the term of this agreement. This includes but is not limited to:
+technical specifications, pricing data, customer lists, and trade secrets.
+
+Data Protection:
+Personal data processed under this contract shall comply with GDPR/CCPA requirements.
+Data Processing Addendum attached as Appendix A.
+
+Term and Termination:
+Initial term: 20 months. Auto-renewal unless 30 days written notice.
+
+Signatures:
+Client: _______________________ Date: __________
+Company: _______________________ Date: __________

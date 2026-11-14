@@ -1,0 +1,31 @@
+Financial Report - Q2 2026
+
+Prepared by: Alice Smith (rizrnpwtdk@company.org)
+Date: 2026-08-24
+Classification: CONFIDENTIAL
+
+Revenue Summary:
+Total Revenue: $78,761,531.00
+Recurring Revenue: $49,919,660.00 (62%)
+New Business: $6,559,731.00
+
+Expense Breakdown:
+Personnel: $1,811,231.00
+Infrastructure: $1,710,073.00
+Marketing: $3,106,346.00
+Operations: $170,139.00
+
+Key Metrics:
+Gross Margin: 64%
+Customer Acquisition Cost: $379.00
+Lifetime Value: $442,979.00
+Churn Rate: 4%
+
+Payment Processing:
+Cards processed: 170748
+Total volume: $53,352,708.00
+Chargeback rate: 2%
+
+Bank Accounts:
+Primary: DE30 17ED UM10 1GQ5 EJRQ 63C8
+Reserve: DE11 KHCM TKG7 MJ4A RXCW 9THJ

@@ -1,0 +1,26 @@
+Client Project Proposal - Nexus
+
+Client: Stark Ltd
+Date: 2026-04-05
+Classification: CONFIDENTIAL
+
+Project Overview:
+Migrate to cloud
+
+Scope and Deliverables:
+Implementation
+
+Timeline: 9 months
+Budget: $1,945,040.00
+
+Payment Information:
+Wire transfer to IBAN: DE45 YC5L NMEH FR2N METR 0N7P
+Reference: PAY-26744
+
+Technical Integration:
+The client's API requires the following credentials (HIGHLY CONFIDENTIAL):
+API Endpoint: https://integration.client.net
+API Key: GuTaIlrmOxSwhd689iLUwv9tYRY3ffLwQBmcFBVpJ6EYZ5US
+Webhook Secret: 2CFiHp9jMA34kr0ENkQbqvmCNmk3KfH29YqaNCJN
+
+These credentials must be stored in the secure vault and rotated quarterly.

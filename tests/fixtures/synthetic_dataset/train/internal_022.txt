@@ -1,0 +1,26 @@
+Internal Security Advisory - SEC-2026042
+
+Date: 2026-06-20
+Severity: CRITICAL
+Affected Systems: Message Queue
+Classification: INTERNAL
+
+Summary:
+Vulnerability discovered in...
+
+Technical Details:
+Detailed analysis shows...
+
+Impact Assessment:
+Potential data exposure
+
+Mitigation Steps:
+1. Rotate credentials
+2. Update firewall rules
+3. Monitor for anomalies
+
+Workaround (if applicable):
+Manual approval required
+
+Contact: security@company.com for questions
+Reference: CVE-2026-37102

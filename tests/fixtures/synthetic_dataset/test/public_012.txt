@@ -1,0 +1,17 @@
+Team Meeting Minutes - 2026-07-16
+
+Attendees: Jane Doe, Sarah Davis, Alice Williams, John Smith, Bob Johnson, Mike Brown
+
+Agenda Items:
+1. Sprint retrospective - team velocity improved 15% this quarter
+2. Upcoming release planning - targeting 2026-08-05
+3. Technical debt discussion - allocated 20% capacity for refactoring
+4. New hire onboarding - two engineers starting next month
+
+Action Items:
+- Jane Doe to update architecture diagrams by 2026-11-17
+- Sarah Davis to review security checklist by 2026-10-11
+- Jane Doe to prepare demo for stakeholder meeting
+
+Notes:
+Team morale is high. Coffee budget approved for new espresso machine.

@@ -1,0 +1,1 @@
+JWT signing key: S0SZAA1EIPICERHN. Keep secure. HIGHLY CONFIDENTIAL

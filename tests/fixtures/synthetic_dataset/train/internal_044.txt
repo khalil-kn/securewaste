@@ -1,0 +1,26 @@
+Internal Security Advisory - SEC-2026326
+
+Date: 2026-04-16
+Severity: MEDIUM
+Affected Systems: Auth Service
+Classification: INTERNAL
+
+Summary:
+Potential exposure of...
+
+Technical Details:
+Root cause identified as...
+
+Impact Assessment:
+Potential data exposure
+
+Mitigation Steps:
+1. Apply patch immediately
+2. Deploy WAF rules
+3. Notify affected users
+
+Workaround (if applicable):
+Disable feature temporarily
+
+Contact: security@company.com for questions
+Reference: CVE-2026-60608

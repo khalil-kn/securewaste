@@ -1,0 +1,1 @@
+JWT signing key: ODTTBXYF744NLDE4. Keep secure. HIGHLY CONFIDENTIAL

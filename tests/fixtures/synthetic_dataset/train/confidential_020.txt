@@ -1,0 +1,30 @@
+Client Contract - CTR-2026373
+
+Parties: Acme LLC (nwsqlkj@sample.co) and Company Inc.
+Date: 2026-06-27
+Classification: CONFIDENTIAL
+
+Scope of Work:
+Consulting services for...
+
+Payment Terms:
+Total Amount: $4,438,666.00
+Payment Schedule: Monthly
+Payment Method: Credit Card ending in 2857
+IBAN for Wire Transfer: DE11 KW7Q K5NT QTQ0 WXHB SO9Q
+
+Confidentiality:
+Both parties agree to maintain strict confidentiality of all proprietary information
+exchanged during the term of this agreement. This includes but is not limited to:
+technical specifications, pricing data, customer lists, and trade secrets.
+
+Data Protection:
+Personal data processed under this contract shall comply with GDPR/CCPA requirements.
+Data Processing Addendum attached as Appendix A.
+
+Term and Termination:
+Initial term: 23 months. Auto-renewal unless 30 days written notice.
+
+Signatures:
+Client: _______________________ Date: __________
+Company: _______________________ Date: __________

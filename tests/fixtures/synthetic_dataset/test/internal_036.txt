@@ -1,0 +1,23 @@
+Employee Onboarding Plan - John Doe
+
+Role: Engineer
+Start Date: 2026-06-05
+Manager: John Smith (leppv@demo.io)
+Buddy: Chris Wilson (ivsrnzt@demo.io)
+Classification: INTERNAL
+
+Week 1: Orientation
+- Day 1: HR orientation, IT setup, team introductions
+- Day 2: Security training, access provisioning
+- Day 3: Codebase walkthrough, development environment
+- Day 4: Confluence training, Slack training
+- Day 5: First task assignment, 30-day goals
+
+Week 2-4: Ramp-up
+- Pair programming with Chris Wilson
+- Complete Security Awareness certification
+- Shadow Architect for 10 days
+- First code review participation
+
+30-Day Check-in: 2026-02-15 with John Smith
+90-Day Review: 2026-05-22

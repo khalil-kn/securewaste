@@ -1,0 +1,1 @@
+JWT signing key: PNCZFU58TO5G4B2I. Keep secure. HIGHLY CONFIDENTIAL

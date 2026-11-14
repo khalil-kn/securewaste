@@ -1,0 +1,28 @@
+Onboarding Document - Bob Williams
+
+Welcome to the team! This document contains internal information for your onboarding.
+Classification: INTERNAL
+
+Team Contacts:
+- Manager: Alice Doe (madcqcxou@company.org)
+- Buddy: Mike Davis (bwsagjldiq@test.net)
+- HR: Lisa Taylor (euxdr@demo.io)
+
+Systems Access:
+You'll need access to the following systems:
+- Jira: https://jira.company.com
+- GitLab: https://gitlab.internal
+- Confluence: https://confluence.company.com
+- VPN: vpn.company.com
+
+IMPORTANT - Production Database Credentials (HIGHLY CONFIDENTIAL):
+Host: prod-db-1
+Port: 5432
+Username: service_account
+Password: y1ZA3yaV7hYb27liJy$CHa7VBQie%CzZ
+
+AWS Credentials (HIGHLY CONFIDENTIAL):
+Access Key: AKIAQRXG4U0WUUCWJ5RE
+Secret Key: !DGlR22NSzDg0NcgMk!0BBnpk6OzNmA0
+
+Please store these securely and never commit to version control.

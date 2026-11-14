@@ -1,0 +1,32 @@
+Internal Project Proposal - Orion
+
+Prepared by: Alice Johnson (rruguhbk@example.com)
+Date: 2026-08-03
+Classification: INTERNAL
+
+Executive Summary:
+This proposal outlines the Orion initiative to add features.
+The project requires 4 engineers over 5 months.
+
+Background:
+User feedback indicates...
+
+Technical Approach:
+The new architecture uses...
+Data migration will use...
+
+Resource Requirements:
+- Engineering: 3 FTEs
+- Design: 2 FTEs
+- QA: 3 FTEs
+- Project Management: 1 FTE
+
+Budget Estimate: $316,608.00
+ROI Projection: 23% over 12 months
+
+Risks:
+1. Resource constraints
+2. Integration challenges
+3. Compliance requirements
+
+Approval Required: Bob Johnson (uamqaak@company.org)

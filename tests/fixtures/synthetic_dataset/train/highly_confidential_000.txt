@@ -1,0 +1,34 @@
+Infrastructure Configuration - CFG-2026675
+
+Environment: STAGING
+Last Updated: 2026-08-03
+Classification: HIGHLY CONFIDENTIAL
+
+Database Clusters:
+Primary: db-primary-3:1433
+  Credentials: app_user / a0@BG%j7qO#8WBZQV1yaG3HowSXHJ7%P
+  Connection String: sqlserver://...
+Replica: db-replica-1:3306
+  Credentials: replication / 1EWKKYcwBQ1F6!9OpvNEuRcp8rrJc@EA
+
+Message Queues:
+RabbitMQ: mq-2
+  Credentials: app_user / #1s2KBH@1QuOd%oSthp%LwKnTfR@biYr
+Kafka: kafka-prod:9092
+  SASL Credentials: admin / B8nkg!uKKe$65aq01@#hEiZ0FiSsf0xz
+
+Cache Layer:
+Redis: redis-1:6379
+  Password: Kqb911fejk2JG9Qb51C2ZAlPGNU$X3!0
+  Cluster Mode: disabled
+
+Secrets Management:
+Vault Address: https://vault-prod.company.com
+Vault Token: vy8cmMbSywYavFigIZNFLKZi20QqJCch
+Key Paths: secret/data/infra
+
+Monitoring:
+Prometheus: https://prometheus.company.com
+Grafana: https://dashboards.company.com
+  Admin: grafana_admin / %s4$$yHXBbtmgjJOgh$ZviMNfduYY9fV
+Alertmanager: https://alerts.company.com

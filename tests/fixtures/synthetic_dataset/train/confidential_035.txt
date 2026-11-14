@@ -1,0 +1,26 @@
+Employee Compensation Review - H2 2026
+
+Employee: Bob Doe
+Role: Designer
+Department: Engineering
+Manager: Bob Johnson (vsbkyqlu@example.com)
+National ID: 53844849
+Classification: CONFIDENTIAL
+
+Current Compensation:
+Base Salary: $118,268.00
+Bonus Target: 26%
+Equity Grant: 38998 shares
+Benefits Value: $22,325.00/year
+
+Performance Rating: 5/5
+Market Position: 46th percentile
+
+Proposed Changes:
+Salary Increase: 14%
+New Base: $198,237.00
+Bonus Adjustment: 5%
+Additional Equity: 2825 shares
+
+Effective Date: 2026-04-01
+Approvals Required: Manager -> HR -> CFO
