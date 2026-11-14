@@ -1,0 +1,28 @@
+{
+  "training_counts": {
+    "Internal": 66,
+    "Highly Confidential": 60,
+    "Public": 40,
+    "Confidential": 60
+  },
+  "new_examples": {
+    "Public": 24,
+    "Internal": 24,
+    "Confidential": 24,
+    "Highly Confidential": 24
+  },
+  "note": "Training augmentation is authored synthetic data, not real-world documents.",
+  "known_challenge": {
+    "accuracy": 0.96875,
+    "macro_f1": 0.9686274509803922,
+    "underclassifications": 1,
+    "overclassifications": 0,
+    "mistakes": [
+      {
+        "id": 22,
+        "expected": "Confidential",
+        "predicted": "Internal"
+      }
+    ]
+  }
+}
