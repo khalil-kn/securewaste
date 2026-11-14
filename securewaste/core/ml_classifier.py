@@ -53,6 +53,39 @@ class MLClassificationResult:
     confidence: float
     all_probabilities: dict[ClassificationLabel, float]
     classifier_source: ClassifierSource = ClassifierSource.ML
+    requires_review: bool = False
+    review_reason: str | None = None
+
+
+REVIEW_THRESHOLD = 0.30
+
+
+def apply_review_policy(
+    result: MLClassificationResult,
+    threshold: float = REVIEW_THRESHOLD,
+) -> MLClassificationResult:
+    """Attach review information without changing the classification."""
+
+    if not 0.0 <= threshold <= 1.0:
+        raise ValueError("Review threshold must be between 0 and 1")
+
+    if result.classifier_source == ClassifierSource.FALLBACK:
+        reason = "Sensitive-content rule override"
+    elif result.classifier_source == ClassifierSource.RULE_BASED:
+        reason = "ML model unavailable; rule-based fallback"
+    elif result.confidence < threshold:
+        reason = "Low ML confidence"
+    else:
+        reason = None
+
+    return MLClassificationResult(
+        label=result.label,
+        confidence=result.confidence,
+        all_probabilities=result.all_probabilities,
+        classifier_source=result.classifier_source,
+        requires_review=reason is not None,
+        review_reason=reason,
+    )
 
 
 class MLClassifierError(ClassifierError):
@@ -324,25 +357,29 @@ def detect_sensitive_patterns(text: str) -> list[ClassificationLabel]:
 def predict_classification_hybrid_with_confidence(
     text: str, model_path: Path | None = None
 ) -> MLClassificationResult:
-    """Combine model and detector using highest-sensitivity-wins.
+    """Combine ML and sensitive-content rules, then apply review policy.
 
-    On override, confidence=0.0 means 'not calibrated / unavailable', NOT
-    0% certainty. all_probabilities always contains the ORIGINAL model's
-    class distribution, not fabricated post-rule probabilities.
+    On rule override, confidence=0.0 means unavailable, not zero
+    certainty. Probabilities retain the original model distribution.
     """
     ml_result = predict_classification_with_confidence(text, model_path)
     detected = detect_sensitive_patterns(text)
-    final_label = highest_sensitivity_label([ml_result.label, *detected])
+
+    final_label = highest_sensitivity_label(
+        [ml_result.label, *detected]
+    )
+
     if final_label != ml_result.label:
-        return MLClassificationResult(
+        result = MLClassificationResult(
             label=final_label,
             confidence=0.0,
             all_probabilities=dict(ml_result.all_probabilities),
             classifier_source=ClassifierSource.FALLBACK,
         )
-    return ml_result
+    else:
+        result = ml_result
 
-
+    return apply_review_policy(result)
 def predict_classification_hybrid(
     text: str, model_path: Path | None = None
 ) -> ClassificationLabel:
