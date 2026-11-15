@@ -1,1 +1,28 @@
-Event announcement: Annual conference on 2026-11-12 at Building 3.
+Release Notes: Analytics Platform v3.3.6
+
+Released: 2026-12-11
+
+ðŸŽ‰ New Features:
+- New dashboard
+- Enhanced API
+- Improved performance
+
+ðŸ› Bug Fixes:
+- Fixed memory leak
+- Resolved race condition
+- Corrected edge case
+
+ðŸ”§ Improvements:
+- Enhanced logging
+- Improved validation
+
+âš ï¸ Breaking Changes:
+- Removed deprecated v1 API
+- Changed config format
+
+ðŸ“¦ Dependencies:
+- Updated: PostgreSQL 16, Redis 7.2
+- Added: None
+
+Full changelog: https://github.com/example/project/blob/main/CHANGELOG.md
+Upgrade guide: https://docs.example.com/upgrade-guide

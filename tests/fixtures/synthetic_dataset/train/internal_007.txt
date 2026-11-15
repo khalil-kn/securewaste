@@ -1,32 +1,27 @@
-Internal Project Proposal - Vanguard
+IT Security Advisory - SEC-2026368
 
-Prepared by: Alice Williams (msleoufafh@demo.io)
-Date: 2026-09-17
-Classification: INTERNAL
+Date: 2026-01-11 | Severity: MEDIUM | Status: Resolved
+Affected: Load Balancer
 
-Executive Summary:
-This proposal outlines the Vanguard initiative to enhance security.
-The project requires 11 engineers over 3 months.
+Summary:
+Misconfigured IAM role
 
-Background:
-User feedback indicates...
+Technical Details:
+Security group allows 0.0.0.0/0
 
-Technical Approach:
-The new architecture uses...
-Testing framework includes...
+Impact:
+Potential data exposure
 
-Resource Requirements:
-- Engineering: 5 FTEs
-- Design: 2 FTEs
-- QA: 1 FTEs
-- Project Management: 1 FTE
+Required Actions:
+1. Patch library to v1.2.4 (Owner: Security Team, Due: 2026-07-04)
+2. Run vulnerability scan (Owner: Security Team, Due: 2026-09-08)
+3. Update runbook (Owner: Security Team, Due: 2026-06-26)
 
-Budget Estimate: $1,643,480.00
-ROI Projection: 182% over 12 months
+Workaround:
+Manual approval required
 
-Risks:
-1. Resource constraints
-2. Skill gaps
-3. Scope creep
+References:
+- CVE-2026-16117
+- Internal ticket: SEC-5382
 
-Approval Required: Jane Doe (jvlzugv@sample.co)
+Contact: security@company.internal | #security-alerts on Slack

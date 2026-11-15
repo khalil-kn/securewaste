@@ -1,23 +1,27 @@
-Employee Onboarding Plan - John Doe
+IT Security Advisory - SEC-2026087
 
-Role: Engineer
-Start Date: 2026-06-05
-Manager: John Smith (leppv@demo.io)
-Buddy: Chris Wilson (ivsrnzt@demo.io)
-Classification: INTERNAL
+Date: 2026-05-17 | Severity: HIGH | Status: In Progress
+Affected: API Gateway
 
-Week 1: Orientation
-- Day 1: HR orientation, IT setup, team introductions
-- Day 2: Security training, access provisioning
-- Day 3: Codebase walkthrough, development environment
-- Day 4: Confluence training, Slack training
-- Day 5: First task assignment, 30-day goals
+Summary:
+Exposed debug endpoint
 
-Week 2-4: Ramp-up
-- Pair programming with Chris Wilson
-- Complete Security Awareness certification
-- Shadow Architect for 10 days
-- First code review participation
+Technical Details:
+Debug endpoint returns stack traces
 
-30-Day Check-in: 2026-02-15 with John Smith
-90-Day Review: 2026-05-22
+Impact:
+Service disruption risk
+
+Required Actions:
+1. Patch library to v1.2.4 (Owner: Security Team, Due: 2026-11-28)
+2. Update firewall rules (Owner: Security Team, Due: 2026-06-18)
+3. Update runbook (Owner: Platform Team, Due: 2026-11-09)
+
+Workaround:
+Route via VPN
+
+References:
+- CVE-2026-84636
+- Internal ticket: SEC-3463
+
+Contact: security@company.internal | #security-alerts on Slack

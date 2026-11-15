@@ -21,10 +21,14 @@ or credentials are included.**
 
 - **Total samples**: 200
 - **Samples per class**: 50
-- **Train/Test split**: 80/20 (stratified)
-- **Train samples**: 160
-- **Test samples**: 40
+- **Train/Validation/Test samples**: 137/32/31
+- **Split policy**: grouped by source template to prevent template leakage
 - **Random seed**: 42 (reproducible)
+
+## Split Integrity
+
+Documents generated from the same source template are kept in exactly one split.
+This reduces template leakage between training, validation, and test data.
 
 ## Features for Classification
 
@@ -58,15 +62,15 @@ Priority order: Highly Confidential > Confidential > Internal > Public
 
 ```
 synthetic_dataset/
-├── train/
-│   ├── labels.txt          # id\tlabel mapping
-│   ├── public_000.txt
-│   ├── internal_001.txt
-│   └── ...
-└── test/
-    ├── labels.txt
-    ├── confidential_000.txt
-    └── ...
+â”œâ”€â”€ train/
+â”‚   â”œâ”€â”€ labels.txt          # id\tlabel mapping
+â”‚   â”œâ”€â”€ public_000.txt
+â”‚   â”œâ”€â”€ internal_001.txt
+â”‚   â””â”€â”€ ...
+â””â”€â”€ test/
+    â”œâ”€â”€ labels.txt
+    â”œâ”€â”€ confidential_000.txt
+    â””â”€â”€ ...
 ```
 
 ## Usage

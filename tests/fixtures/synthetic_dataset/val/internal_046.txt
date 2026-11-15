@@ -1,1 +1,23 @@
-HR onboarding: Mike Johnson (anjmix@example.com) starts 2026-09-20. Assign buddy.
+Welcome to the Team - John Smith
+
+Role: Analyst | Team: Backend | Start Date: 2026-05-02
+Manager: Jane Smith (ulgtjjo@company.org) | Buddy: Mike Anderson (ruqcdrpuoc@company.org)
+
+Your First Week:
+Day 1: Orientation (9am), IT setup (10am), Team lunch (12:30pm), 1:1 with manager (3pm)
+Day 2: Security training (mandatory), Access provisioning, Codebase tour
+Day 3: GitLab deep dive, CI/CD hands-on, First commit!
+Day 4: Architecture overview with Alex Brown, Pair programming session
+Day 5: Sprint planning participation, 30-day goals review
+
+Key Contacts:
+- HR: Tom Anderson (wlhip@test.net) - benefits, policies
+- IT: Chris Wilson (npkakgujc@example.com) - access, hardware, tools
+- Security: Sam Lee (security@company.internal) - VPN, MFA, secrets
+
+Resources:
+- Internal wiki: wiki.company.internal
+- Engineering handbook: handbook.company.internal
+- Onboarding checklist: onboarding.company.internal/EMP-7763
+
+Welcome aboard! ðŸŽ‰

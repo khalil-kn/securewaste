@@ -1,1 +1,43 @@
-Payroll data: Employee 76401545 salary $3,088.00. CONFIDENTIAL
+Quarterly Financial Report - DataFlow Ltd - Q1 2026
+
+Prepared by: John Smith | Date: 2026-06-28
+Classification: CONFIDENTIAL
+Distribution: CFO, Controller, Board Audit Committee
+
+=== INCOME STATEMENT ===
+Revenue: $836,545,511 (+-5% YoY)
+COGS: $77,861,020 (34%)
+Gross Profit: $597,775,766 (74%)
+
+Operating Expenses:
+  R&D: $81,675,884 (20%)
+  Sales & Marketing: $24,564,459 (21%)
+  G&A: $1,102,930 (12%)
+Total OpEx: $177,523,574 (56%)
+
+Operating Income: $462,523,432 (21%)
+Net Income: $79,650,738 (27%)
+
+=== BALANCE SHEET HIGHLIGHTS ===
+Cash & Equivalents: $272,919,400
+Accounts Receivable: $128,390,775 (DSO: 52 days)
+Total Assets: $1,175,669,828
+Total Liabilities: $413,778,292
+Equity: $1,039,728,629
+
+=== KEY METRICS ===
+ARR: $36,184,618 (+23% YoY)
+NRR: 119%
+Burn Rate: $2,847,670/month
+Runway: 19 months
+
+=== PAYMENT DATA ===
+Cards Processed: 2,470,898
+Volume: $9,524,459,742
+Chargebacks: 6931 (0%)
+Refunds: 4257 (1%)
+
+Bank Accounts:
+Primary Operating: DE97 AM9I LQP8 JO58 FFHU WG74
+Reserve: DE67 AVGV 6E48 EJPI WJVH HSYU
+Payroll: DE88 9A8A ICLU GG9T 0R8E FH0V

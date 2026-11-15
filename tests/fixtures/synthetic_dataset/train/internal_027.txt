@@ -1,1 +1,27 @@
-Internal memo: confidential project update from Jane Johnson (inulcpm@company.org).
+IT Security Advisory - SEC-2026874
+
+Date: 2026-01-15 | Severity: CRITICAL | Status: Resolved
+Affected: Database
+
+Summary:
+Misconfigured IAM role
+
+Technical Details:
+Security group allows 0.0.0.0/0
+
+Impact:
+Service disruption risk
+
+Required Actions:
+1. Disable debug endpoint (Owner: Platform Team, Due: 2026-06-20)
+2. Update firewall rules (Owner: Backend Team, Due: 2026-08-16)
+3. Schedule follow-up scan (Owner: Platform Team, Due: 2026-05-10)
+
+Workaround:
+Use alternative endpoint
+
+References:
+- CVE-2026-83647
+- Internal ticket: SEC-3618
+
+Contact: security@company.internal | #security-alerts on Slack

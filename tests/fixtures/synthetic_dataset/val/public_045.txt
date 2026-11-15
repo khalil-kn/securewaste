@@ -1,24 +1,19 @@
-Quarterly Business Review - Q1 2026
+Securing Microservices
 
-Revenue Highlights:
-Total revenue: $8,792,046.00 (up 23% YoY)
-New customers acquired: 224
-Customer retention rate: 94%
+By Alex Rodriguez | 2026-02-16 | 5 min read
 
-Product Metrics:
-Monthly active users: 160,647
-Feature adoption rate: 60%
-Average session duration: 60 minutes
+Last quarter, our team faced...
 
-Engineering Metrics:
-Deploy frequency: 50/week
-Mean time to recovery: 25 minutes
-Change failure rate: 6%
+Our approach was unconventional...
 
-Strategic Initiatives:
-1. Market expansion into Enterprise
-2. AI/ML platform investment
-3. Developer experience improvements
+Team adoption was faster than...
 
-Next Quarter Focus:
-Scaling infrastructure for 4x growth.
+Key Takeaways:
+- Measure before optimizing
+- Documentation is a feature
+- Technical debt is a choice
+
+The full code is on GitHub.
+
+Tags: engineering, scaling, kubernetes
+---

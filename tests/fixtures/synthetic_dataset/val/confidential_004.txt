@@ -1,31 +1,30 @@
-Financial Report - Q4 2026
+Payroll Register - 2026-03 - CONFIDENTIAL
 
-Prepared by: Jane Doe (znnsla@company.org)
-Date: 2026-06-22
-Classification: CONFIDENTIAL
+Entity: TechCorp Inc | EIN: 35-9879906
+Processed by: Paylocity | Date: 2026-09-14
+Classification: CONFIDENTIAL - HR & Finance Only
 
-Revenue Summary:
-Total Revenue: $76,031,292.00
-Recurring Revenue: $25,285,454.00 (67%)
-New Business: $6,955,503.00
+Summary:
+Employees Paid: 84
+Gross Wages: $142,588,924.00
+Employer Taxes: $8,330,973.00
+Benefits Cost: $22,359,235.00
+Net Pay: $130,151,774.00
+Total Cost: $238,804,132.00
 
-Expense Breakdown:
-Personnel: $3,902,267.00
-Infrastructure: $1,063,901.00
-Marketing: $6,250,623.00
-Operations: $4,846,310.00
+Top 5 Earners:
+1. Alice Smith - $537,311.00 (CTO)
+2. David Brown - $300,852.00 (Director)
+3. Iris Davis - $270,197.00 (Staff Engineer)
+4. Jack Wilson - $195,928.00 (Senior Engineer)
+5. Mia Anderson - $172,716.00 (ML Engineer)
 
-Key Metrics:
-Gross Margin: 69%
-Customer Acquisition Cost: $429.00
-Lifetime Value: $279,085.00
-Churn Rate: 3%
+Tax Deposits:
+Federal: $42,034,622.00 (Due: 2026-12-15)
+State: $9,070,343.00 (Due: 2026-04-15)
+Local: $73,746.00 (Due: 2026-10-15)
 
-Payment Processing:
-Cards processed: 124461
-Total volume: $49,957,504.00
-Chargeback rate: 2%
+Benefits Deductions:
+401(k): $9,827,360.00 | Health: $26,055,348.00 | HSA: $195,045.00
 
-Bank Accounts:
-Primary: DE57 9I4R XGK0 C8QK PXNU 8AOT
-Reserve: DE57 AHS5 L1WW 7TH4 CVFK KWSH
+Bank: Wells Fargo | Account: 3484150715 | Routing: 726938297

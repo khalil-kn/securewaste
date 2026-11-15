@@ -1,21 +1,16 @@
-Internal Audit Report - Compliance
+Quarterly Budget Review - Platform - Q2 2026
 
-Audit Period: 2026-01-01 to 2026-10-22
-Auditor: Audit Team B (kcpgoqov@example.com)
-Classification: INTERNAL
+Budget Allocated: $7,335,998
+Budget Spent: $1,173,774 (73%)
+Variance: $-509,797 (3%)
 
-Scope:
-This audit covered data handling.
+Top Expenses:
+1. Personnel: $547,954
+2. Personnel: $1,448,854
+3. Software Licenses: $498,467
 
-Findings:
-1. Missing encryption - Risk Level: HIGH
-2. Gap in monitoring - Risk Level: MEDIUM
-3. Process deviation - Risk Level: HIGH
+Forecast Next Quarter:
+Decrease after migration
 
-Recommendations:
-Implement encryption
-
-Management Response:
-Under review
-
-Follow-up Date: 2026-10-27
+Decisions Needed:
+Optimize cloud spend

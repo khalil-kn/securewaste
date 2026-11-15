@@ -1,1 +1,27 @@
-Contact Bob Smith at yrtfvho@test.net or +14 730 858 4920 for project questions.
+IT Security Advisory - SEC-2026242
+
+Date: 2026-02-04 | Severity: HIGH | Status: Open
+Affected: Cache Layer
+
+Summary:
+Vulnerability in dependency
+
+Technical Details:
+Debug endpoint returns stack traces
+
+Impact:
+Service disruption risk
+
+Required Actions:
+1. Enable TLS 1.2+ (Owner: Backend Team, Due: 2026-11-07)
+2. Update firewall rules (Owner: Security Team, Due: 2026-04-04)
+3. Monitor for anomalies (Owner: Security Team, Due: 2026-08-06)
+
+Workaround:
+Disable feature temporarily
+
+References:
+- CVE-2026-97836
+- Internal ticket: SEC-1706
+
+Contact: security@company.internal | #security-alerts on Slack

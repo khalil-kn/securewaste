@@ -1,1 +1,1 @@
-Encryption key: LQ9DWCJTAC15DI4Y for analytics. HIGHLY CONFIDENTIAL
+API token: Bearer vhnoxWAc14UHgvhnRmeAA3q2luYtXsAOd1es0qUkNuXoOaMz. DO NOT SHARE. HIGHLY CONFIDENTIAL

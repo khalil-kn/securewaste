@@ -1,1 +1,19 @@
-Weekly status report: All tasks on track. No blockers identified.
+Lessons from Our Migration to Kubernetes
+
+By Lisa Wang | 2026-02-12 | 5 min read
+
+The challenge was clear:...
+
+First, we identified the bottlenecks...
+
+Edge cases taught us...
+
+Key Takeaways:
+- Measure before optimizing
+- Documentation is a feature
+- Your team is your greatest asset
+
+Stay tuned for part 2.
+
+Tags: database, performance, sharding
+---

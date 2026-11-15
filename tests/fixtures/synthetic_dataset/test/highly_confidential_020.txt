@@ -1,1 +1,39 @@
-Service account: frcmeemuy@demo.io key=PUT7SSOQZ3MV1A0Q. HIGHLY CONFIDENTIAL
+Production Deployment Runbook - DEP-2026185
+
+Date: 2026-04-17
+Environment: PRODUCTION
+Classification: HIGHLY CONFIDENTIAL
+
+Pre-deployment Checklist:
+- [ ] All tests passing in staging
+- [ ] Security scan clean
+- [ ] Database migration reviewed
+- [ ] Rollback plan documented
+- [ ] On-call engineer confirmed: Sarah Davis ((416) 866-3942)
+
+Secrets Required:
+AWS Access Key: AKIAWDS779PIWO4OCD44
+AWS Secret Key: Bje@G@!tQuFE@Q#VMUvjVLo@nVDi1T!X
+Database Password: oEKy!k4lpjAut%ZRWfqiq4blgxjJ%%6P
+API Keys: KnFGQmVFG9E1EyavaIyVBEPi53Kzqo9EON3DXs1lLcxKqX2K, 4yTrNo09gaeW1QbOjA41xoE8roPADml4A3VKgFJxGHnEmcHc, BwYWnyDjnHmFIkq4hg9ags4m4JvlStRcNELx60OQbmUWbDdh, jA27sUKCZ5k7zpz7eBFqvJKsXnRBTdf04OGGAVSy8Ctl0spv, YzDuW4kMmwO67MVXtFarteSkW7OinSZN0BVCa82MSMjJmMX0, fA3EzSMFIOnPnBByeGMQ5PMEFtYnFUkZ2npz3NKcuYau39wJ, CrFfxofjK0eZ4vM2LMRst6DpmqGrqi3bQXEFjP76AJjsJM1e, sYn53vEPiLZFlwCFYxj47LuHp0KyI1Hf9IcN4lSIaC3ltAlI
+JWT Signing Key: HVAKUdGh7ES9qb8pgR1Ld7RVb6NnT8JCkyvnDeCdWmJmEUhWqWuPnnh8akj0YYZM
+Encryption Keys: 2fJtUooQt1D3pSNpDZDg33lGCU4HrB1m, jMVagCfQD5HW5DlKitZjTmdGruN6Rwml, mNiZGq7MUEz4TptrHRSVPiQEAS9EY3we, egUYEbdWC7r1WgP2XIPJXySM9a8udkRP
+
+Deployment Steps:
+1. Create pre-deployment snapshot
+2. Apply database migrations
+3. Deploy application containers
+4. Run smoke tests
+5. Update DNS records
+6. Monitor error rates for 30 minutes
+
+Rollback Procedure:
+1. Revert DNS
+2. Restore database snapshot
+3. Redeploy previous container version
+4. Notify stakeholders
+
+Emergency Contacts:
+Security: security@company.com
+Infrastructure: infra@company.com
+Management: management@company.com

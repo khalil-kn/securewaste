@@ -1,0 +1,24 @@
+How We Scaled to 1M Requests/sec at DevTools Inc
+
+Background:
+As our user base grew...
+
+The Challenge:
+Maintaining consistency...
+
+Our Approach:
+We implemented a new caching layer...
+
+Results:
+- MTTR: < 0.1%
+- Incident count: -80%
+- Test coverage: +25%
+
+Lessons Learned:
+Automate everything
+
+What's Next:
+Open source the tooling
+
+---
+James Okafor is a Tech Lead at DevTools Inc. Connect on LinkedIn/Twitter.

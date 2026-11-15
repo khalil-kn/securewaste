@@ -1,39 +1,38 @@
-Production Deployment Runbook - DEP-2026487
+Incident Response Playbook - INC-2026787
 
-Date: 2026-07-22
-Environment: PRODUCTION
+Severity: SEV-3
+Detected: 2026-10-25 14:56
 Classification: HIGHLY CONFIDENTIAL
 
-Pre-deployment Checklist:
-- [ ] All tests passing in staging
-- [ ] Security scan clean
-- [ ] Database migration reviewed
-- [ ] Rollback plan documented
-- [ ] On-call engineer confirmed: John Smith (+38 321 646 4384)
+Incident Summary:
+Synthetic incident involving exposed credentials
 
-Secrets Required:
-AWS Access Key: AKIAW7U8BUE0OW5M3AWO
-AWS Secret Key: rgEp#wHzK!cWd#Ex6Pbu0Qpzz45!kwYJ
-Database Password: dY$zfHH5Mzl6b6$C0LjAEvAMF%58nDck
-API Keys: l0spvYzDuW4kMmwO67MVXtFarteSkW7OinSZN0BVCa82MSMj, JmMX0fA3EzSMFIOnPnBByeGMQ5PMEFtYnFUkZ2npz3NKcuYa
-JWT Signing Key: u39wJCrFfxofjK0eZ4vM2LMRst6DpmqGrqi3bQXEFjP76AJjsJM1esYn53vEPiLZ
-Encryption Keys: pDwgqL2cjLjIoA4ZsXZxTlnQ0OCkxi1E, csRLLLhfPWwhlo8KEofcnFZ8UidaKTHH, Dv14bTmN6UCtg13AO8DW3HAcBAzNpCt5, 4pNbGkqzLfvvnI5stg6ITfO6qfIrQXYD
+Affected Systems:
+API Gateway, Database
 
-Deployment Steps:
-1. Create pre-deployment snapshot
-2. Apply database migrations
-3. Deploy application containers
-4. Run smoke tests
-5. Update DNS records
-6. Monitor error rates for 30 minutes
+Root Cause Analysis:
+Configuration drift in Kubernetes
 
-Rollback Procedure:
-1. Revert DNS
-2. Restore database snapshot
-3. Redeploy previous container version
-4. Notify stakeholders
+Compromised Credentials (ROTATE IMMEDIATELY):
+- AWS Keys: AKIAF6P4YKDTLYQ8ITNO / vOAAsqO1TdNC7G1KuIcxkd1mF!zyHagM
+- Database: app_user / bfcD0MJKHBwyBqicvjcuTAocSa07JTX6
+- API Tokens: CDqPTjsQLOQfwYgpUTv7qhKyxYHX4M9TC7qQuhoZlGzQgpzp, O3kMhjcpcDczixQijkcAiqV9Kpej1L116Pzo9RYCmueloSSz, kJXxxFZ3WbQiQ3vAiPeAWXJDZan6N8eLvhqI23Wjt9bs3h4B, ylMnkHfUbTvrTLs84rPM3FpeRQsBSJSSpAJwncDoNyR6RZa7
+- SSH Keys: monitoring agent key
 
-Emergency Contacts:
-Security: security@company.com
-Infrastructure: infra@company.com
-Management: management@company.com
+Containment Actions Taken:
+Rotated all credentials
+
+Eradication Steps:
+1. Rotate all compromised credentials
+2. Patch vulnerable systems
+3. Remove unauthorized access
+4. Verify integrity of all systems
+
+Recovery Plan:
+Gradual service restoration
+
+Lessons Learned:
+Improve runbook accuracy
+
+Report Prepared by: Mike Brown (esngg@company.org)
+Approved by: Alice Williams (eefsswujl@demo.io)

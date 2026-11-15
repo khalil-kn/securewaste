@@ -2,8 +2,8 @@
 """Synthetic dataset generator for SecureWaste document classification (Sprint 2: SCRUM-19/20/21).
 
 Generates balanced synthetic documents across four classification labels:
-- Public: No sensitive data
-- Internal: Emails, phone numbers, keywords
+- Public: Intended or approved for external distribution
+- Internal: Non-public operational company information
 - Confidential: Payment cards, IBANs, national IDs, passports, confidentiality labels
 - Highly Confidential: API keys, secrets, private keys
 
@@ -41,55 +41,22 @@ random.seed(SEED)
 # Synthetic Data Templates
 # =============================================================================
 
-# Public documents - no sensitive content
+# Public documents - suitable for external distribution
 # Varied document types: emails, reports, tutorials, announcements, policies, blog posts
 PUBLIC_TEMPLATES = [
-    # Short emails/messages
-    "Hi team, just a reminder about our standup tomorrow at 9am in the main conference room.",
-    "Thanks for the quick review on the PR. I've addressed your comments and pushed the updates.",
-    "The office will be closed next Friday for the company holiday. Enjoy the long weekend!",
-    "Lunch and learn session this Thursday at noon - topic: 'Intro to GraphQL'. Pizza provided.",
-    "Welcome aboard Sarah! Your desk is on the 3rd floor, badge access already configured.",
+    # Public-facing announcements and communications
+    "Join our free public webinar next Thursday to learn the fundamentals of cybersecurity.",
+
+    "Thank you for your interest in our open-source project. The latest release is available on our public GitHub repository.",
+
+    "Our offices will be closed next Friday for a national holiday. Customer support will resume on Monday.",
+
+    "Registration is now open for our public technology conference. Visit our website for the full agenda.",
+
+    "We are pleased to welcome visitors to our annual public technology exhibition. Admission is free.",
     # Meeting notes & agendas
-    """Meeting Notes - Project Atlas Sync - {date}
-
-Attendees: {attendees}
-
-Discussion:
-1. Sprint velocity trending up 12% this quarter - good momentum
-2. Blockers: waiting on design review for checkout flow (targeting Tuesday)
-3. New hire ramp-up: both junior devs shipping features by week 3
-4. Technical debt: allocated 15% capacity for refactoring auth module
-
-Decisions:
-- Proceed with React 18 upgrade after Q3 release
-- Adopt ESLint flat config for new projects
-
-Action Items:
-- {action_owner_1}: finalize API spec by {action_date_1}
-- {action_owner_2}: schedule load test for payment service
-- {action_owner_3}: update runbook for new deployment process""",
-    """Quarterly All-Hands - Q{quarter} {year} Highlights
-
-Company Metrics:
-- Revenue: ${revenue:,.0f} (+{growth}% YoY)
-- Headcount: {headcount} ({new_hires} new hires this quarter)
-- Customer NPS: {nps} (industry avg: 42)
-
-Product Updates:
-- Launched: Mobile app v3.2 with dark mode
-- Shipped: Real-time collaboration features
-- Beta: AI-powered code suggestions (opt-in)
-
-Engineering:
-- Deploy frequency: {deploy_freq}/week (target: 50)
-- P95 latency: {p95_ms}ms (down from {p95_prev}ms)
-- Incident count: {incidents} (target: < 5/month)
-
-People:
-- Promotions: {promotions} engineers to Senior/Staff
-- Learning budget: ${learning_budget:,.0f} utilized
-- Hackathon winners: {hackathon_winners}""",
+    'Product Update - Project {project_name} - {date}\n\nWe are pleased to announce new improvements to our product.\n\nHighlights:\n- Improved accessibility and user experience.\n- Updated public documentation and tutorials.\n- New features developed in response to community feedback.\n\nUpcoming events:\n- Product demonstration for customers and partners.\n- Community questions and answers.\n\nFor more information, see our published product updates.',
+    'Company News Release - Q{quarter} {year}\n\nOur company is pleased to share an overview of our latest publicly announced milestones.\n\nHighlights:\n- New product capabilities are now available to customers.\n- Expanded learning resources and customer support.\n- Community feedback continues to guide product improvements.\n\nLearn more through our public newsroom and product documentation.',
     # Tutorials & documentation
     """Getting Started with {technology}
 
@@ -156,24 +123,7 @@ Key Takeaways:
 Tags: {tags}
 ---""",
     # Policies & announcements
-    """Company Policy Update: {policy_name}
-
-Effective: {effective_date}
-
-Summary:
-{policy_summary}
-
-What's Changing:
-{changes_list}
-
-What You Need to Do:
-{action_items}
-
-Questions?
-Contact {contact_team} at {contact_email} or visit the internal wiki.
-
----
-This is an automated notification from {sender}.""",
+    "Public Website Policy Update: {policy_name}\n\nEffective: {effective_date}\n\nThis notice describes the publicly available version of our updated policy.\n\nSummary:\n{policy_summary}\n\nWhat's Changing:\n{changes_list}\n\nQuestions?\nVisit our public help center or contact the customer support team.\n\nThis notice is intended for external publication.",
     # Technical blog / engineering posts
     """How We {achievement} at {company_name}
 
@@ -257,9 +207,9 @@ Resources:
 - Onboarding checklist: onboarding.company.internal/{employee_id}
 
 Welcome aboard! ðŸŽ‰""",
-    """Performance Review - {employee_name} ({review_cycle})
+    """Team Development Discussion - {review_cycle}
 
-Role: {role} | Level: {level} | Manager: {manager_name}
+Team: {onboarding_team} | Facilitator: {manager_name}
 
 Achievements:
 {achievements}
@@ -273,12 +223,12 @@ Areas for Growth:
 Goals for Next Period:
 {next_goals}
 
-Compensation Discussion:
-Current: ${current_comp:,.0f} | Market: ${market_comp:,.0f}
-Recommended adjustment: {adjustment_pct}%
+Development Planning:
+Discuss training goals, mentoring opportunities, and skill-building priorities.
+No compensation or sensitive personal details are included in this summary.
 
 Signatures:
-Employee: _____________________ Date: _______
+Facilitator: __________________ Date: _______
 Manager: _____________________ Date: _______""",
     # IT & Security
     """IT Security Advisory - {advisory_id}
@@ -2394,12 +2344,35 @@ GENERATORS = {
 
 
 def generate_dataset(samples_per_class: int = SAMPLES_PER_CLASS) -> list[SyntheticDocument]:
-    """Generate balanced synthetic dataset."""
+    """Generate balanced synthetic documents without duplicate text."""
+    import re
+
     documents = []
+
     for label in CLASSIFICATION_LABELS:
-        class_documents = [GENERATORS[label]() for _ in range(samples_per_class)]
-        while len({doc.metadata["template_group"] for doc in class_documents}) < 3:
-            class_documents[-1] = GENERATORS[label]()
+        class_documents = []
+        seen = set()
+        attempts = 0
+        max_attempts = samples_per_class * 100
+
+        while len(class_documents) < samples_per_class:
+            attempts += 1
+
+            if attempts > max_attempts:
+                raise RuntimeError(
+                    f"Unable to generate {samples_per_class} unique "
+                    f"documents for {label}. Add more diverse templates."
+                )
+
+            doc = GENERATORS[label]()
+
+            normalized = " ".join(re.findall(r"\w+", doc.text.casefold()))
+
+            if normalized in seen:
+                continue
+
+            seen.add(normalized)
+            class_documents.append(doc)
 
         for index, doc in enumerate(class_documents):
             doc.metadata = {
@@ -2409,8 +2382,10 @@ def generate_dataset(samples_per_class: int = SAMPLES_PER_CLASS) -> list[Synthet
                 "seed": SEED,
             }
             documents.append(doc)
+
     random.shuffle(documents)
     return documents
+
 
 
 def train_val_test_split(
@@ -2419,77 +2394,134 @@ def train_val_test_split(
     val_ratio: float = 0.15,
     test_ratio: float = 0.15,
 ) -> tuple[list[SyntheticDocument], list[SyntheticDocument], list[SyntheticDocument]]:
-    """Split by source template so a template never appears in multiple splits.
-
-    The generator stores a ``template_group`` in each document's metadata.
-    Documents without that metadata are assigned their own group, which keeps
-    this function safe for callers that construct SyntheticDocument manually.
-    """
+    """Split by template groups, keeping each group in one split."""
     ratios = (train_ratio, val_ratio, test_ratio)
-    if any(ratio <= 0 for ratio in ratios) or abs(sum(ratios) - 1.0) >= 1e-6:
+
+    if any(r <= 0 for r in ratios) or abs(sum(ratios) - 1.0) >= 1e-6:
         raise ValueError("Split ratios must be positive and sum to 1.0")
 
-    by_label: dict[str, dict[str, list[SyntheticDocument]]] = {label: {} for label in CLASSIFICATION_LABELS}
+    by_label = {label: {} for label in CLASSIFICATION_LABELS}
+
     for index, doc in enumerate(documents):
         if doc.label not in by_label:
             raise ValueError(f"Unknown classification label: {doc.label}")
-        group = doc.metadata.get("template_group", f"single-document:{index}")
+
+        group = doc.metadata.get(
+            "template_group", f"single-document:{index}"
+        )
         by_label[doc.label].setdefault(group, []).append(doc)
 
-    splits: list[list[SyntheticDocument]] = [[], [], []]
-    split_ratios = (train_ratio, val_ratio, test_ratio)
+    splits = [[], [], []]
 
     for label, groups in by_label.items():
         group_items = list(groups.items())
+
         if len(group_items) < 3:
             raise ValueError(
-                f"Label {label!r} needs at least 3 independent template groups "
-                "to create train, validation, and test splits."
+                f"Label {label!r} needs at least 3 template groups."
             )
 
         random.shuffle(group_items)
         total = sum(len(items) for _, items in group_items)
-        targets = [total * ratio for ratio in split_ratios]
+        targets = [total * r for r in ratios]
 
-        # Choose one independent group for validation and one for testing.
-        # The remaining groups are used for training. Pick the pair whose sizes
-        # best approximate the requested holdout proportions.
-        best_pair = None
-        best_error = float("inf")
-        for val_index in range(len(group_items)):
-            for test_index in range(len(group_items)):
-                if val_index == test_index:
-                    continue
-                val_size = len(group_items[val_index][1])
-                test_size = len(group_items[test_index][1])
-                error = abs(val_size - targets[1]) + abs(test_size - targets[2])
+        # Use multiple independent groups per holdout where possible.
+        min_holdout_groups = 2 if len(group_items) >= 5 else 1
+
+        assignments = [0] * len(group_items)
+        counts = [total, 0, 0]
+        group_counts = [len(group_items), 0, 0]
+
+        for split_index in (1, 2):
+            for _ in range(min_holdout_groups):
+                candidates = [
+                    i for i, assigned in enumerate(assignments)
+                    if assigned == 0
+                ]
+
+                # Preserve enough groups for the other holdout.
+                if not candidates:
+                    raise RuntimeError(
+                        f"Not enough groups for label {label!r}"
+                    )
+
+                chosen = min(
+                    candidates,
+                    key=lambda i: abs(
+                        counts[split_index] +
+                        len(group_items[i][1]) -
+                        targets[split_index]
+                    ),
+                )
+
+                assignments[chosen] = split_index
+                size = len(group_items[chosen][1])
+                counts[0] -= size
+                counts[split_index] += size
+                group_counts[0] -= 1
+                group_counts[split_index] += 1
+
+        # Assign additional groups when they improve ratio balance.
+        for i, (_, group_docs) in enumerate(group_items):
+            if assignments[i] != 0:
+                continue
+
+            size = len(group_docs)
+            current_error = sum(
+                abs(counts[j] - targets[j]) for j in range(3)
+            )
+
+            best_split = 0
+            best_error = current_error
+
+            for target_split in (1, 2):
+                if group_counts[0] <= 1:
+                    break
+
+                trial = counts.copy()
+                trial[0] -= size
+                trial[target_split] += size
+
+                error = sum(
+                    abs(trial[j] - targets[j]) for j in range(3)
+                )
+
                 if error < best_error:
                     best_error = error
-                    best_pair = (val_index, test_index)
+                    best_split = target_split
 
-        if best_pair is None:
-            raise RuntimeError(f"Could not allocate template groups for label {label!r}.")
-        val_index, test_index = best_pair
-        for group_index, (_, group_docs) in enumerate(group_items):
-            if group_index == val_index:
-                splits[1].extend(group_docs)
-            elif group_index == test_index:
-                splits[2].extend(group_docs)
-            else:
-                splits[0].extend(group_docs)
+            if best_split != 0:
+                assignments[i] = best_split
+                counts[0] -= size
+                counts[best_split] += size
+                group_counts[0] -= 1
+                group_counts[best_split] += 1
+
+        for i, (_, group_docs) in enumerate(group_items):
+            splits[assignments[i]].extend(group_docs)
 
     for split_docs in splits:
         random.shuffle(split_docs)
 
-    # Defensive assertion: no template group may cross a split boundary.
     group_sets = [
-        {doc.metadata["template_group"] for doc in split_docs if "template_group" in doc.metadata}
+        {
+            doc.metadata["template_group"]
+            for doc in split_docs
+            if "template_group" in doc.metadata
+        }
         for split_docs in splits
     ]
-    if (group_sets[0] & group_sets[1]) or (group_sets[0] & group_sets[2]) or (group_sets[1] & group_sets[2]):
-        raise RuntimeError("Template leakage detected between dataset splits.")
+
+    if any(
+        group_sets[a] & group_sets[b]
+        for a, b in ((0, 1), (0, 2), (1, 2))
+    ):
+        raise RuntimeError(
+            "Template leakage detected between dataset splits."
+        )
 
     return splits[0], splits[1], splits[2]
+
 
 
 def save_dataset(documents: list[SyntheticDocument], split: str) -> None:

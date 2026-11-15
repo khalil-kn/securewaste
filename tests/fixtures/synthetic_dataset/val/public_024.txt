@@ -1,1 +1,19 @@
-Office holiday schedule: Closed Dec 24-26, Dec 31-Jan 1.
+CI/CD Pipeline Best Practices
+
+By Sarah Chen | 2026-08-12 | 14 min read
+
+Last quarter, our team faced...
+
+We started by measuring...
+
+Edge cases taught us...
+
+Key Takeaways:
+- Design for failure
+- Simplicity scales, complexity fails
+- Your team is your greatest asset
+
+Try it yourself and let us know.
+
+Tags: api, typescript, architecture
+---

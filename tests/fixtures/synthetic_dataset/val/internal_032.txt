@@ -1,0 +1,23 @@
+Welcome to the Team - Bob Thomas
+
+Role: Principal | Team: Backend | Start Date: 2026-03-10
+Manager: John Smith (ibpzpve@company.org) | Buddy: Lisa Anderson (ghvbp@company.org)
+
+Your First Week:
+Day 1: Orientation (9am), IT setup (10am), Team lunch (12:30pm), 1:1 with manager (3pm)
+Day 2: Security training (mandatory), Access provisioning, Codebase tour
+Day 3: Jira deep dive, VPN hands-on, First commit!
+Day 4: Architecture overview with Alex Davis, Pair programming session
+Day 5: Sprint planning participation, 30-day goals review
+
+Key Contacts:
+- HR: Lisa Taylor (weunmfhki@company.org) - benefits, policies
+- IT: Alex Martinez (yhqvkyu@test.net) - access, hardware, tools
+- Security: Jordan Lee (security@company.internal) - VPN, MFA, secrets
+
+Resources:
+- Internal wiki: wiki.company.internal
+- Engineering handbook: handbook.company.internal
+- Onboarding checklist: onboarding.company.internal/EMP-6359
+
+Welcome aboard! ðŸŽ‰

@@ -1,1 +1,43 @@
-Financial statement: Account DE80 7C4M 29DW E29F PJ2Q ZP6D balance $5,564.00. CONFIDENTIAL
+Quarterly Financial Report - PayTech Solutions - Q4 2026
+
+Prepared by: Jane Smith | Date: 2026-08-01
+Classification: CONFIDENTIAL
+Distribution: CFO, Controller, Board Audit Committee
+
+=== INCOME STATEMENT ===
+Revenue: $64,907,528 (+19% YoY)
+COGS: $107,803,154 (28%)
+Gross Profit: $192,914,801 (62%)
+
+Operating Expenses:
+  R&D: $77,120,854 (11%)
+  Sales & Marketing: $127,477,620 (29%)
+  G&A: $16,252,269 (15%)
+Total OpEx: $248,467,057 (44%)
+
+Operating Income: $454,406,994 (28%)
+Net Income: $169,470,607 (13%)
+
+=== BALANCE SHEET HIGHLIGHTS ===
+Cash & Equivalents: $350,878,786
+Accounts Receivable: $97,706,762 (DSO: 72 days)
+Total Assets: $1,400,522,034
+Total Liabilities: $746,184,335
+Equity: $30,280,387
+
+=== KEY METRICS ===
+ARR: $139,755,857 (+45% YoY)
+NRR: 96%
+Burn Rate: $632,136/month
+Runway: 19 months
+
+=== PAYMENT DATA ===
+Cards Processed: 2,320,344
+Volume: $8,659,039,917
+Chargebacks: 1811 (1%)
+Refunds: 729 (0%)
+
+Bank Accounts:
+Primary Operating: DE98 P0Z0 6KBC V5G9 OO88 HUR6
+Reserve: DE22 48C1 Z6CV T5FO WTCO IHJJ
+Payroll: DE96 CAY9 RZST MLB2 NXCC R7G1

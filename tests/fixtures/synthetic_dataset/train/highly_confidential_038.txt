@@ -1,34 +1,38 @@
-Infrastructure Configuration - CFG-2026983
+Incident Response Playbook - INC-2026847
 
-Environment: STAGING
-Last Updated: 2026-11-14
+Severity: SEV-2
+Detected: 2026-10-12 06:05
 Classification: HIGHLY CONFIDENTIAL
 
-Database Clusters:
-Primary: db-primary-1:5432
-  Credentials: admin / 6EhHH7Ap5JAtTq1dtNzZci5SzaBcLnn3
-  Connection String: postgresql://...
-Replica: db-replica-1:3306
-  Credentials: replication / 7cqXxrfEmPDhlgPbSDef7q1LLBOYzBOn
+Incident Summary:
+Synthetic incident involving exposed credentials
 
-Message Queues:
-RabbitMQ: mq-3
-  Credentials: app_user / QlCxx!nRXvNWPH6Wu2JP43qgZw0h7U6L
-Kafka: kafka-prod:9092
-  SASL Credentials: app_user / KNL4cq#LXrWI3P%0h2XYIzL6I2t57X0N
+Affected Systems:
+API Gateway, Database
 
-Cache Layer:
-Redis: redis-3:6379
-  Password: 3YkcJ6J5$cR#MLJ@eec4S68T%GHqnY83
-  Cluster Mode: enabled
+Root Cause Analysis:
+Certificate expiration
 
-Secrets Management:
-Vault Address: https://vault-prod.company.com
-Vault Token: 6NANtZ0m5n8!sKiHlGFXggv46BAgUpDO
-Key Paths: secret/data/app
+Compromised Credentials (ROTATE IMMEDIATELY):
+- AWS Keys: AKIAE4NH93FDYFLIMRUT / u7XFO9d8aw04aVHmIjGrMBo5h6XXHxms
+- Database: app_user / om8TDKV%DjkMwij3uWXiVY3g2$Be5#0Q
+- API Tokens: S8z2APKSSdMH7xWGRKHJnOvdIF0LMKqosa8eivmCrLIhT9OM, IDKUs1MEFqM1y7vGPiNNCF2mEpf6XARban16DyQGtvYRWRIE, Slg9bz4wcAyhFp7ldm8FHS4YJcqK47DnlrPf0m3rxk1ZgohF
+- SSH Keys: CI/CD deploy key
 
-Monitoring:
-Prometheus: https://prometheus.company.com
-Grafana: https://grafana.company.com
-  Admin: grafana_admin / @VWpeXDhlcT9OnHNTt4G69Gql#d3KuIL
-Alertmanager: https://alerts.company.com
+Containment Actions Taken:
+Isolated affected namespace
+
+Eradication Steps:
+1. Rotate all compromised credentials
+2. Patch vulnerable systems
+3. Remove unauthorized access
+4. Verify integrity of all systems
+
+Recovery Plan:
+Full credential rotation
+
+Lessons Learned:
+Enhance alerting thresholds
+
+Report Prepared by: Sarah Davis (tqsrdmxoiv@example.com)
+Approved by: Alice Williams (scrjbxn@demo.io)
