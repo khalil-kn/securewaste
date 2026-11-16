@@ -1,0 +1,30 @@
+Payroll Register - 2026-11 - CONFIDENTIAL
+
+Entity: SecureNet Group | EIN: 67-9237649
+Processed by: Gusto | Date: 2026-09-25
+Classification: CONFIDENTIAL - HR & Finance Only
+
+Summary:
+Employees Paid: 993
+Gross Wages: $24,026,103.00
+Employer Taxes: $11,196,150.00
+Benefits Cost: $26,566,571.00
+Net Pay: $102,197,534.00
+Total Cost: $169,249,810.00
+
+Top 5 Earners:
+1. Bob Johnson - $542,577.00 (Chief Architect)
+2. Frank Brown - $342,655.00 (Principal Engineer)
+3. Henry Davis - $360,328.00 (Security Lead)
+4. Karen Wilson - $186,663.00 (Security Engineer)
+5. Nathan Taylor - $261,377.00 (Senior Engineer)
+
+Tax Deposits:
+Federal: $38,792,022.00 (Due: 2026-12-15)
+State: $1,492,154.00 (Due: 2026-08-15)
+Local: $250,612.00 (Due: 2026-05-15)
+
+Benefits Deductions:
+401(k): $17,745,168.00 | Health: $13,232,263.00 | HSA: $1,885,703.00
+
+Bank: Bank of America | Account: 4855036388 | Routing: 700383573

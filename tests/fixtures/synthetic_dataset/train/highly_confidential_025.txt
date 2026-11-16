@@ -1,0 +1,1 @@
+JWT signing key: NPHM6B7JE2WDCG2Q. Keep secure. HIGHLY CONFIDENTIAL

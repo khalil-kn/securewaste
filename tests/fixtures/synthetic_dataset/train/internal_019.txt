@@ -1,0 +1,31 @@
+Project Proposal: Atlas
+
+Author: Emma Taylor (uprnifoxi@test.net) | Date: 2026-06-19
+Sponsor: Alice Jones (tdgtwjj@sample.co)
+
+Executive Summary:
+New payment processing service
+
+Problem Statement:
+Vendor lock-in risk
+
+Proposed Solution:
+Implement CDC for real-time sync
+
+Resource Request:
+- Engineering: 12 FTEs (18,774/month)
+- Design: 2 FTEs (18,441/month)
+- PM: 2 FTE (15,882/month)
+- Infrastructure: $42,312/month
+Total: $1,550,935 over 14 months
+
+Success Metrics:
+Process 1M events/sec
+
+Risks & Mitigations:
+Risk: Vendor dependency
+Mit: Multi-cloud strategy
+Risk: Team bandwidth
+Mit: Hire 2 contractors
+
+Approval Required: CTO, CFO

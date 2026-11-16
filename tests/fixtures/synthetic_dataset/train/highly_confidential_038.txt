@@ -1,0 +1,38 @@
+Incident Response Playbook - INC-2026847
+
+Severity: SEV-2
+Detected: 2026-10-12 06:05
+Classification: HIGHLY CONFIDENTIAL
+
+Incident Summary:
+Synthetic incident involving exposed credentials
+
+Affected Systems:
+API Gateway, Database
+
+Root Cause Analysis:
+Certificate expiration
+
+Compromised Credentials (ROTATE IMMEDIATELY):
+- AWS Keys: AKIAE4NH93FDYFLIMRUT / u7XFO9d8aw04aVHmIjGrMBo5h6XXHxms
+- Database: app_user / om8TDKV%DjkMwij3uWXiVY3g2$Be5#0Q
+- API Tokens: S8z2APKSSdMH7xWGRKHJnOvdIF0LMKqosa8eivmCrLIhT9OM, IDKUs1MEFqM1y7vGPiNNCF2mEpf6XARban16DyQGtvYRWRIE, Slg9bz4wcAyhFp7ldm8FHS4YJcqK47DnlrPf0m3rxk1ZgohF
+- SSH Keys: CI/CD deploy key
+
+Containment Actions Taken:
+Isolated affected namespace
+
+Eradication Steps:
+1. Rotate all compromised credentials
+2. Patch vulnerable systems
+3. Remove unauthorized access
+4. Verify integrity of all systems
+
+Recovery Plan:
+Full credential rotation
+
+Lessons Learned:
+Enhance alerting thresholds
+
+Report Prepared by: Sarah Davis (tqsrdmxoiv@example.com)
+Approved by: Alice Williams (scrjbxn@demo.io)

@@ -1,0 +1,16 @@
+Quarterly Budget Review - Platform - Q4 2026
+
+Budget Allocated: $6,190,441
+Budget Spent: $8,253,160 (68%)
+Variance: $-811,995 (0%)
+
+Top Expenses:
+1. Contractors: $1,289,468
+2. Software Licenses: $295,035
+3. Software Licenses: $71,307
+
+Forecast Next Quarter:
+Expect 10% increase due to hiring
+
+Decisions Needed:
+Fund migration project

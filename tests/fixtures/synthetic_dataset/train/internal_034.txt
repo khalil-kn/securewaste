@@ -1,0 +1,16 @@
+Quarterly Budget Review - Platform - Q2 2026
+
+Budget Allocated: $7,335,998
+Budget Spent: $1,173,774 (73%)
+Variance: $-509,797 (3%)
+
+Top Expenses:
+1. Personnel: $547,954
+2. Personnel: $1,448,854
+3. Software Licenses: $498,467
+
+Forecast Next Quarter:
+Decrease after migration
+
+Decisions Needed:
+Optimize cloud spend

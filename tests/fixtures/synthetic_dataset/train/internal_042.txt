@@ -1,0 +1,27 @@
+IT Security Advisory - SEC-2026054
+
+Date: 2026-07-11 | Severity: MEDIUM | Status: Open
+Affected: Message Queue
+
+Summary:
+Weak encryption detected
+
+Technical Details:
+Debug endpoint returns stack traces
+
+Impact:
+Low - internal only
+
+Required Actions:
+1. Patch library to v1.2.4 (Owner: Security Team, Due: 2026-11-21)
+2. Enable WAF (Owner: Infra Team, Due: 2026-05-14)
+3. Deploy WAF rules (Owner: Platform Team, Due: 2026-05-02)
+
+Workaround:
+Route via VPN
+
+References:
+- CVE-2026-57154
+- Internal ticket: SEC-9873
+
+Contact: security@company.internal | #security-alerts on Slack

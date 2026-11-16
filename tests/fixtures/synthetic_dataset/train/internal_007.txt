@@ -1,0 +1,27 @@
+IT Security Advisory - SEC-2026368
+
+Date: 2026-01-11 | Severity: MEDIUM | Status: Resolved
+Affected: Load Balancer
+
+Summary:
+Misconfigured IAM role
+
+Technical Details:
+Security group allows 0.0.0.0/0
+
+Impact:
+Potential data exposure
+
+Required Actions:
+1. Patch library to v1.2.4 (Owner: Security Team, Due: 2026-07-04)
+2. Run vulnerability scan (Owner: Security Team, Due: 2026-09-08)
+3. Update runbook (Owner: Security Team, Due: 2026-06-26)
+
+Workaround:
+Manual approval required
+
+References:
+- CVE-2026-16117
+- Internal ticket: SEC-5382
+
+Contact: security@company.internal | #security-alerts on Slack

@@ -1,0 +1,16 @@
+Quarterly Budget Review - Security - Q3 2026
+
+Budget Allocated: $8,074,899
+Budget Spent: $8,241,337 (61%)
+Variance: $-673,053 (19%)
+
+Top Expenses:
+1. Cloud Infrastructure: $3,049,655
+2. Contractors: $921,142
+3. Personnel: $812,887
+
+Forecast Next Quarter:
+Stable with optimization
+
+Decisions Needed:
+Optimize cloud spend

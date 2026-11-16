@@ -1,0 +1,27 @@
+IT Security Advisory - SEC-2026342
+
+Date: 2026-01-08 | Severity: HIGH | Status: Monitoring
+Affected: API Gateway
+
+Summary:
+Misconfigured IAM role
+
+Technical Details:
+Security group allows 0.0.0.0/0
+
+Impact:
+Potential data exposure
+
+Required Actions:
+1. Patch library to v1.2.4 (Owner: Backend Team, Due: 2026-12-24)
+2. Update firewall rules (Owner: Infra Team, Due: 2026-07-14)
+3. Update runbook (Owner: Security Team, Due: 2026-07-16)
+
+Workaround:
+Manual approval required
+
+References:
+- CVE-2026-94023
+- Internal ticket: SEC-2167
+
+Contact: security@company.internal | #security-alerts on Slack

@@ -1,0 +1,16 @@
+Quarterly Budget Review - Data - Q1 2026
+
+Budget Allocated: $4,764,422
+Budget Spent: $7,536,077 (104%)
+Variance: $-699,596 (14%)
+
+Top Expenses:
+1. Cloud Infrastructure: $691,883
+2. Software Licenses: $1,377,748
+3. Cloud Infrastructure: $774,149
+
+Forecast Next Quarter:
+Stable with optimization
+
+Decisions Needed:
+Optimize cloud spend

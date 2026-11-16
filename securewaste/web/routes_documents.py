@@ -1,20 +1,16 @@
-"""Document upload and scanning routes for Secure Waste."""
+"""Document upload, scanning, and V3 classification routes."""
 
 from pathlib import Path
 
 from flask import Blueprint, current_app, render_template, request
 from werkzeug.exceptions import RequestEntityTooLarge
 
-from securewaste.core.errors import ExtractionFailed
-from securewaste.core.upload import (
-    Limits,
-    UploadRejected,
-    validate_upload,
-)
+from securewaste.core.errors import ExtractionFailed, UploadRejected
+from securewaste.core.ml_classifier import predict_classification_v3_dict
+from securewaste.core.upload import Limits, validate_upload
 from securewaste.services.detect_service import scan_file
 
 bp = Blueprint("documents", __name__)
-
 
 ERROR_MESSAGES = {
     "FILE_EMPTY": "Please select a file.",
@@ -68,13 +64,12 @@ def upload_document():
 
         destination = storage_dir / result.stored_name
 
-        # Exclusive creation prevents overwriting files.
         with destination.open("xb") as stored_file:
             stored_file.write(data)
 
-        # Step 3: Extract text and detect sensitive information.
+        # 3. Extract text and detect sensitive information.
         try:
-            findings, _pages = scan_file(
+            findings, pages = scan_file(
                 destination,
                 destination.suffix.lower().lstrip("."),
                 limits,
@@ -95,10 +90,16 @@ def upload_document():
                 error=message,
             ), 422
 
-        # Step 4: Display masked detection results.
+        # 4. Classify the extracted document text with V3.
+        document_text = "\n".join(page.text for page in pages)
+
+        classification = predict_classification_v3_dict(document_text)
+
+        # 5. Display masked findings and classification.
         return render_template(
             "detect.html",
             findings=findings,
+            classification=classification,
             error=None,
         ), 200
 

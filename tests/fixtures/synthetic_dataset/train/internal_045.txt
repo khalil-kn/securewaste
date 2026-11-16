@@ -1,0 +1,31 @@
+Project Proposal: Atlas
+
+Author: Lisa Taylor (oktjax@test.net) | Date: 2026-08-15
+Sponsor: Alice Smith (ugvrbxqs@test.net)
+
+Executive Summary:
+Migration to cloud-native architecture
+
+Problem Statement:
+Vendor lock-in risk
+
+Proposed Solution:
+Adopt serverless for variable workloads
+
+Resource Request:
+- Engineering: 9 FTEs (19,351/month)
+- Design: 1 FTEs (19,989/month)
+- PM: 2 FTE (21,891/month)
+- Infrastructure: $13,155/month
+Total: $814,349 over 9 months
+
+Success Metrics:
+99.99% availability, <50ms p99
+
+Risks & Mitigations:
+Risk: Vendor dependency
+Mit: Multi-cloud strategy
+Risk: Team bandwidth
+Mit: Hire 2 contractors
+
+Approval Required: Director, VP Engineering

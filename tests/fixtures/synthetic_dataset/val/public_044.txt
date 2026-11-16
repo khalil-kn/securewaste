@@ -1,0 +1,19 @@
+Securing Microservices
+
+By James Okafor | 2026-09-13 | 5 min read
+
+Last quarter, our team faced...
+
+We started by measuring...
+
+Surprisingly, the simplest solution...
+
+Key Takeaways:
+- Design for failure
+- Simplicity scales, complexity fails
+- Technical debt is a choice
+
+The full code is on GitHub.
+
+Tags: api, typescript, architecture
+---

@@ -1,0 +1,27 @@
+IT Security Advisory - SEC-2026031
+
+Date: 2026-03-27 | Severity: HIGH | Status: Open
+Affected: Cache Layer
+
+Summary:
+Vulnerability in dependency
+
+Technical Details:
+Debug endpoint returns stack traces
+
+Impact:
+Service disruption risk
+
+Required Actions:
+1. Restrict security group (Owner: Backend Team, Due: 2026-07-06)
+2. Enable WAF (Owner: Infra Team, Due: 2026-07-13)
+3. Update runbook (Owner: Platform Team, Due: 2026-02-12)
+
+Workaround:
+Use alternative endpoint
+
+References:
+- CVE-2026-78762
+- Internal ticket: SEC-4941
+
+Contact: security@company.internal | #security-alerts on Slack

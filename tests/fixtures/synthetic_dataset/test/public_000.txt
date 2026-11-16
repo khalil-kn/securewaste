@@ -1,0 +1,24 @@
+How We Reduced Latency by 80% at APIHub
+
+Background:
+As our user base grew...
+
+The Challenge:
+Debugging distributed systems...
+
+Our Approach:
+We implemented a new caching layer...
+
+Results:
+- Deploy frequency: < 50ms
+- Developer satisfaction: +40%
+- Build time: -50%
+
+Lessons Learned:
+Plan for rollback
+
+What's Next:
+Write a follow-up post
+
+---
+David Kim is a Principal Engineer at APIHub. Connect on LinkedIn/Twitter.
