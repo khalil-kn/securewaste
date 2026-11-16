@@ -6,15 +6,27 @@
   <title>{% block title %}SecureWaste{% endblock %} · SecureWaste</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='css/tokens.css') }}">
   <link rel="stylesheet" href="{{ url_for('static', filename='css/app.css') }}">
+  {% block head %}{% endblock %}
 </head>
 <body>
-  <header class="sw-topbar">
-    <a class="sw-brand" href="{{ url_for('dashboard.index') }}">SecureWaste</a>
-    <span class="sw-local-badge">Local · 127.0.0.1</span>
-  </header>
-  <main class="sw-main" id="main">
-    {% block content %}{% endblock %}
-  </main>
+  {% set endpoint = request.endpoint or '' %}
+  <div class="sw-shell">
+    <nav class="sw-rail" aria-label="Main">
+      <a class="sw-brand" href="{{ url_for('dashboard.index') }}" aria-label="SecureWaste" title="SecureWaste">
+        <svg width="24" height="28" viewBox="0 0 24 28" fill="none" aria-hidden="true"><path d="M3 1.75h12.5L21.25 7.5v18.75H3z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/><rect x="7" y="12" width="10" height="4" fill="currentColor"/><path d="M7 20h7" stroke="currentColor" stroke-width="1.5" opacity=".55"/></svg>
+      </a>
+      <a href="{{ url_for('dashboard.index') }}" aria-label="Overview" title="Overview"{% if endpoint == 'dashboard.index' %} aria-current="page"{% endif %}>
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="3" y="3" width="7" height="9" rx="1"/><rect x="14" y="3" width="7" height="5" rx="1"/><rect x="14" y="12" width="7" height="9" rx="1"/><rect x="3" y="16" width="7" height="5" rx="1"/></svg>
+      </a>
+      <a href="{{ url_for('documents.upload_page') }}" aria-label="Upload and scan" title="Upload and scan"{% if endpoint.startswith('documents.') %} aria-current="page"{% endif %}>
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="m17 8-5-5-5 5"/><path d="M12 3v12"/></svg>
+      </a>
+    </nav>
+    <main class="sw-main" id="main">
+      <p class="sw-crumb">SecureWaste / Local · 127.0.0.1</p>
+      {% block content %}{% endblock %}
+    </main>
+  </div>
   {# Page scripts go in static/js and are added per page; CSP forbids inline <script>. #}
   {% block scripts %}{% endblock %}
 </body>

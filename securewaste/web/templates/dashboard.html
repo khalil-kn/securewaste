@@ -1,7 +1,15 @@
 {% extends "base.html" %}
 {% block title %}Dashboard{% endblock %}
 {% block content %}
-  <h1>Dashboard</h1>
-  <p class="sw-muted">The application skeleton is running. Upload arrives in Milestone 1, the dashboard in Milestone 3.</p>
-  <p><a href="{{ url_for('documents.upload_page') }}">Detect sensitive data in a PDF</a></p>
+  <header class="sw-pagehead">
+    <h1>Dashboard</h1>
+    <p class="sw-lead">The application skeleton is running. Upload arrives in Milestone 1, the dashboard in Milestone 3.</p>
+  </header>
+  <section class="sw-card sw-stack sw-col-8">
+    <h2 class="sw-card-title">Check a document before you share it</h2>
+    <p class="sw-secondary">Scan a PDF or TXT file for emails, phone numbers and the keywords your organisation marked as sensitive.</p>
+    <div class="sw-actions">
+      <a class="sw-btn sw-btn-primary" href="{{ url_for('documents.upload_page') }}">Detect sensitive data in a PDF</a>
+    </div>
+  </section>
 {% endblock %}

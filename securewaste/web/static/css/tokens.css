@@ -1,26 +1,49 @@
-/* Design tokens mirrored from the Figma design system ("Color · Dark (active)", "Spacing & Radius").
-   Rule: components use var(--sw-*) only, never a raw hex value. Sync the values from Figma when they change. */
+/* Design tokens from the "SecureWaste Product Design v2" canvas (Foundations board).
+   Rule: components use var(--sw-*) only, never a raw hex value. Sync the values from the canvas when they change. */
 :root {
-  --sw-font-sans: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --sw-font-sans: "Public Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
   --sw-font-mono: "IBM Plex Mono", ui-monospace, Consolas, monospace;
 
-  --sw-bg: #0f1420;
-  --sw-surface: #171e2d;
-  --sw-border: #2a3448;
-  --sw-text: #e6eaf2;
-  --sw-text-muted: #9aa5b8;
-  --sw-accent: #4f8cff;
+  --sw-bg: #171719;               /* page */
+  --sw-surface: #131217;          /* cards sit darker than the page */
+  --sw-surface-2: #18171c;        /* wells, table headers, hover */
+  --sw-chip: #212023;             /* neutral pills and notices */
+  --sw-border: #3a3a3e;           /* controls and the drop zone */
+  --sw-divider: #222224;          /* hairlines between blocks */
+  --sw-divider-soft: #1f1e23;     /* hairlines inside cards */
+  --sw-text: #ffffff;
+  --sw-text-secondary: #bdbdc0;
+  --sw-text-muted: #8a8c92;
+  --sw-accent: #4a8ad6;
+  --sw-on-light: #131217;         /* text on the white primary button */
 
-  --sw-sev-critical: #ff5c6c;
-  --sw-sev-high: #ff9a3d;
-  --sw-sev-medium: #f5c542;
-  --sw-sev-low: #4fc3a1;
-  --sw-sev-info: #7aa2d6;
+  --sw-sev-critical: #e5566f;
+  --sw-sev-critical-bg: #2c1a20;
+  --sw-sev-high: #d9a441;
+  --sw-sev-high-bg: #2a2416;
+  --sw-sev-medium: #bdbdc0;
+  --sw-sev-low: #8a8c92;
+  --sw-sev-info: #82b2ea;
+  --sw-sev-info-bg: #172231;
+  --sw-positive: #5fc39c;
+  --sw-positive-bg: #1b2828;
+  --sw-meter-off: #2e2d33;
+
+  /* The document drawing on the upload page ("The document" group). */
+  --sw-paper: #fbfbf9;
+  --sw-paper-back: #d9d9d6;
+  --sw-paper-line: #c9c9c6;
+  --sw-paper-ink: #000000;
+  --sw-paper-found: #fbe9bf;
 
   --sw-space-1: 4px;
   --sw-space-2: 8px;
   --sw-space-3: 12px;
   --sw-space-4: 16px;
+  --sw-space-5: 20px;
   --sw-space-6: 24px;
-  --sw-radius: 8px;
+  --sw-space-8: 32px;
+  --sw-radius: 6px;
+  --sw-radius-pill: 999px;
+  --sw-shadow-card: 0 12px 28px rgba(0, 0, 0, 0.2);
 }
