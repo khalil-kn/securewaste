@@ -12,7 +12,21 @@
     {{ classification.label }}
   </p>
 
-  <p><strong>Original V3 prediction:</strong>
+  {% if classification.provisional_label %}
+  <p><strong>Rule-based assessment:</strong>
+    {{ classification.provisional_label }}
+  </p>
+  <p class="sr-footnote">
+    This assessment is advisory and does not override
+    the final security classification.
+  </p>
+  {% else %}
+  <p><strong>Rule-based assessment:</strong>
+    No classification rule matched.
+  </p>
+  {% endif %}
+
+  <p><strong>Original ML prediction:</strong>
     {{ classification.ml_label if classification.ml_label else 'Unavailable' }}
   </p>
 
