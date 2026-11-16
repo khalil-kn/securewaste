@@ -2,7 +2,7 @@
 <section class="sr" aria-labelledby="sr-title">
 
 {% if classification is defined and classification %}
-<section class="sw-card" style="padding:24px; margin:24px 0;"
+<section class="sw-card sr-class-card"
          aria-labelledby="ml-classification-title">
 
   <p class="sr-eyebrow">SECURE WASTE / HYBRID ML</p>
@@ -11,6 +11,10 @@
   <p><strong>Final security classification:</strong>
     {{ classification.label }}
   </p>
+
+  <p><span class="sr-tag sr-severity-{{ classification.risk_level }}">Risk level: {{ classification.risk_level|title }}</span></p>
+  <p class="sr-explanation">{{ classification.explanation }}</p>
+  <div class="sr-recommendation"><strong>Recommended action</strong><p>{{ classification.recommendation }}</p></div>
 
   {% if classification.provisional_label %}
   <p><strong>Rule-based assessment:</strong>
