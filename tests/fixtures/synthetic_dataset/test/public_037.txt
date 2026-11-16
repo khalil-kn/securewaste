@@ -1,0 +1,24 @@
+How We Cut Cloud Costs by 40% at PayFlow
+
+Background:
+Our legacy architecture...
+
+The Challenge:
+Debugging distributed systems...
+
+Our Approach:
+We migrated to a service mesh...
+
+Results:
+- P99 latency: 50+/day
+- Incident count: +40%
+- Test coverage: -50%
+
+Lessons Learned:
+Automate everything
+
+What's Next:
+Open source the tooling
+
+---
+Alex Rodriguez is a Tech Lead at PayFlow. Connect on LinkedIn/Twitter.

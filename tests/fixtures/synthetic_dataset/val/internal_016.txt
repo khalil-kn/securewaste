@@ -1,1 +1,23 @@
-Expense report: John Williams submitted via wpybx@sample.co. Phone: +88 490 642 5888
+Welcome to the Team - David Johnson
+
+Role: Engineer | Team: Platform | Start Date: 2026-02-03
+Manager: John Johnson (atzqueqf@company.org) | Buddy: Sarah Anderson (rhyqqpc@demo.io)
+
+Your First Week:
+Day 1: Orientation (9am), IT setup (10am), Team lunch (12:30pm), 1:1 with manager (3pm)
+Day 2: Security training (mandatory), Access provisioning, Codebase tour
+Day 3: Jira deep dive, Slack hands-on, First commit!
+Day 4: Architecture overview with Sam Brown, Pair programming session
+Day 5: Sprint planning participation, 30-day goals review
+
+Key Contacts:
+- HR: Maria Anderson (dgecv@company.org) - benefits, policies
+- IT: Alex Wilson (ukmqfkxq@demo.io) - access, hardware, tools
+- Security: Sam Lee (security@company.internal) - VPN, MFA, secrets
+
+Resources:
+- Internal wiki: wiki.company.internal
+- Engineering handbook: handbook.company.internal
+- Onboarding checklist: onboarding.company.internal/EMP-8166
+
+Welcome aboard! ðŸŽ‰

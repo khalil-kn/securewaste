@@ -1,0 +1,39 @@
+Production Deployment Runbook - DEP-2026176
+
+Date: 2026-03-19
+Environment: PRODUCTION
+Classification: HIGHLY CONFIDENTIAL
+
+Pre-deployment Checklist:
+- [ ] All tests passing in staging
+- [ ] Security scan clean
+- [ ] Database migration reviewed
+- [ ] Rollback plan documented
+- [ ] On-call engineer confirmed: Mike Brown (+80 362 874 1285)
+
+Secrets Required:
+AWS Access Key: AKIA86ZR5ZM6PDGVWZK8
+AWS Secret Key: jtbuqLKcIw5zxVdPYr$LCvlQesD05htl
+Database Password: sXWIVL1zjYmrMh%IJugMA83bP8ORrDG$
+API Keys: AkZ9dB2kwIr0moyt1wUvsfpN4vZEAr9hmPPwXstpvFAOJTz6, 3BJP0wB06MPpY07T6osRJNY4yanujzkKpLhgDAyDYzfdrqwQ, XjPNPz6yLZT0N5bDKyx7dkhPONLiZXDQvSw5dFywtzJlrgrW, HTD5QI5VpHWk6THc87NvFBowMdYAW1Aqho5DLOBdYAT7pqir, PgAy0OpzwEblbgIKlpMUsnoHOvKdW71B5oLInm8yBK1KjHtX, XOEWHZ09LqiTXqNpNBDijcEfaRW7QDMa5MZVKgthgp1n88B1, mYcZNWtSpW3feJoErlIijsJcKULvyfQ0v38a8iTpu86bmswG, Y9W1l6HBnvoeQ8lPFlaN9YzUOvUoCoDJ5HVkPKB05BKFqnIb
+JWT Signing Key: AGcOnsmFzuNkQLUgSGQJownODIYysdkbU8rmgQ2v3JHJ0ZACZQnPpUFku3zwQkYX
+Encryption Keys: DrEebbwlJ5ptxdmZNAzfF7k5YvE8P0P9, xt2UKok0WlNo5Au9nVZORrg5FnSCtm71, 3KB0lN5WgIFn8Tg5RPktWANz9kaPDQDM, ZKhio38kE1VL3GzZ0xD9YpA17zV6Ew8t
+
+Deployment Steps:
+1. Create pre-deployment snapshot
+2. Apply database migrations
+3. Deploy application containers
+4. Run smoke tests
+5. Update DNS records
+6. Monitor error rates for 30 minutes
+
+Rollback Procedure:
+1. Revert DNS
+2. Restore database snapshot
+3. Redeploy previous container version
+4. Notify stakeholders
+
+Emergency Contacts:
+Security: security@company.com
+Infrastructure: infra@company.com
+Management: management@company.com

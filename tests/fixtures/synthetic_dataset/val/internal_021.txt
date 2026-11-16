@@ -1,0 +1,23 @@
+Welcome to the Team - Jane Smith
+
+Role: Lead | Team: Backend | Start Date: 2026-05-18
+Manager: Jane Doe (gcupti@sample.co) | Buddy: Chris Anderson (euzcud@company.org)
+
+Your First Week:
+Day 1: Orientation (9am), IT setup (10am), Team lunch (12:30pm), 1:1 with manager (3pm)
+Day 2: Security training (mandatory), Access provisioning, Codebase tour
+Day 3: GitLab deep dive, CI/CD hands-on, First commit!
+Day 4: Architecture overview with Sam Davis, Pair programming session
+Day 5: Sprint planning participation, 30-day goals review
+
+Key Contacts:
+- HR: Tom Anderson (czdulmh@example.com) - benefits, policies
+- IT: Chris Martinez (usjvicpf@company.org) - access, hardware, tools
+- Security: Jordan Lee (security@company.internal) - VPN, MFA, secrets
+
+Resources:
+- Internal wiki: wiki.company.internal
+- Engineering handbook: handbook.company.internal
+- Onboarding checklist: onboarding.company.internal/EMP-8679
+
+Welcome aboard! ðŸŽ‰

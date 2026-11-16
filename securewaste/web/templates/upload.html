@@ -1,0 +1,73 @@
+
+{% extends "base.html" %}
+
+{% block title %}Upload Document{% endblock %}
+
+{% block content %}
+<section class="sw-card">
+    <h1>Upload Document</h1>
+
+    <p>
+        Select a PDF or TXT document for secure local analysis.
+    </p>
+
+    {% if error %}
+    <div role="alert" class="sw-alert sw-alert-error">
+        {{ error }}
+    </div>
+    {% endif %}
+
+    {% if success %}
+    <div role="status" class="sw-alert sw-alert-success">
+        <p>{{ success }}</p>
+
+        <p>
+            <strong>Filename:</strong>
+            {{ filename }}
+        </p>
+
+        <p>
+            <strong>SHA-256:</strong>
+            <code>{{ fingerprint }}</code>
+        </p>
+    </div>
+    {% endif %}
+
+    <form
+        action="{{ url_for('documents.upload_document') }}"
+        method="POST"
+        enctype="multipart/form-data"
+    >
+        <input
+            type="hidden"
+            name="csrf_token"
+            value="{{ csrf_token() }}"
+        >
+
+        <div class="sw-field">
+            <label for="file">
+                Choose a document
+            </label>
+
+            <input
+                type="file"
+                id="file"
+                name="file"
+                accept=".pdf,.txt"
+                required
+            >
+        </div>
+
+        <p>Accepted formats: PDF and TXT. Maximum size: 10 MB.</p>
+
+        <button type="submit">
+            Upload Document
+        </button>
+    </form>
+
+    <p>
+        Files are validated and stored locally using
+        randomly generated filenames.
+    </p>
+</section>
+{% endblock %}

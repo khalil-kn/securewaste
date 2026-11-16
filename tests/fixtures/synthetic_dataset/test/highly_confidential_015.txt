@@ -1,3 +1,39 @@
-SSH private key: -----BEGIN PRIVATE KEY-----
-L5EFJP6MKT7S1GD1
------END PRIVATE KEY-----. HIGHLY CONFIDENTIAL
+Production Deployment Runbook - DEP-2026568
+
+Date: 2026-10-07
+Environment: PRODUCTION
+Classification: HIGHLY CONFIDENTIAL
+
+Pre-deployment Checklist:
+- [ ] All tests passing in staging
+- [ ] Security scan clean
+- [ ] Database migration reviewed
+- [ ] Rollback plan documented
+- [ ] On-call engineer confirmed: Bob Johnson ((844) 258-9475)
+
+Secrets Required:
+AWS Access Key: AKIAW92E301SNU5S3K46
+AWS Secret Key: X0NX1aNgYff!rE#jr97nJa7Gb1y62qG3
+Database Password: MRHDscReJqXVlbkytc2q2VVDq3TeZq1y
+API Keys: FiQgN5rzu3qh4zGpNzhFTDP3tQUul5TehYjQNkpDOzY7aXuB, EbxPTBhn5X4AT5eLfirxszDe56Es6MWsAsdwCkCktOzg4omZ, IlagbxxbtX5TnzsTXBjQlNhclxYs6EuyVKAC6zuvopK6PSa5
+JWT Signing Key: dF5E5ZCcDlLSmlXmhrjoRtWsQlaQpGgHjPH7TkV8F4YwckTndcyInNTDNiEr1KIh
+Encryption Keys: OFSkzTSsh8Y1yDgb3GGqJLxLuwOUmmj4, AtHlFfdt2AvAHmxdzhUxtml4nsZdb8pA, yMptX3FHY0XcScMk1xXpqz6wlv0gKytE, fqV3drVNhaMaAhRInwAyTHImNRYLsJvl
+
+Deployment Steps:
+1. Create pre-deployment snapshot
+2. Apply database migrations
+3. Deploy application containers
+4. Run smoke tests
+5. Update DNS records
+6. Monitor error rates for 30 minutes
+
+Rollback Procedure:
+1. Revert DNS
+2. Restore database snapshot
+3. Redeploy previous container version
+4. Notify stakeholders
+
+Emergency Contacts:
+Security: security@company.com
+Infrastructure: infra@company.com
+Management: management@company.com

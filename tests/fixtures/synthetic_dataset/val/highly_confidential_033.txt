@@ -1,0 +1,41 @@
+Cryptographic Key Ceremony - CER-2026591
+
+Date: 2026-10-23
+Participants: Sarah Davis, Bob Johnson, John Smith, Jane Doe, Chris Wilson, Alice Williams, Mike Brown
+Classification: HIGHLY CONFIDENTIAL
+
+Purpose:
+Generate and distribute X25519 keys for Internal CA.
+
+Key Generation:
+Algorithm: ECDSA-P384
+Key Size: 256 bits
+Entropy Source: Multiple sources mixed
+
+Generated Keys:
+Root CA: 1YgcGApRB183gIyPMnkhBguCBv5BwOMFiC7kMYJ/j/+NWW9ZBLy6I67avffCqQCN
+NwmOX/zX6cE=TIS=qE3bTmiFVKXYEn32mpfWbxiU9+7Yw4xkNfX27kHAQ0BT8K5n
+LHrUD0xgyA5kpvjkeVE89Bav30rA1lihZ/koqt11bprpsRsaHRBez03S1o0MCZnQ
+wYGmBkgPZN69AuTLClvpkxsw95caGyiAk8R+Uw7eUUDktHkfjRceLo5VghefcUZJ
+Intermediate CA: 98y4pG=yejPsxWcohZnrh4EaiAMTNj05aBgj3BaAFyf3bac0nFraP1f49wmDIh+W
+wIFEnG43tlQhjdg4D5Ipz2qUOyt0kuZyQkXJHLsPyABeLD9l+DnI/xODY3EPrQtP
+/yjtZY+3g78cCXcAUra5o8mzCcV=Kk2+3F3C04PQ+78xijMKF49WquiIO5hulY7=
+R1yvTfhvSii49cAGCvT/Qov6Krxds4nM1dw5iRkMUocU2FZ/OZAlOzMeWq3FBWNF
+Leaf Certificates: cert-0, cert-1, cert-2, cert-3, cert-4, cert-5, cert-6, cert-7, cert-8, cert-9, cert-10
+Encryption Keys: IHSvqhogVFflSY7DrKYitg3mrd32YjQv, 7ETTcKg53iXQUhIMdw35vxh3mcis7ZXe, XcwWGPNZm7alRujA0Jc4B2kL9OAZJpgN, U7jn9ISaOehi7UQ52PfqOSP4Vsd60hsj, lzgRrOYMxTNqVmUEVTQh94EDWw8YVQXt, YAzfaql2tYxlSyEOKxAHAnXr41U1SvRI, fukwBJjoF8s0jIz5XQftdJqSRYuo4BZ4, LUCqDnZjV727lIREawcel3YytwccrCVa, usstQznEi2GYFfA6qggwsIJiddAqL48k, 1k03WYF3Z5gwJSTHIxn5ru2VC4T57I0f, D3hrDVxfL83kVm6lWuLAQSZcA71xqJUJ, 3AfKpYdU0K4J0KIwlI6zkmZ2rv994Svz
+Signing Keys: iwBiiiQSmMyzYNf9ceIPT0xZplOxvmAlXWyjK6PGfOEOXEVjBhbEYN1VtrHBoqgd, ntiYo7kudRkxugc4qLpe9g78igt9ulPoKJGX9PYpTwezbK5P43qCgRs2bSopl1oV, jMslTiueU6NCbMzI3jdwg82oyGtCxC7Hl5ta8GLhkjdl28SNmPu3jDz9KHrQ6ig4, wMgyoBeEzYVdyCSRgEe9E7uLIycMh5sZPUJCaIt0DebtGzxQUpYuLVEmgVYbe7gE, 1fhUfuLrMjnUJgTyioEC4w05OYioJU378b9XMtjjrQoU6m15vfe3ucWS17cRPzXz, g7uehRmlsFyDbOv72X2vkUf4N3NW0cESKyCQsdGhxKrX3vZ1bY1YWCzttNnxJ1Nh
+
+Distribution:
+Synthetic offline key ceremony distribution
+
+Backup and Escrow:
+Offline backup: Bank safe deposit box
+Escrow agent: Legal Firm A
+Escrow conditions: All of the above
+
+Revocation Procedure:
+Automated (ACME)
+
+Attestation:
+All participants confirm secure generation and distribution.
+Signatures: John Smith, Jane Doe, Bob Johnson, Lisa Anderson, Mike Brown, Sarah Davis, Alice Williams

@@ -1,0 +1,30 @@
+Payroll Register - 2026-01 - CONFIDENTIAL
+
+Entity: DataFlow Ltd | EIN: 87-8439765
+Processed by: Workday | Date: 2026-10-19
+Classification: CONFIDENTIAL - HR & Finance Only
+
+Summary:
+Employees Paid: 1337
+Gross Wages: $157,925,793.00
+Employer Taxes: $12,956,356.00
+Benefits Cost: $7,928,333.00
+Net Pay: $72,532,442.00
+Total Cost: $99,061,054.00
+
+Top 5 Earners:
+1. Bob Smith - $515,826.00 (VP Engineering)
+2. David Brown - $351,588.00 (Principal Engineer)
+3. Henry Williams - $313,975.00 (Tech Lead)
+4. Leo Wilson - $297,818.00 (Security Engineer)
+5. Mia Anderson - $288,823.00 (Senior Engineer)
+
+Tax Deposits:
+Federal: $6,637,217.00 (Due: 2026-07-15)
+State: $5,205,675.00 (Due: 2026-06-15)
+Local: $914,097.00 (Due: 2026-01-15)
+
+Benefits Deductions:
+401(k): $12,280,769.00 | Health: $23,442,388.00 | HSA: $1,324,271.00
+
+Bank: Bank of America | Account: 8821250584 | Routing: 322509601

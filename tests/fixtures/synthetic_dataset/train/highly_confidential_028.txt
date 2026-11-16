@@ -1,1 +1,1 @@
-API token: Bearer Y3k2a8YIfDbJQlEOWCuEuNByheBST9qgZwr6023u8Ll6ejH6. DO NOT SHARE. HIGHLY CONFIDENTIAL
+Docker registry: username=user93 password=1lLu%iU27jC1G%Zz6jDpy2AjH9i!eY#f. HIGHLY CONFIDENTIAL

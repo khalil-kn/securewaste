@@ -1,1 +1,1 @@
-Kubernetes secret: api-key=1B76MKFA2LW8E9S1 secret=J!$OA!$4uErLwh4jD!emyo@ZTeSoY$QP. HIGHLY CONFIDENTIAL
+Database config: password=WKhOLP6me%4U3$y1N9SlO!A0BM2@L$fX api_key=0WOEKWKGX5BE8BM6. HIGHLY CONFIDENTIAL

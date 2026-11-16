@@ -1,26 +1,27 @@
-Internal Security Advisory - SEC-2026026
+IT Security Advisory - SEC-2026443
 
-Date: 2026-01-25
-Severity: CRITICAL
-Affected Systems: Message Queue
-Classification: INTERNAL
+Date: 2026-12-07 | Severity: HIGH | Status: Open
+Affected: API Gateway
 
 Summary:
-Potential exposure of...
+Weak encryption detected
 
 Technical Details:
-Impact assessment reveals...
+TLS 1.0 still enabled on legacy endpoint
 
-Impact Assessment:
-Limited to internal systems
+Impact:
+Potential data exposure
 
-Mitigation Steps:
-1. Rotate credentials
-2. Update firewall rules
-3. Notify affected users
+Required Actions:
+1. Restrict security group (Owner: Security Team, Due: 2026-01-18)
+2. Run vulnerability scan (Owner: Backend Team, Due: 2026-07-04)
+3. Deploy WAF rules (Owner: Platform Team, Due: 2026-04-03)
 
-Workaround (if applicable):
+Workaround:
 Disable feature temporarily
 
-Contact: security@company.com for questions
-Reference: CVE-2026-95010
+References:
+- CVE-2026-64401
+- Internal ticket: SEC-2776
+
+Contact: security@company.internal | #security-alerts on Slack

@@ -1,1 +1,34 @@
-Kubernetes secret: api-key=4SX27DCBHHLK3YJZ secret=%%YX9au30BBMRFIYkApYFI0YWE1umZUo. HIGHLY CONFIDENTIAL
+Infrastructure Configuration - CFG-2026864
+
+Environment: PRODUCTION
+Last Updated: 2026-12-07
+Classification: HIGHLY CONFIDENTIAL
+
+Database Clusters:
+Primary: prod-db-primary.cluster-xyz.us-east-1.rds.amazonaws.com:5432
+  Credentials: service_account / N6knJPATF9AsHQDHjM#I8NeeH6psrIJ2
+  Connection String: postgresql://app_user:xxx@prod-db-primary.cluster-xyz.us-east-1.rds.amazonaws.com:5432/app
+Replica: prod-db-replica1.cluster-xyz.us-east-1.rds.amazonaws.com:5432
+  Credentials: readonly / 1T9EdV2aYJXgBL7J5fTt$GpYxRlOwWEl
+
+Message Queues:
+RabbitMQ: rabbitmq-prod.xyz.us-east-1.amazonaws.com
+  Credentials: admin / 34laItacVCypw@glS%NM@sYwELe3Z#cz
+Kafka: kafka-prod.internal:9092
+  SASL Credentials: app_consumer / yemci9yzh8tzYJ8VSL1$AQH8S6@WQK2j
+
+Cache Layer:
+Redis: redis.internal:6379
+  Password: o9hnRZMyMlhXBJIxL03e9aoXjDHVjXpt
+  Cluster Mode: enabled
+
+Secrets Management:
+Vault Address: https://vault.company.com:8200
+Vault Token: A9ADfnuq$lkdnqVWXRwY4#C!ZDgtr%Nl
+Key Paths: secret/data/prod
+
+Monitoring:
+Prometheus: https://prometheus.company.internal
+Grafana: https://grafana.company.internal
+  Admin: grafana_admin / WzzVWE3rcl@iE39uFdcI@0!0@HDYUZ10
+Alertmanager: https://alertmanager.company.internal

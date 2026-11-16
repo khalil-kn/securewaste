@@ -1,32 +1,23 @@
-Internal Project Proposal - Orion
+Team Development Discussion - 2026 Annual
 
-Prepared by: Alice Johnson (rruguhbk@example.com)
-Date: 2026-08-03
-Classification: INTERNAL
+Team: Platform | Facilitator: Jane Smith
 
-Executive Summary:
-This proposal outlines the Orion initiative to add features.
-The project requires 4 engineers over 5 months.
+Achievements:
+Mentored 3 junior engineers
 
-Background:
-User feedback indicates...
+Strengths:
+Technical leadership
 
-Technical Approach:
-The new architecture uses...
-Data migration will use...
+Areas for Growth:
+Documentation
 
-Resource Requirements:
-- Engineering: 3 FTEs
-- Design: 2 FTEs
-- QA: 3 FTEs
-- Project Management: 1 FTE
+Goals for Next Period:
+Get promoted to L6
 
-Budget Estimate: $316,608.00
-ROI Projection: 23% over 12 months
+Development Planning:
+Discuss training goals, mentoring opportunities, and skill-building priorities.
+No compensation or sensitive personal details are included in this summary.
 
-Risks:
-1. Resource constraints
-2. Integration challenges
-3. Compliance requirements
-
-Approval Required: Bob Johnson (uamqaak@company.org)
+Signatures:
+Facilitator: __________________ Date: _______
+Manager: _____________________ Date: _______

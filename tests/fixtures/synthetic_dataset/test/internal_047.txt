@@ -1,1 +1,31 @@
-Expense report: John Doe submitted via tsobidhp@test.net. Phone: 961-554-4700
+Incident Retrospective - INC-6258
+
+Date: 2026-09-12 | Duration: 396 minutes | Severity: SEV-CRITICAL
+
+Timeline:
+T+0m: Alert fired
+T+5m: On-call acknowledged
+T+15m: Root cause identified
+T+45m: Fix deployed
+T+60m: All clear
+
+Root Cause:
+Memory leak in new release
+
+Impact:
+- Users affected: 71,666
+- Revenue impact: $11,008
+- SLA breach: No - within SLA
+
+What Went Well:
+Clear communication
+
+What Went Wrong:
+Missing runbook
+
+Action Items:
+- Add connection pool monitoring
+- Improve runbook
+- Add integration test
+
+Follow-up: 2026-03-08

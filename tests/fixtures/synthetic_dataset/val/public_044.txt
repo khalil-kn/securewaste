@@ -1,18 +1,19 @@
-Blog Post: Security in 2026
+Securing Microservices
 
-Published: 2026-09-21 | Author: Jane Doe
+By James Okafor | 2026-09-13 | 5 min read
 
-In today's fast-paced world...
+Last quarter, our team faced...
 
-Main Content:
-Research shows that...
+We started by measuring...
 
-Practical implementation requires...
+Surprisingly, the simplest solution...
 
-Next steps include...
+Key Takeaways:
+- Design for failure
+- Simplicity scales, complexity fails
+- Technical debt is a choice
 
-Conclusion:
-Build responsibly.
+The full code is on GitHub.
 
-Tags: security, best-practices
-Share this article: Twitter, LinkedIn, GitHub
+Tags: api, typescript, architecture
+---

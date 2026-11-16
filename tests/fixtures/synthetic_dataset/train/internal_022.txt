@@ -1,26 +1,16 @@
-Internal Security Advisory - SEC-2026042
+Quarterly Budget Review - Security - Q3 2026
 
-Date: 2026-06-20
-Severity: CRITICAL
-Affected Systems: Message Queue
-Classification: INTERNAL
+Budget Allocated: $8,074,899
+Budget Spent: $8,241,337 (61%)
+Variance: $-673,053 (19%)
 
-Summary:
-Vulnerability discovered in...
+Top Expenses:
+1. Cloud Infrastructure: $3,049,655
+2. Contractors: $921,142
+3. Personnel: $812,887
 
-Technical Details:
-Detailed analysis shows...
+Forecast Next Quarter:
+Stable with optimization
 
-Impact Assessment:
-Potential data exposure
-
-Mitigation Steps:
-1. Rotate credentials
-2. Update firewall rules
-3. Monitor for anomalies
-
-Workaround (if applicable):
-Manual approval required
-
-Contact: security@company.com for questions
-Reference: CVE-2026-37102
+Decisions Needed:
+Optimize cloud spend

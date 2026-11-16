@@ -1,1 +1,1 @@
-Encryption key: I835JVSDUR9VTBYS for prod-db. HIGHLY CONFIDENTIAL
+Docker registry: username=user76 password=XoYMsODQTbvPd99uXEFTuo#MJGE!0%dE. HIGHLY CONFIDENTIAL

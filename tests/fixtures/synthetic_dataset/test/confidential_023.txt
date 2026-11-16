@@ -1,1 +1,45 @@
-Financial statement: Account DE83 N5VQ 8W61 NG9X 3F5I I193 balance $4,011.00. CONFIDENTIAL
+Master Services Agreement - MSA-2026474
+
+Between: Wayne Inc ("Client") and DataFlow LLC ("Vendor")
+Effective Date: 2026-04-01
+Classification: CONFIDENTIAL
+
+1. Services
+Vendor shall provide Payment processing in accordance with the attached
+Statement of Work (Exhibit A).
+
+2. Fees & Payment
+Total Contract Value: $4,276,993.00
+Payment Terms: Quarterly
+Invoicing: Quarterly in advance
+Wire Instructions:
+  Bank: Bank of America
+  Account: 5091388228
+  Routing: 531138599
+  SWIFT: CHASUS33
+
+3. Confidentiality
+Both parties acknowledge that Confidential Information includes, but is not
+limited to: pricing, technical architectures, customer data, trade secrets,
+business strategies, and any information marked "CONFIDENTIAL".
+
+4. Data Protection
+Vendor shall comply with all applicable data protection laws including GDPR,
+CCPA, and HIPAA where applicable. Data Processing Addendum (Exhibit B).
+
+5. Intellectual Property
+Pre-existing IP remains with original owner. Work product IP assigns to Client
+upon full payment.
+
+6. Limitation of Liability
+Neither party liable for indirect, consequential, or punitive damages.
+Vendor's aggregate liability capped at 12 months' fees.
+
+7. Term & Termination
+Initial Term: 20 months. Auto-renewal for successive 12-month
+periods unless 60 days written notice.
+Termination for cause: 30 days cure period.
+
+Signatures:
+Client: _________________________ Date: __________
+Vendor: _________________________ Date: __________

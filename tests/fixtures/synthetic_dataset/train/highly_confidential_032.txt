@@ -1,1 +1,1 @@
-Docker registry: username=user20 password=BnEfSCZ%VXOXksDIyzDBOEvS2qchTepc. HIGHLY CONFIDENTIAL
+API token: Bearer aOc7nA8hjPPSPUnOoAw2rnyz2pP5ud27lzklgeob48b20X4c. DO NOT SHARE. HIGHLY CONFIDENTIAL

@@ -1,30 +1,32 @@
-Client Contract - CTR-2026396
+Non-Disclosure Agreement - NDA-2026313
 
-Parties: Stark Ltd (xxpel@test.net) and Company Inc.
-Date: 2026-11-21
+Parties: Acme Corp and DataFlow Inc
+Effective: 2026-06-01
 Classification: CONFIDENTIAL
 
-Scope of Work:
-License grant for...
+Purpose: Acquisition due diligence
 
-Payment Terms:
-Total Amount: $1,217,495.00
-Payment Schedule: Net 45
-Payment Method: Credit Card ending in 5096
-IBAN for Wire Transfer: DE54 AYHO G5YM NAAS 01AL 1BFN
+Confidential Information includes:
+- Financial projections and metrics
+- Technical architectures and source code
+- Customer lists and pipeline data
+- Product roadmaps and unreleased features
+- Pricing models and discount structures
+- Personnel compensation data
 
-Confidentiality:
-Both parties agree to maintain strict confidentiality of all proprietary information
-exchanged during the term of this agreement. This includes but is not limited to:
-technical specifications, pricing data, customer lists, and trade secrets.
+Obligations:
+1. Use Confidential Information solely for the Purpose
+2. Restrict access to need-to-know personnel under NDA
+3. Protect with same degree of care as own confidential information
+4. No reverse engineering, decompilation, or disassembly
+5. Return/destroy upon request or termination
 
-Data Protection:
-Personal data processed under this contract shall comply with GDPR/CCPA requirements.
-Data Processing Addendum attached as Appendix A.
+Term: 3 years from disclosure
+Survival: Confidentiality obligations survive 6 years
 
-Term and Termination:
-Initial term: 20 months. Auto-renewal unless 30 days written notice.
+Governing Law: Delaware
+Jurisdiction: Delaware Chancery Court
 
 Signatures:
-Client: _______________________ Date: __________
-Company: _______________________ Date: __________
+Acme Corp: _________________________ Date: __________
+DataFlow Inc: _________________________ Date: __________

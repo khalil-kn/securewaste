@@ -1,1 +1,16 @@
-Expense report: Sarah Johnson submitted via swtalu@demo.io. Phone: +48 741 575 1022
+Quarterly Budget Review - Security - Q3 2026
+
+Budget Allocated: $7,004,808
+Budget Spent: $7,139,854 (78%)
+Variance: $983,342 (5%)
+
+Top Expenses:
+1. Software Licenses: $1,096,163
+2. Contractors: $1,568,800
+3. Cloud Infrastructure: $253,287
+
+Forecast Next Quarter:
+Stable with optimization
+
+Decisions Needed:
+Optimize cloud spend

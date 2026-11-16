@@ -1,1 +1,24 @@
-Internal newsletter: Employee spotlight, birthdays, and updates.
+How We Scaled to 1M Requests/sec at PayFlow
+
+Background:
+The previous system...
+
+The Challenge:
+Handling traffic spikes...
+
+Our Approach:
+We adopted event sourcing...
+
+Results:
+- Deploy frequency: 50+/day
+- Incident count: -80%
+- Cloud costs: -40%
+
+Lessons Learned:
+Involve the team early
+
+What's Next:
+Write a follow-up post
+
+---
+Emma Thompson is a Engineering Manager at PayFlow. Connect on LinkedIn/Twitter.

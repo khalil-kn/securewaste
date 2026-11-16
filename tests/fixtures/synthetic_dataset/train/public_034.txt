@@ -1,31 +1,27 @@
-Public Tutorial: security
+Release Notes: Notification Service v3.5.2
 
-Introduction:
-This guide walks you through setting up Terraform for development purposes.
+Released: 2026-12-21
 
-Prerequisites:
-- Python 3.8+
-- IDE setup
-- Basic CLI knowledge
+ðŸŽ‰ New Features:
+- Feature A
+- Feature B
+- Feature C
 
-Step 1: Installation
-Run the following command to install the package:
-    pip install mega-framework
+ðŸ› Bug Fixes:
+- Patch for CVE-2026-XXXXX
+- Fixed timeout issue
 
-Step 2: Configuration
-Create a configuration file with your settings:
-    # config.yaml
-    setting1: value1
-    setting2: value2
+ðŸ”§ Improvements:
+- Better error messages
+- Faster startup
+- Reduced memory usage
 
-Step 3: Running the Application
-Start the development server:
-    python -m mega_framework runserver
+âš ï¸ Breaking Changes:
+- Updated authentication flow
 
-Common Issues:
-If you encounter connection errors, verify your firewall settings.
-For authentication issues, check your API credentials.
+ðŸ“¦ Dependencies:
+- Updated: PostgreSQL 16, Redis 7.2
+- Added: New caching library
 
-Next Steps:
-Explore the advanced features in the official documentation.
-Join our community forum for support and discussions.
+Full changelog: https://github.com/example/project/blob/main/CHANGELOG.md
+Upgrade guide: https://docs.example.com/upgrade-guide

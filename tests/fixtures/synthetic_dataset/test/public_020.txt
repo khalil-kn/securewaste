@@ -1,1 +1,24 @@
-Company policy reminder: Please review the updated handbook.
+How We Scaled to 1M Requests/sec at APIHub
+
+Background:
+Our legacy architecture...
+
+The Challenge:
+Debugging distributed systems...
+
+Our Approach:
+We adopted event sourcing...
+
+Results:
+- Error rate: 50+/day
+- Incident count: -80%
+- Cloud costs: +25%
+
+Lessons Learned:
+Plan for rollback
+
+What's Next:
+Open source the tooling
+
+---
+Sarah Chen is a Tech Lead at APIHub. Connect on LinkedIn/Twitter.

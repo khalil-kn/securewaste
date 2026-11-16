@@ -1,1 +1,26 @@
-Meeting agenda for 2026-11-21: Discuss project timeline and deliverables.
+Release Notes: API Gateway v3.9.5
+
+Released: 2026-11-28
+
+ðŸŽ‰ New Features:
+- Feature A
+- Feature B
+- Feature C
+
+ðŸ› Bug Fixes:
+- Patch for CVE-2026-XXXXX
+- Fixed timeout issue
+
+ðŸ”§ Improvements:
+- Enhanced logging
+- Improved validation
+
+âš ï¸ Breaking Changes:
+- None
+
+ðŸ“¦ Dependencies:
+- Updated: Kubernetes 1.28, Go 1.21
+- Added: New caching library
+
+Full changelog: https://github.com/example/project/blob/main/CHANGELOG.md
+Upgrade guide: https://docs.example.com/upgrade-guide

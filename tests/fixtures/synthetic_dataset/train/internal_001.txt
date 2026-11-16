@@ -1,1 +1,23 @@
-Calendar invite: Sarah Smith at qsbdhkn@test.net - deployment discussion 2026-06-20.
+Team Development Discussion - 2026 Annual
+
+Team: QA | Facilitator: John Doe
+
+Achievements:
+Led migration to Kubernetes
+
+Strengths:
+Code quality advocacy
+
+Areas for Growth:
+Documentation
+
+Goals for Next Period:
+Present at conference
+
+Development Planning:
+Discuss training goals, mentoring opportunities, and skill-building priorities.
+No compensation or sensitive personal details are included in this summary.
+
+Signatures:
+Facilitator: __________________ Date: _______
+Manager: _____________________ Date: _______

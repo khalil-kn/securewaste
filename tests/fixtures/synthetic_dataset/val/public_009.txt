@@ -1,0 +1,19 @@
+Building a Type-Safe API Layer
+
+By Marcus Johnson | 2026-03-10 | 9 min read
+
+The challenge was clear:...
+
+Our approach was unconventional...
+
+Team adoption was faster than...
+
+Key Takeaways:
+- Measure before optimizing
+- Documentation is a feature
+- Your team is your greatest asset
+
+The full code is on GitHub.
+
+Tags: database, performance, sharding
+---
