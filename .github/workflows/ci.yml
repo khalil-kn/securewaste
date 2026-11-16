@@ -12,11 +12,23 @@ permissions:
 jobs:
   test:
     runs-on: ubuntu-latest
-
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: securewaste_cloud_ci
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
     env:
       SECUREWASTE_SECRET_KEY: ci-secret-not-real
       SECUREWASTE_HMAC_KEY: ci-hmac-not-real
-
+      CLOUD_DATABASE_URL: postgresql://postgres:postgres@localhost:5432/securewaste_cloud_ci
     steps:
       - uses: actions/checkout@v4
         with:
@@ -51,7 +63,10 @@ jobs:
           else
             echo "No changed Python files to lint."
           fi
-
+      - name: Apply cloud API schema
+        run: >-
+          docker exec -i ${{ job.services.postgres.id }}
+          psql -U postgres -d securewaste_cloud_ci < cloud_api/schema.sql
       - name: Tests with coverage
         run: pytest --cov=securewaste --cov-report=term-missing
 
