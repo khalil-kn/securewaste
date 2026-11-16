@@ -17,9 +17,7 @@ DEFAULT_MODEL_DIR = Path("securewaste/models")
 LABELS = ["Public", "Internal", "Confidential", "Highly Confidential"]
 
 
-def load_dataset(
-    split: str, dataset_dir: Path = DEFAULT_DATASET_DIR
-) -> tuple[list[str], list[str]]:
+def load_dataset(split: str, dataset_dir: Path = DEFAULT_DATASET_DIR) -> tuple[list[str], list[str]]:
     """Read documents and tab-separated IDs/labels from one split."""
     if split not in {"train", "val", "test"}:
         raise ValueError(f"Unknown split: {split}")
@@ -34,9 +32,7 @@ def load_dataset(
             try:
                 doc_id, label = line.rstrip("\r\n").split("\t", 1)
             except ValueError as exc:
-                raise ValueError(
-                    f"Invalid label record at {labels_file}:{line_number}"
-                ) from exc
+                raise ValueError(f"Invalid label record at {labels_file}:{line_number}") from exc
             if label not in LABELS:
                 raise ValueError(f"Unknown label {label!r} in {labels_file}:{line_number}")
             doc_path = split_dir / f"{doc_id}.txt"
@@ -78,10 +74,7 @@ def compute_metrics(y_true: list[str], y_pred: list[str], labels: list[str]) -> 
         return sum(m[metric] for m in per_class.values()) / len(labels)
 
     def weighted(metric: str) -> float:
-        return (
-            sum(m[metric] * m["support"] for m in per_class.values()) / total_support
-            if total_support else 0.0
-        )
+        return sum(m[metric] * m["support"] for m in per_class.values()) / total_support if total_support else 0.0
 
     return {
         "accuracy": correct / len(y_true) if y_true else 0.0,
@@ -114,15 +107,20 @@ def evaluate_classifier(
 def main() -> None:
     parser = argparse.ArgumentParser(description="Train and evaluate the SecureWaste ML classifier.")
     parser.add_argument(
-        "--dataset-dir", type=Path, default=DEFAULT_DATASET_DIR,
+        "--dataset-dir",
+        type=Path,
+        default=DEFAULT_DATASET_DIR,
         help=f"Dataset directory (default: {DEFAULT_DATASET_DIR})",
     )
     parser.add_argument(
-        "--model-dir", type=Path, default=DEFAULT_MODEL_DIR,
+        "--model-dir",
+        type=Path,
+        default=DEFAULT_MODEL_DIR,
         help=f"Model output directory (default: {DEFAULT_MODEL_DIR})",
     )
     parser.add_argument(
-        "--final-test", action="store_true",
+        "--final-test",
+        action="store_true",
         help="Evaluate held-out test split; use only after model choices are frozen.",
     )
     args = parser.parse_args()
@@ -151,8 +149,12 @@ def main() -> None:
     print(f"\n=== {evaluation_split.title()} Set Results ===")
     print(f"Overall Accuracy: {metrics['accuracy']:.2%} ({metrics['correct']}/{metrics['total']})")
     for name in (
-        "macro_precision", "macro_recall", "macro_f1",
-        "weighted_precision", "weighted_recall", "weighted_f1",
+        "macro_precision",
+        "macro_recall",
+        "macro_f1",
+        "weighted_precision",
+        "weighted_recall",
+        "weighted_f1",
     ):
         print(f"{name.replace('_', ' ').title()}: {metrics[name]:.2%}")
 

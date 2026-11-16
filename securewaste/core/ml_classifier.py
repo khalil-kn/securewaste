@@ -491,17 +491,12 @@ def predict_classification_v3_dict(text: str) -> dict:
 
     original = predict_classification_with_confidence(text, model_path=path)
     final = predict_classification_hybrid_with_confidence(text, model_path=path)
-        # Independent rule-based assessment for human reviewers.
+    # Independent rule-based assessment for human reviewers.
     # This never lowers the final security classification.
     rule_indicators = detect_sensitive_patterns(text)
     rule_indicators.extend(detect_organizational_context(text))
 
-    provisional_label = (
-        highest_sensitivity_label(rule_indicators).value
-        if rule_indicators
-        else None
-    )
-
+    provisional_label = highest_sensitivity_label(rule_indicators).value if rule_indicators else None
 
     ml_available = original.classifier_source == ClassifierSource.ML
     rule_override = final.classifier_source == ClassifierSource.FALLBACK
@@ -515,7 +510,7 @@ def predict_classification_v3_dict(text: str) -> dict:
 
     return {
         "label": final.label.value,
-	"provisional_label": provisional_label,
+        "provisional_label": provisional_label,
         "confidence": round(final.confidence, 4),
         "model_version": "candidate-v3" if path != MODEL_PATH else "baseline-v1",
         "requires_review": final.requires_review,

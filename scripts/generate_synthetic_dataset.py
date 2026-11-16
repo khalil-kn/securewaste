@@ -46,17 +46,13 @@ random.seed(SEED)
 PUBLIC_TEMPLATES = [
     # Public-facing announcements and communications
     "Join our free public webinar next Thursday to learn the fundamentals of cybersecurity.",
-
     "Thank you for your interest in our open-source project. The latest release is available on our public GitHub repository.",
-
     "Our offices will be closed next Friday for a national holiday. Customer support will resume on Monday.",
-
     "Registration is now open for our public technology conference. Visit our website for the full agenda.",
-
     "We are pleased to welcome visitors to our annual public technology exhibition. Admission is free.",
     # Meeting notes & agendas
-    'Product Update - Project {project_name} - {date}\n\nWe are pleased to announce new improvements to our product.\n\nHighlights:\n- Improved accessibility and user experience.\n- Updated public documentation and tutorials.\n- New features developed in response to community feedback.\n\nUpcoming events:\n- Product demonstration for customers and partners.\n- Community questions and answers.\n\nFor more information, see our published product updates.',
-    'Company News Release - Q{quarter} {year}\n\nOur company is pleased to share an overview of our latest publicly announced milestones.\n\nHighlights:\n- New product capabilities are now available to customers.\n- Expanded learning resources and customer support.\n- Community feedback continues to guide product improvements.\n\nLearn more through our public newsroom and product documentation.',
+    "Product Update - Project {project_name} - {date}\n\nWe are pleased to announce new improvements to our product.\n\nHighlights:\n- Improved accessibility and user experience.\n- Updated public documentation and tutorials.\n- New features developed in response to community feedback.\n\nUpcoming events:\n- Product demonstration for customers and partners.\n- Community questions and answers.\n\nFor more information, see our published product updates.",
+    "Company News Release - Q{quarter} {year}\n\nOur company is pleased to share an overview of our latest publicly announced milestones.\n\nHighlights:\n- New product capabilities are now available to customers.\n- Expanded learning resources and customer support.\n- Community feedback continues to guide product improvements.\n\nLearn more through our public newsroom and product documentation.",
     # Tutorials & documentation
     """Getting Started with {technology}
 
@@ -2360,8 +2356,7 @@ def generate_dataset(samples_per_class: int = SAMPLES_PER_CLASS) -> list[Synthet
 
             if attempts > max_attempts:
                 raise RuntimeError(
-                    f"Unable to generate {samples_per_class} unique "
-                    f"documents for {label}. Add more diverse templates."
+                    f"Unable to generate {samples_per_class} unique documents for {label}. Add more diverse templates."
                 )
 
             doc = GENERATORS[label]()
@@ -2387,7 +2382,6 @@ def generate_dataset(samples_per_class: int = SAMPLES_PER_CLASS) -> list[Synthet
     return documents
 
 
-
 def train_val_test_split(
     documents: list[SyntheticDocument],
     train_ratio: float = 0.7,
@@ -2406,9 +2400,7 @@ def train_val_test_split(
         if doc.label not in by_label:
             raise ValueError(f"Unknown classification label: {doc.label}")
 
-        group = doc.metadata.get(
-            "template_group", f"single-document:{index}"
-        )
+        group = doc.metadata.get("template_group", f"single-document:{index}")
         by_label[doc.label].setdefault(group, []).append(doc)
 
     splits = [[], [], []]
@@ -2417,9 +2409,7 @@ def train_val_test_split(
         group_items = list(groups.items())
 
         if len(group_items) < 3:
-            raise ValueError(
-                f"Label {label!r} needs at least 3 template groups."
-            )
+            raise ValueError(f"Label {label!r} needs at least 3 template groups.")
 
         random.shuffle(group_items)
         total = sum(len(items) for _, items in group_items)
@@ -2434,24 +2424,15 @@ def train_val_test_split(
 
         for split_index in (1, 2):
             for _ in range(min_holdout_groups):
-                candidates = [
-                    i for i, assigned in enumerate(assignments)
-                    if assigned == 0
-                ]
+                candidates = [i for i, assigned in enumerate(assignments) if assigned == 0]
 
                 # Preserve enough groups for the other holdout.
                 if not candidates:
-                    raise RuntimeError(
-                        f"Not enough groups for label {label!r}"
-                    )
+                    raise RuntimeError(f"Not enough groups for label {label!r}")
 
                 chosen = min(
                     candidates,
-                    key=lambda i: abs(
-                        counts[split_index] +
-                        len(group_items[i][1]) -
-                        targets[split_index]
-                    ),
+                    key=lambda i: abs(counts[split_index] + len(group_items[i][1]) - targets[split_index]),
                 )
 
                 assignments[chosen] = split_index
@@ -2467,9 +2448,7 @@ def train_val_test_split(
                 continue
 
             size = len(group_docs)
-            current_error = sum(
-                abs(counts[j] - targets[j]) for j in range(3)
-            )
+            current_error = sum(abs(counts[j] - targets[j]) for j in range(3))
 
             best_split = 0
             best_error = current_error
@@ -2482,9 +2461,7 @@ def train_val_test_split(
                 trial[0] -= size
                 trial[target_split] += size
 
-                error = sum(
-                    abs(trial[j] - targets[j]) for j in range(3)
-                )
+                error = sum(abs(trial[j] - targets[j]) for j in range(3))
 
                 if error < best_error:
                     best_error = error
@@ -2504,24 +2481,14 @@ def train_val_test_split(
         random.shuffle(split_docs)
 
     group_sets = [
-        {
-            doc.metadata["template_group"]
-            for doc in split_docs
-            if "template_group" in doc.metadata
-        }
+        {doc.metadata["template_group"] for doc in split_docs if "template_group" in doc.metadata}
         for split_docs in splits
     ]
 
-    if any(
-        group_sets[a] & group_sets[b]
-        for a, b in ((0, 1), (0, 2), (1, 2))
-    ):
-        raise RuntimeError(
-            "Template leakage detected between dataset splits."
-        )
+    if any(group_sets[a] & group_sets[b] for a, b in ((0, 1), (0, 2), (1, 2))):
+        raise RuntimeError("Template leakage detected between dataset splits.")
 
     return splits[0], splits[1], splits[2]
-
 
 
 def save_dataset(documents: list[SyntheticDocument], split: str) -> None:

@@ -896,6 +896,7 @@ class TestHybridDictionaryContract:
 if __name__ == "__main__":
     pytest.main([__file__, "-v"])
 
+
 def test_v3_dict_exposes_provisional_rule_assessment():
     from securewaste.core.ml_classifier import (
         predict_classification_v3_dict,
