@@ -1,0 +1,16 @@
+Quarterly Budget Review - Security - Q3 2026
+
+Budget Allocated: $5,191,140
+Budget Spent: $6,096,472 (106%)
+Variance: $233,799 (7%)
+
+Top Expenses:
+1. Software Licenses: $2,761,934
+2. Software Licenses: $422,821
+3. Cloud Infrastructure: $344,335
+
+Forecast Next Quarter:
+Decrease after migration
+
+Decisions Needed:
+Approve Q3 hiring plan

@@ -1,0 +1,19 @@
+Securing Microservices
+
+By Alex Rodriguez | 2026-02-16 | 5 min read
+
+Last quarter, our team faced...
+
+Our approach was unconventional...
+
+Team adoption was faster than...
+
+Key Takeaways:
+- Measure before optimizing
+- Documentation is a feature
+- Technical debt is a choice
+
+The full code is on GitHub.
+
+Tags: engineering, scaling, kubernetes
+---

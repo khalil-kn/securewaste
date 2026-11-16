@@ -1,5 +1,68 @@
 {# Presentation only. Receives Jawed's Finding objects; never scans, persists or unmasks data. #}
 <section class="sr" aria-labelledby="sr-title">
+
+{% if classification is defined and classification %}
+<section class="sw-card" style="padding:24px; margin:24px 0;"
+         aria-labelledby="ml-classification-title">
+
+  <p class="sr-eyebrow">SECURE WASTE / HYBRID ML</p>
+  <h3 id="ml-classification-title">Document classification</h3>
+
+  <p><strong>Final security classification:</strong>
+    {{ classification.label }}
+  </p>
+
+  {% if classification.provisional_label %}
+  <p><strong>Rule-based assessment:</strong>
+    {{ classification.provisional_label }}
+  </p>
+  <p class="sr-footnote">
+    This assessment is advisory and does not override
+    the final security classification.
+  </p>
+  {% else %}
+  <p><strong>Rule-based assessment:</strong>
+    No classification rule matched.
+  </p>
+  {% endif %}
+
+  <p><strong>Original ML prediction:</strong>
+    {{ classification.ml_label if classification.ml_label else 'Unavailable' }}
+  </p>
+
+  <p><strong>Original ML confidence:</strong>
+    {% if classification.ml_confidence is not none %}
+      {{ (classification.ml_confidence * 100)|round(2) }}%
+    {% else %}
+      Unavailable
+    {% endif %}
+  </p>
+
+  <p><strong>Decision source:</strong>
+    {{ classification.decision_source|replace('_', ' ')|title }}
+  </p>
+
+  <p><strong>Model version:</strong>
+    {{ classification.model_version }}
+  </p>
+
+  <p><strong>Human review:</strong>
+    {{ 'Required' if classification.requires_review else 'Not flagged' }}
+  </p>
+
+  {% if classification.review_reason %}
+    <p><strong>Review reason:</strong>
+      {{ classification.review_reason }}
+    </p>
+  {% endif %}
+
+  <p class="sr-footnote">
+    Automated classification is advisory. Review sensitive documents
+    before sharing.
+  </p>
+</section>
+{% endif %}
+
   <div class="sr-heading">
     <div>
       <p class="sr-eyebrow">LOCAL DOCUMENT ANALYSIS</p>
@@ -47,7 +110,7 @@
       </article>
     {% endfor %}
     </div>
-  
+
 
 {% else %}
   <div class="sr-empty">

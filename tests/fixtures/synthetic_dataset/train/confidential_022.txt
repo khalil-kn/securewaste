@@ -1,0 +1,43 @@
+Quarterly Financial Report - PayTech Solutions - Q2 2026
+
+Prepared by: Jane Doe | Date: 2026-11-04
+Classification: CONFIDENTIAL
+Distribution: CFO, Controller, Board Audit Committee
+
+=== INCOME STATEMENT ===
+Revenue: $300,007,607 (+39% YoY)
+COGS: $47,835,217 (26%)
+Gross Profit: $255,480,237 (72%)
+
+Operating Expenses:
+  R&D: $15,290,225 (16%)
+  Sales & Marketing: $3,959,940 (17%)
+  G&A: $19,260,654 (11%)
+Total OpEx: $17,650,919 (59%)
+
+Operating Income: $252,306,873 (39%)
+Net Income: $166,869,569 (10%)
+
+=== BALANCE SHEET HIGHLIGHTS ===
+Cash & Equivalents: $274,408,333
+Accounts Receivable: $175,524,401 (DSO: 49 days)
+Total Assets: $1,369,599,722
+Total Liabilities: $253,429,068
+Equity: $948,170,921
+
+=== KEY METRICS ===
+ARR: $227,533,961 (+53% YoY)
+NRR: 109%
+Burn Rate: $2,731,072/month
+Runway: 21 months
+
+=== PAYMENT DATA ===
+Cards Processed: 9,535,704
+Volume: $6,173,282,927
+Chargebacks: 1034 (2%)
+Refunds: 4491 (0%)
+
+Bank Accounts:
+Primary Operating: DE35 PUW0 1GPS RFDT E06U 6ZEW
+Reserve: DE70 TYPS 5IRE X3TO YS59 NB5D
+Payroll: DE23 LSJT 5BMB ZRG9 MDD7 DTAX

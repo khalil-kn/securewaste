@@ -1,0 +1,19 @@
+How We Scaled to 1M Users
+
+By Alex Rodriguez | 2026-11-20 | 10 min read
+
+Last quarter, our team faced...
+
+We started by measuring...
+
+Team adoption was faster than...
+
+Key Takeaways:
+- Automate the boring stuff
+- Simplicity scales, complexity fails
+- Your team is your greatest asset
+
+Try it yourself and let us know.
+
+Tags: security, microservices, observability
+---

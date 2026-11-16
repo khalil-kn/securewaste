@@ -1,0 +1,30 @@
+Payroll Register - 2026-12 - CONFIDENTIAL
+
+Entity: TechCorp Inc | EIN: 14-4851254
+Processed by: ADP | Date: 2026-07-19
+Classification: CONFIDENTIAL - HR & Finance Only
+
+Summary:
+Employees Paid: 1750
+Gross Wages: $104,481,725.00
+Employer Taxes: $2,963,970.00
+Benefits Cost: $29,811,595.00
+Net Pay: $89,362,714.00
+Total Cost: $137,637,158.00
+
+Top 5 Earners:
+1. Carol Smith - $388,089.00 (CTO)
+2. David Brown - $262,600.00 (Engineering Manager)
+3. Grace Williams - $231,834.00 (Security Lead)
+4. Leo Miller - $349,101.00 (Senior Engineer)
+5. Olivia Taylor - $211,292.00 (Senior Engineer)
+
+Tax Deposits:
+Federal: $13,221,171.00 (Due: 2026-06-15)
+State: $6,092,439.00 (Due: 2026-10-15)
+Local: $1,844,623.00 (Due: 2026-12-15)
+
+Benefits Deductions:
+401(k): $17,544,592.00 | Health: $26,802,894.00 | HSA: $1,088,764.00
+
+Bank: Wells Fargo | Account: 5550808264 | Routing: 946141259

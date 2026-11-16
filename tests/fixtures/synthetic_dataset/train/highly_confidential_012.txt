@@ -1,0 +1,38 @@
+Incident Response Playbook - INC-2026727
+
+Severity: SEV-1
+Detected: 2026-07-22 20:12
+Classification: HIGHLY CONFIDENTIAL
+
+Incident Summary:
+Synthetic incident involving exposed credentials
+
+Affected Systems:
+API Gateway, Database
+
+Root Cause Analysis:
+Third-party API rate limit exceeded
+
+Compromised Credentials (ROTATE IMMEDIATELY):
+- AWS Keys: AKIA27QXN4BB263GH1DQ / ZY%$#uwPjzirQmUiO$Ao2P6EMrE%tNS9
+- Database: admin / 6cgYGpMS!lOgCYV$fbA4YsO9VdLN7#KV
+- API Tokens: KwkUA6amNtfK4XPg3z7feD7gQ1hbB0vkEpSiTdwOnFHtMH7C, OLqvUDBSGFIChRJykWm81eDJ2DdQjmHq5HQCDCJGypEHUIqK, BNHVe6fEQnuZXZfLaZ9NTiZguhxL3rfkHRIeVF3L0UMZgh4u, PBY7Tr7dSz1e6hoGL7RL7EyGFLWWmEtNQnU4hTwXoCaN5Q5B, mvzem4ausexo8cU2CVYhCxmtYOE5FFJXUrnoYiQqNk3I2ZoW, 3i895ZZcnoZnfKBLOZvE87Pzxl5jkEyBHpnYAEimEzI2ZmlS
+- SSH Keys: backup server key
+
+Containment Actions Taken:
+Isolated affected namespace
+
+Eradication Steps:
+1. Rotate all compromised credentials
+2. Patch vulnerable systems
+3. Remove unauthorized access
+4. Verify integrity of all systems
+
+Recovery Plan:
+Data restoration from backup
+
+Lessons Learned:
+Implement circuit breakers
+
+Report Prepared by: John Smith (oxvcntz@company.org)
+Approved by: Chris Wilson (yddqjbgdx@test.net)

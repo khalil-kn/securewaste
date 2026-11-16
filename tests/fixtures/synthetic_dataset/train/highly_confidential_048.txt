@@ -1,0 +1,38 @@
+Incident Response Playbook - INC-2026787
+
+Severity: SEV-3
+Detected: 2026-10-25 14:56
+Classification: HIGHLY CONFIDENTIAL
+
+Incident Summary:
+Synthetic incident involving exposed credentials
+
+Affected Systems:
+API Gateway, Database
+
+Root Cause Analysis:
+Configuration drift in Kubernetes
+
+Compromised Credentials (ROTATE IMMEDIATELY):
+- AWS Keys: AKIAF6P4YKDTLYQ8ITNO / vOAAsqO1TdNC7G1KuIcxkd1mF!zyHagM
+- Database: app_user / bfcD0MJKHBwyBqicvjcuTAocSa07JTX6
+- API Tokens: CDqPTjsQLOQfwYgpUTv7qhKyxYHX4M9TC7qQuhoZlGzQgpzp, O3kMhjcpcDczixQijkcAiqV9Kpej1L116Pzo9RYCmueloSSz, kJXxxFZ3WbQiQ3vAiPeAWXJDZan6N8eLvhqI23Wjt9bs3h4B, ylMnkHfUbTvrTLs84rPM3FpeRQsBSJSSpAJwncDoNyR6RZa7
+- SSH Keys: monitoring agent key
+
+Containment Actions Taken:
+Rotated all credentials
+
+Eradication Steps:
+1. Rotate all compromised credentials
+2. Patch vulnerable systems
+3. Remove unauthorized access
+4. Verify integrity of all systems
+
+Recovery Plan:
+Gradual service restoration
+
+Lessons Learned:
+Improve runbook accuracy
+
+Report Prepared by: Mike Brown (esngg@company.org)
+Approved by: Alice Williams (eefsswujl@demo.io)

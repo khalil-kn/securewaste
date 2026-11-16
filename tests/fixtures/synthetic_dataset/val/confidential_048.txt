@@ -1,0 +1,30 @@
+Payroll Register - 2026-12 - CONFIDENTIAL
+
+Entity: TechCorp Inc | EIN: 93-9980222
+Processed by: Paylocity | Date: 2026-11-23
+Classification: CONFIDENTIAL - HR & Finance Only
+
+Summary:
+Employees Paid: 1913
+Gross Wages: $119,516,241.00
+Employer Taxes: $13,758,666.00
+Benefits Cost: $32,525,453.00
+Net Pay: $85,170,568.00
+Total Cost: $19,907,368.00
+
+Top 5 Earners:
+1. Carol Johnson - $555,220.00 (CTO)
+2. David Jones - $367,655.00 (Engineering Manager)
+3. Henry Williams - $276,575.00 (Security Lead)
+4. Jack Miller - $243,203.00 (Senior Engineer)
+5. Olivia Taylor - $257,090.00 (Senior Engineer)
+
+Tax Deposits:
+Federal: $2,252,925.00 (Due: 2026-12-15)
+State: $8,371,947.00 (Due: 2026-03-15)
+Local: $604,872.00 (Due: 2026-08-15)
+
+Benefits Deductions:
+401(k): $5,116,055.00 | Health: $12,565,048.00 | HSA: $629,882.00
+
+Bank: Wells Fargo | Account: 7151512333 | Routing: 410676114

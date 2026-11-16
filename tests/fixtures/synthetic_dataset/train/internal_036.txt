@@ -1,0 +1,27 @@
+IT Security Advisory - SEC-2026087
+
+Date: 2026-05-17 | Severity: HIGH | Status: In Progress
+Affected: API Gateway
+
+Summary:
+Exposed debug endpoint
+
+Technical Details:
+Debug endpoint returns stack traces
+
+Impact:
+Service disruption risk
+
+Required Actions:
+1. Patch library to v1.2.4 (Owner: Security Team, Due: 2026-11-28)
+2. Update firewall rules (Owner: Security Team, Due: 2026-06-18)
+3. Update runbook (Owner: Platform Team, Due: 2026-11-09)
+
+Workaround:
+Route via VPN
+
+References:
+- CVE-2026-84636
+- Internal ticket: SEC-3463
+
+Contact: security@company.internal | #security-alerts on Slack

@@ -1,0 +1,27 @@
+IT Security Advisory - SEC-2026891
+
+Date: 2026-11-07 | Severity: LOW | Status: Monitoring
+Affected: Auth Service
+
+Summary:
+Weak encryption detected
+
+Technical Details:
+TLS 1.0 still enabled on legacy endpoint
+
+Impact:
+Low - internal only
+
+Required Actions:
+1. Restrict security group (Owner: Backend Team, Due: 2026-07-19)
+2. Rotate affected credentials (Owner: Infra Team, Due: 2026-04-07)
+3. Update runbook (Owner: Platform Team, Due: 2026-10-20)
+
+Workaround:
+Manual approval required
+
+References:
+- CVE-2026-59292
+- Internal ticket: SEC-8045
+
+Contact: security@company.internal | #security-alerts on Slack

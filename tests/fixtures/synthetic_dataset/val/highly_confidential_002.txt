@@ -1,0 +1,41 @@
+Cryptographic Key Ceremony - CER-2026548
+
+Date: 2026-05-25
+Participants: Lisa Anderson, John Smith, Sarah Davis, Alice Williams, Bob Johnson, Chris Wilson, Mike Brown
+Classification: HIGHLY CONFIDENTIAL
+
+Purpose:
+Generate and distribute ECDSA keys for Data Pipeline.
+
+Key Generation:
+Algorithm: X25519
+Key Size: 521 bits
+Entropy Source: Hardware RNG (TRNG)
+
+Generated Keys:
+Root CA: XFFHlACXIe6ZXzZhamWAt1HtNAx1KDYot+01+QsiQydJcelIqqGI7ZM1x3usxIOM
+cflof6it96huDHr0EH/g0F0V2Wmppv9O6bJquzyA1RlL2UxVsaftP8=5RPxjq=y6
+xBe10oXs/DlqReN1Hl=6htnvn4P1wU1i=RBWaTH2q+G+DveWqcROGVbTI+Rdw8XB
+wiAbOBg9UYDPkpahIyoXYr2ibuRd=YVnL8dEGa3SL3prVP9WkzbvxUT9VyjGNyZV
+Intermediate CA: CS20MNYnbSfJHXJIm59a3wl4HNHa3KK0PMXHAZSbDt4kuWPankgIPDH1dL4Rcw/6
+cA675/nbzqIFGNctZ1YaFPLfJORhlXXFlSQVOO86fP/ABF=FLwCBiTbq96XmQezP
+Ilv=8d+t0yyTncy0j3pzji=yW=EcdzB+p7I5kqJcD0bQE02UVQDVXrPSWJyXDboV
+zDVPW7X8/2bLOO2o1FsUAkYIs2m5bNJbEcbzYwrw0YCsU9njfE11Pd2wkE+/+S4J
+Leaf Certificates: cert-0, cert-1, cert-2, cert-3, cert-4, cert-5, cert-6, cert-7, cert-8, cert-9, cert-10, cert-11, cert-12, cert-13, cert-14, cert-15, cert-16, cert-17, cert-18
+Encryption Keys: RsOQWQa8vJc3BiRWd6YDEjrDrx776Gui, HbM1PcQzqCMPFY3iQjaWI2CnWAIOlFDv, BTvuzuxHb7Vq7Dky2FgcdvqNvprMvKN8, rCrhRxuUnmcLugegyhHB2OvIkJ6Pp5je, PC7CfG1SxRC6mdqMaKujgqQJqpL8sDRG, KSzyTRGDCtTGdsfMNkeRZTNbtPiAwREd, 49G55MH8BJx2fkFoEo1gGQv4gTV9uSmY, QdUrtE4V9YCVu4rhYmEdmCN7iUcxW0yZ, qmQaO7U8mSyezlXPEYufS2qNT60fimxF, cTXtwyNUY9uOjkctSwYoV379LawGLD0k, qFcxI39nu6yFKdVI2LWsWJc2SE7Z04aM, ThNaPap2wgYaz0vuKL7cyHyK1USkklpb, yQJ1Z0D0TpVvePX08jdZHgYnIQ4VqSir
+Signing Keys: sjTjrboiRafiGLHPqodKEf5uVL8h69lrTGzExdVU3KCJwx4alNcdp5xh64SuDSAE, 5WAKsYPJR1mTls6jrkjljGnGWm6uSnLbiQV1s902Q9skujKjYyPGZJJo2Nczj7Qm, 7rvmvYT5oSBNKWe45bpcNqIwvF9v4ilRlaaA3ILsZyCCNvUgHT7xwIVJPi01OUui, QXNR3ggP32wzO8iOB3FW5Z6TJscmYkrVV8jAqTn8Nsn1R409mej0qXceP6HOb4To, 8e9kwTVrBBCAOPskz6oCObGTTTgs0rVxLshgFtKbrKZOWdkle0sJ9rLb7r3feCPr, 8eXwafTFIczVBYOqqo6ubvqiCdjvoyguh4A1DfmwlgyOAuN72ltn0cm3laiTH9tS, k5IBXTAKt6Yzga5TMoe286RqdYLFkSM6gXiRXlG1seS1pjwNsuczqkp6AKyBrdfu, 7kNi2jqbADMoxCeEF3pdLnwS1nUgwJdlpAfSNbB8jYuhiN2dQ4zKW80bqPMUlO6D
+
+Distribution:
+Synthetic offline key ceremony distribution
+
+Backup and Escrow:
+Offline backup: Offsite vault (geographically separate)
+Escrow agent: Legal Firm A
+Escrow conditions: Regulatory action
+
+Revocation Procedure:
+Manual (emergency only)
+
+Attestation:
+All participants confirm secure generation and distribution.
+Signatures: Sarah Davis, John Smith, Mike Brown, Chris Wilson, Lisa Anderson, Jane Doe

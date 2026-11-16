@@ -1,0 +1,23 @@
+Welcome to the Team - John Brown
+
+Role: Lead | Team: Platform | Start Date: 2026-06-07
+Manager: Alice Johnson (nohat@test.net) | Buddy: Lisa Brown (bascyv@sample.co)
+
+Your First Week:
+Day 1: Orientation (9am), IT setup (10am), Team lunch (12:30pm), 1:1 with manager (3pm)
+Day 2: Security training (mandatory), Access provisioning, Codebase tour
+Day 3: Confluence deep dive, CI/CD hands-on, First commit!
+Day 4: Architecture overview with Alex Davis, Pair programming session
+Day 5: Sprint planning participation, 30-day goals review
+
+Key Contacts:
+- HR: Lisa Anderson (uxuywg@example.com) - benefits, policies
+- IT: Alex Martinez (oafxjffae@test.net) - access, hardware, tools
+- Security: Sam Lee (security@company.internal) - VPN, MFA, secrets
+
+Resources:
+- Internal wiki: wiki.company.internal
+- Engineering handbook: handbook.company.internal
+- Onboarding checklist: onboarding.company.internal/EMP-8032
+
+Welcome aboard! ðŸŽ‰

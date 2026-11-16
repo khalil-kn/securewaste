@@ -9,6 +9,13 @@ from __future__ import annotations
 from flask import Flask
 
 from securewaste.config import load_config
+from securewaste.web import (
+    routes_api,
+    routes_dashboard,
+    routes_detect,
+    routes_documents,
+    security,
+)
 
 
 def create_app(test_config: dict | None = None) -> Flask:
@@ -22,7 +29,6 @@ def create_app(test_config: dict | None = None) -> Flask:
         (app.config["STORAGE_DIR"] / sub).mkdir(parents=True, exist_ok=True)
 
     from securewaste.db import connection
-    from securewaste.web import routes_api, routes_dashboard, routes_detect, routes_documents, security
 
     security.init_app(app)
     connection.init_app(app)

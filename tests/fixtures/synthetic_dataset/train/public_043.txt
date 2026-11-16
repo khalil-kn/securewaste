@@ -1,0 +1,27 @@
+Release Notes: Search Engine v3.6.9
+
+Released: 2026-12-19
+
+ðŸŽ‰ New Features:
+- Feature A
+- Feature B
+- Feature C
+
+ðŸ› Bug Fixes:
+- Fixed memory leak
+- Resolved race condition
+- Corrected edge case
+
+ðŸ”§ Improvements:
+- Enhanced logging
+- Improved validation
+
+âš ï¸ Breaking Changes:
+- Updated authentication flow
+
+ðŸ“¦ Dependencies:
+- Updated: React 18.2, TypeScript 5.1
+- Added: OpenTelemetry SDK
+
+Full changelog: https://github.com/example/project/blob/main/CHANGELOG.md
+Upgrade guide: https://docs.example.com/upgrade-guide

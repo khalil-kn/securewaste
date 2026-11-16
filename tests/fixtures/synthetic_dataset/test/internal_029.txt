@@ -1,0 +1,31 @@
+Incident Retrospective - INC-3867
+
+Date: 2026-08-01 | Duration: 21 minutes | Severity: SEV-HIGH
+
+Timeline:
+T+0m: Alert fired
+T+5m: On-call acknowledged
+T+15m: Root cause identified
+T+45m: Fix deployed
+T+60m: All clear
+
+Root Cause:
+Database connection pool exhaustion
+
+Impact:
+- Users affected: 36,908
+- Revenue impact: $94,048
+- SLA breach: No - within SLA
+
+What Went Well:
+Rollback worked smoothly
+
+What Went Wrong:
+Missing runbook
+
+Action Items:
+- Add connection pool monitoring
+- Improve runbook
+- Add integration test
+
+Follow-up: 2026-05-01

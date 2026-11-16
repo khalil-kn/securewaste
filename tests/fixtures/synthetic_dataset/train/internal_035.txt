@@ -1,0 +1,31 @@
+Project Proposal: Orion
+
+Author: Jane Brown (yqqbjqhxl@sample.co) | Date: 2026-07-19
+Sponsor: Bob Jones (byxstk@company.org)
+
+Executive Summary:
+Migration to cloud-native architecture
+
+Problem Statement:
+Vendor lock-in risk
+
+Proposed Solution:
+Build new service with event-driven architecture
+
+Resource Request:
+- Engineering: 11 FTEs (16,508/month)
+- Design: 3 FTEs (19,147/month)
+- PM: 2 FTE (19,939/month)
+- Infrastructure: $45,985/month
+Total: $4,477,369 over 12 months
+
+Success Metrics:
+99.99% availability, <50ms p99
+
+Risks & Mitigations:
+Risk: Vendor dependency
+Mit: Multi-cloud strategy
+Risk: Team bandwidth
+Mit: Hire 2 contractors
+
+Approval Required: CTO, CFO

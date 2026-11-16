@@ -1,0 +1,39 @@
+Production Deployment Runbook - DEP-2026115
+
+Date: 2026-01-17
+Environment: PRODUCTION
+Classification: HIGHLY CONFIDENTIAL
+
+Pre-deployment Checklist:
+- [ ] All tests passing in staging
+- [ ] Security scan clean
+- [ ] Database migration reviewed
+- [ ] Rollback plan documented
+- [ ] On-call engineer confirmed: Bob Johnson (+34 177 241 3680)
+
+Secrets Required:
+AWS Access Key: AKIAO1YN1U4L8XPD1F8P
+AWS Secret Key: jSGCnL1#d#ejvZVTChENO4POSY0o1Zqn
+Database Password: nDCIK1I0kI#o6DK9zmjwG3OVPG$pQiMJ
+API Keys: cOB4FW3ocnEcA8ihRorIDlvGqLMZUfisy68lC0LvVYOGcCIP, soORG2aJY4A35JW8N2tbu2MtUUvLxnrXoxsJgdE4LBijRt4T, f95ocjaCwd00X8LVQRpHctpoIOQhA3eV2E2dy14Q6w2vJ13j, iqt6vnhs89tVlXJxfBIm6oeAu4DvOVLRaAYzgWYGEcYOdZ8Q, JLZjriB9GLJJiJ6aNIdiFcxd6UJjzqTv9JuMIHq7Ko6ZvteV, 4N6QxFsDuxn15cx9K9qygag04PS4dyxxZ0ZbvbFwxCuHJZDR, pfLEnjJKRujRVJ5y0KbC4qeV1lPofeNdBzPoB95gn1pL8p9w
+JWT Signing Key: kE5XmxXTlBNXzz3IzGU75cdwIO5RnhDx340qQ9U8CgN7C7Sq55X282hP0807qz3O
+Encryption Keys: pCc1zw04yHw1tuWNyEXAwMvLkorVi3IZ, lx8FtOGyt2Ionu6OUmOfmQmAY63kFDsC, ZWBUoMXgVeR1I2vHPG6YPhNURQsGtq1m, DJAUvvEJ0xFprjhFLqtK6hg5FAtpeAVP, cZPp4su9E70bYxfAPx69vDlA8qSfqNFa
+
+Deployment Steps:
+1. Create pre-deployment snapshot
+2. Apply database migrations
+3. Deploy application containers
+4. Run smoke tests
+5. Update DNS records
+6. Monitor error rates for 30 minutes
+
+Rollback Procedure:
+1. Revert DNS
+2. Restore database snapshot
+3. Redeploy previous container version
+4. Notify stakeholders
+
+Emergency Contacts:
+Security: security@company.com
+Infrastructure: infra@company.com
+Management: management@company.com
