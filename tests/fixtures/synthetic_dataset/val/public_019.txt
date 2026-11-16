@@ -1,0 +1,19 @@
+Lessons from Our Migration to Kubernetes
+
+By Lisa Wang | 2026-08-16 | 13 min read
+
+The challenge was clear:...
+
+Our approach was unconventional...
+
+The results exceeded expectations...
+
+Key Takeaways:
+- Invest in developer experience
+- Simplicity scales, complexity fails
+- Technical debt is a choice
+
+The full code is on GitHub.
+
+Tags: security, microservices, observability
+---

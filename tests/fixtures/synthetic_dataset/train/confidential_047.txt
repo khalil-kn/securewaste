@@ -1,0 +1,32 @@
+Non-Disclosure Agreement - NDA-2026695
+
+Parties: Acme Corp and DataFlow Inc
+Effective: 2026-08-01
+Classification: CONFIDENTIAL
+
+Purpose: Technical evaluation
+
+Confidential Information includes:
+- Financial projections and metrics
+- Technical architectures and source code
+- Customer lists and pipeline data
+- Product roadmaps and unreleased features
+- Pricing models and discount structures
+- Personnel compensation data
+
+Obligations:
+1. Use Confidential Information solely for the Purpose
+2. Restrict access to need-to-know personnel under NDA
+3. Protect with same degree of care as own confidential information
+4. No reverse engineering, decompilation, or disassembly
+5. Return/destroy upon request or termination
+
+Term: 3 years from disclosure
+Survival: Confidentiality obligations survive 7 years
+
+Governing Law: England & Wales
+Jurisdiction: SF Superior Court
+
+Signatures:
+Acme Corp: _________________________ Date: __________
+DataFlow Inc: _________________________ Date: __________

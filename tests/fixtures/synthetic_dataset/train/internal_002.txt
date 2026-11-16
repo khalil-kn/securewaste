@@ -1,0 +1,16 @@
+Quarterly Budget Review - Product - Q2 2026
+
+Budget Allocated: $9,872,679
+Budget Spent: $2,312,044 (86%)
+Variance: $-34,280 (-16%)
+
+Top Expenses:
+1. Personnel: $1,200,855
+2. Personnel: $1,055,622
+3. Software Licenses: $351,708
+
+Forecast Next Quarter:
+Decrease after migration
+
+Decisions Needed:
+Fund migration project

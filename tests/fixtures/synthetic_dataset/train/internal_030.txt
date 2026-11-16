@@ -1,0 +1,27 @@
+IT Security Advisory - SEC-2026996
+
+Date: 2026-02-19 | Severity: MEDIUM | Status: In Progress
+Affected: Database
+
+Summary:
+Weak encryption detected
+
+Technical Details:
+Debug endpoint returns stack traces
+
+Impact:
+Compliance violation
+
+Required Actions:
+1. Enable TLS 1.2+ (Owner: Backend Team, Due: 2026-11-07)
+2. Run vulnerability scan (Owner: Backend Team, Due: 2026-05-07)
+3. Schedule follow-up scan (Owner: Security Team, Due: 2026-04-26)
+
+Workaround:
+Route via VPN
+
+References:
+- CVE-2026-86251
+- Internal ticket: SEC-9521
+
+Contact: security@company.internal | #security-alerts on Slack

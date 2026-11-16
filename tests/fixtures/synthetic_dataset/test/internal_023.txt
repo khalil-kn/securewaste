@@ -1,0 +1,43 @@
+Engineering Design Review - Payment Processing v2
+
+Author: Bob Williams | Reviewers: Bob Johnson, Jane Doe
+Date: 2026-08-04 | Status: In Progress
+
+Context:
+Rate limiting at LB only
+
+Proposed Design:
+Event-driven with Kafka
+WebSocket for real-time
+Idempotent consumers
+
+Alternatives Considered:
+Polling with Redis
+SSE instead of WebSocket
+Third-party notification service
+
+Trade-offs:
+Complexity vs real-time
+Cost vs latency
+Build vs buy
+
+Security Considerations:
+Encrypt PII in events
+Validate webhook signatures
+Rate limit per tenant
+
+Testing Strategy:
+Unit: 80% coverage
+Integration: contract tests
+Load: 2x peak traffic
+Chaos: dependency failure
+
+Rollout Plan:
+Canary 5% -> 25% -> 100%
+Feature flag per tenant
+Rollback in <2min
+
+Open Questions:
+Event ordering guarantees?
+Schema evolution strategy?
+Cross-region replication?

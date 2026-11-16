@@ -1,0 +1,16 @@
+Quarterly Budget Review - Product - Q1 2026
+
+Budget Allocated: $9,776,236
+Budget Spent: $3,380,239 (62%)
+Variance: $733,243 (18%)
+
+Top Expenses:
+1. Contractors: $325,137
+2. Cloud Infrastructure: $467,330
+3. Personnel: $980,614
+
+Forecast Next Quarter:
+Stable with optimization
+
+Decisions Needed:
+Fund migration project

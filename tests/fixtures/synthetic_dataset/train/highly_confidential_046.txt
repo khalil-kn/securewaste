@@ -1,0 +1,38 @@
+Incident Response Playbook - INC-2026998
+
+Severity: SEV-2
+Detected: 2026-01-18 19:19
+Classification: HIGHLY CONFIDENTIAL
+
+Incident Summary:
+Synthetic incident involving exposed credentials
+
+Affected Systems:
+API Gateway, Database
+
+Root Cause Analysis:
+Third-party API rate limit exceeded
+
+Compromised Credentials (ROTATE IMMEDIATELY):
+- AWS Keys: AKIAAX56VJJRWYKORI1K / x4YEv9s6kT5lBT$6MeCw6LTO9rifCZvK
+- Database: app_user / i8KKq2z78ridUaW6g6MLHHq5aquZAf2!
+- API Tokens: 98NPZ6l8IATY0zDL34OLGeEHxpV2OBUfMXkjbOSdvgBjHuhS, qCeDsuVH9SG4P0tY5B13FjPsYmPwFdJXNoWr5fJ3maA7dpIv, 3O7p9YGiFNXGx4bbaQJvOKFzMQTIdbSMHZRECu4J6k0nRGdA, tXENfAP2Tt33qrF0Dr0KkytNw1iXqM7cUaa7P5TvK6YHol91, 4VlbSH6AA8Q4hgwAIitVQZT6mYMLaQgzgumfoui8yv4O7GcK
+- SSH Keys: bastion host key
+
+Containment Actions Taken:
+Isolated affected namespace
+
+Eradication Steps:
+1. Rotate all compromised credentials
+2. Patch vulnerable systems
+3. Remove unauthorized access
+4. Verify integrity of all systems
+
+Recovery Plan:
+Full credential rotation
+
+Lessons Learned:
+Enhance alerting thresholds
+
+Report Prepared by: Sarah Davis (mhpdoovoip@demo.io)
+Approved by: Alice Williams (rcgfnmkr@sample.co)

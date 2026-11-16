@@ -41,6 +41,12 @@ docs/diagrams/tools/
 Thumbs.db
 desktop.ini
 
+# Local Python development
+.venv-ci/
+*.pyc
+
+# Local ML experiments and training datasets
+/experiments/
 # ---- Working files / AI tooling: keep untracked, never commit ----
 design.md
 images/

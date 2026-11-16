@@ -1,0 +1,30 @@
+Payroll Register - 2026-01 - CONFIDENTIAL
+
+Entity: TechCorp Inc | EIN: 55-3170997
+Processed by: ADP | Date: 2026-05-23
+Classification: CONFIDENTIAL - HR & Finance Only
+
+Summary:
+Employees Paid: 1518
+Gross Wages: $31,769,228.00
+Employer Taxes: $2,189,603.00
+Benefits Cost: $32,802,164.00
+Net Pay: $6,371,623.00
+Total Cost: $128,608,434.00
+
+Top 5 Earners:
+1. Alice Johnson - $426,586.00 (VP Engineering)
+2. Frank Brown - $478,422.00 (Director)
+3. Iris Davis - $227,315.00 (Staff Engineer)
+4. Jack Wilson - $181,682.00 (Data Engineer)
+5. Nathan Taylor - $188,869.00 (ML Engineer)
+
+Tax Deposits:
+Federal: $6,402,485.00 (Due: 2026-10-15)
+State: $4,543,133.00 (Due: 2026-11-15)
+Local: $647,392.00 (Due: 2026-06-15)
+
+Benefits Deductions:
+401(k): $9,208,774.00 | Health: $13,192,627.00 | HSA: $931,465.00
+
+Bank: Citi | Account: 6993317138 | Routing: 463388095

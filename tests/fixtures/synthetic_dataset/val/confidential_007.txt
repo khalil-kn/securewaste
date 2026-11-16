@@ -1,0 +1,30 @@
+Payroll Register - 2026-04 - CONFIDENTIAL
+
+Entity: DataFlow Ltd | EIN: 32-1914505
+Processed by: Workday | Date: 2026-06-08
+Classification: CONFIDENTIAL - HR & Finance Only
+
+Summary:
+Employees Paid: 945
+Gross Wages: $126,820,590.00
+Employer Taxes: $16,389,816.00
+Benefits Cost: $17,274,098.00
+Net Pay: $78,283,582.00
+Total Cost: $183,669,646.00
+
+Top 5 Earners:
+1. Carol Johnson - $392,980.00 (Chief Architect)
+2. Eve Jones - $343,378.00 (Principal Engineer)
+3. Grace Davis - $380,448.00 (Staff Engineer)
+4. Karen Wilson - $277,236.00 (Security Engineer)
+5. Olivia Taylor - $230,126.00 (DevOps Engineer)
+
+Tax Deposits:
+Federal: $27,178,276.00 (Due: 2026-03-15)
+State: $6,303,072.00 (Due: 2026-04-15)
+Local: $1,839,424.00 (Due: 2026-11-15)
+
+Benefits Deductions:
+401(k): $17,642,859.00 | Health: $3,032,682.00 | HSA: $1,349,371.00
+
+Bank: Citi | Account: 7083774420 | Routing: 212985973

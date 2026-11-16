@@ -1,0 +1,1 @@
+JWT signing key: 8U9OHUZ7RTHNZVFD. Keep secure. HIGHLY CONFIDENTIAL

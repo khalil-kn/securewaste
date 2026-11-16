@@ -1,0 +1,27 @@
+Release Notes: Notification Service v3.5.2
+
+Released: 2026-12-21
+
+ðŸŽ‰ New Features:
+- Feature A
+- Feature B
+- Feature C
+
+ðŸ› Bug Fixes:
+- Patch for CVE-2026-XXXXX
+- Fixed timeout issue
+
+ðŸ”§ Improvements:
+- Better error messages
+- Faster startup
+- Reduced memory usage
+
+âš ï¸ Breaking Changes:
+- Updated authentication flow
+
+ðŸ“¦ Dependencies:
+- Updated: PostgreSQL 16, Redis 7.2
+- Added: New caching library
+
+Full changelog: https://github.com/example/project/blob/main/CHANGELOG.md
+Upgrade guide: https://docs.example.com/upgrade-guide
