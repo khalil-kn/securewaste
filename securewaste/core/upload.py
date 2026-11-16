@@ -11,6 +11,9 @@ from typing import Literal
 
 import fitz  # PyMuPDF
 
+# One shared error class: routes_documents.py catches this exact class.
+from securewaste.core.errors import UploadRejected
+
 
 @dataclass(frozen=True)
 class Limits:
@@ -27,14 +30,6 @@ class ValidatedUpload:
     size_bytes: int
     sha256: str
     page_count: int
-
-
-class UploadRejected(ValueError):
-    """Upload failed validation; code identifies the reason."""
-
-    def __init__(self, code: str):
-        self.code = code
-        super().__init__(code)
 
 
 def validate_upload(

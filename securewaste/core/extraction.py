@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Literal
+from typing import Literal, cast
 
 import pymupdf
 
@@ -39,8 +39,10 @@ def extract_pages(path: Path, file_type: Literal["pdf", "txt"], limits: Limits) 
                 raise ExtractionFailed("EXTRACTION_ERROR")
             pages = []
             total_chars = 0
-            for page_number, page in enumerate(document, start=1):
-                text = page.get_text("text")
+            for page_index in range(len(document)):
+                page_number = page_index + 1
+                page = document.load_page(page_index)
+                text = cast(str, page.get_text("text"))
                 total_chars += len(text)
                 if total_chars > limits.max_extracted_chars:
                     raise ExtractionFailed("EXTRACTION_ERROR")
