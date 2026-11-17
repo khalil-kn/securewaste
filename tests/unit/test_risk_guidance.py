@@ -65,3 +65,27 @@ def test_results_page_shows_risk_guidance_without_leaking_values(tmp_path):
     assert r.status_code == 200
     assert "Risk level: Critical" in body and RECOMMENDATIONS["Highly Confidential"] in body
     assert "sana@example.tn" not in body and ' style="' not in body
+
+
+def test_results_page_survives_classifier_failure(tmp_path, caplog):
+    app = create_app(
+        {"TESTING": True, "WTF_CSRF_ENABLED": False, "STORAGE_DIR": tmp_path / "s", "DATABASE_PATH": tmp_path / "t.db"}
+    )
+    with pymupdf.open() as pdf:
+        pdf.new_page().insert_text((55, 75), "x")
+        data = pdf.tobytes()
+    leak_marker = "private text that must never reach the logs"
+    pages = [PageText(page_number=1, text="Contact sana@example.tn")]
+    with (
+        patch("securewaste.services.detect_service.extract_pages", return_value=pages),
+        patch(V3, side_effect=RuntimeError(leak_marker)),
+        caplog.at_level("WARNING"),
+    ):
+        r = app.test_client().post(
+            "/documents", data={"file": (io.BytesIO(data), "t.pdf")}, content_type="multipart/form-data"
+        )
+    body = r.get_data(as_text=True)
+    assert r.status_code == 200
+    assert "Document classification is unavailable" in body and "Risk level" not in body
+    assert "s•••@e•••.tn" in body and "sana@example.tn" not in body
+    assert "RuntimeError" in caplog.text and leak_marker not in caplog.text

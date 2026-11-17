@@ -94,8 +94,13 @@ def upload_document():
         # 4. Classify the extracted document text with V3.
         document_text = "\n".join(page.text for page in pages)
 
-        classification = predict_classification_v3_dict(document_text)
-        classification.update(risk_guidance(classification, sum(f.occurrences for f in findings)))
+        try:
+            classification = predict_classification_v3_dict(document_text)
+            classification.update(risk_guidance(classification, sum(f.occurrences for f in findings)))
+        except Exception as error:
+            # Findings stay visible. Log only the type: the message can hold pieces of the document.
+            current_app.logger.warning("Document classification unavailable: %s", type(error).__name__)
+            classification = None
 
         # 5. Display masked findings and classification.
         return render_template(
