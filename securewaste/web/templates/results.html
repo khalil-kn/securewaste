@@ -67,10 +67,17 @@
         <span class="sr-label">Document classification &middot; automated estimate</span>
         <h2 id="sr-class-title" class="sr-class-label">{{ classification.label }}</h2>
         <div class="sr-tags">
+          {# Risk badge hidden for now (tech lead decision). The level is still computed; set to true to show it again. #}
+          {% set show_risk_badge = false %}
+          {% if show_risk_badge %}
           <span class="sw-meter sw-meter-{{ classification.risk_level }}" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
           <span class="sw-pill sw-pill-sev-{{ classification.risk_level }}">Risk level: {{ classification.risk_level|title }}</span>
+          {% endif %}
           {% if classification.requires_review %}<span class="sw-pill sw-pill-sev-high">Human review required</span>{% endif %}
         </div>
+        {% if classification.low_ml_confidence %}
+        <div class="sw-alert sw-alert-warning" role="alert"><strong>Low ML confidence ({{ (classification.ml_confidence * 100)|round|int }}%).</strong> This classification needs human review before the document is shared.</div>
+        {% endif %}
         <p class="sw-secondary">{{ classification.explanation }}</p>
         <div class="sr-reco"><strong>Recommended action</strong><p class="sw-secondary">{{ classification.recommendation }}</p></div>
         {% if classification.review_reason %}<p class="sw-secondary"><strong>Review reason:</strong> {{ classification.review_reason }}</p>{% endif %}
