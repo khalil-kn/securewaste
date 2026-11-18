@@ -37,7 +37,8 @@ def risk_guidance(classification: dict, occurrences: int) -> dict:
     label = classification["label"]
     parts = [
         (
-            f"The classifier estimates this document as {label} ({round(classification['confidence'] * 100)}% confidence)."
+            f"The classifier estimates this document as {label} "
+            f"({round(classification['confidence'] * 100)}% confidence)."
             if classification.get("decision_source") == "ml"
             else f"The final classification is {label}, based on sensitive-content rules."
         ),
