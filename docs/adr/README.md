@@ -23,3 +23,4 @@ An **ADR** is a short document that captures one important technical decision: t
 | [0008](0008-explainable-additive-risk-score.md) | Explainable additive risk score | Accepted |
 | [0009](0009-verified-true-redaction.md) | True redaction verified by re-extraction | Accepted |
 | [0010](0010-single-local-user-mvp.md) | Single local user in the MVP; authentication deferred | Accepted |
+| [0011](0011-optional-metadata-only-cloud-sync.md) | Optional metadata-only sync to the cloud API | Proposed |

@@ -10,6 +10,7 @@ from securewaste.core.ml_classifier import predict_classification_v3_dict
 from securewaste.core.upload import Limits, validate_upload
 from securewaste.services.classify_service import risk_guidance
 from securewaste.services.detect_service import scan_file
+from securewaste.services.sync_service import sync_scan
 
 bp = Blueprint("documents", __name__)
 
@@ -102,11 +103,15 @@ def upload_document():
             current_app.logger.warning("Document classification unavailable: %s", type(error).__name__)
             classification = None
 
-        # 5. Display masked findings and classification.
+        # 5. Optional metadata-only sync. A cloud failure never hides the local result.
+        sync = sync_scan(config, classification, findings)
+
+        # 6. Display masked findings, classification and the sync status.
         return render_template(
             "detect.html",
             findings=findings,
             classification=classification,
+            sync=sync,
             error=None,
         ), 200
 
