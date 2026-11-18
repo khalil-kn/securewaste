@@ -9,6 +9,7 @@ STORED_COLUMNS = {
     "event_timestamp",
     "classification",
     "risk",
+    "employee_id",
     "email_count",
     "phone_count",
     "keyword_count",

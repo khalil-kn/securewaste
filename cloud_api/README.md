@@ -91,7 +91,7 @@ The contract:
 - `event_id`: a UUID, unique in the table.
 - `timestamp`: an ISO 8601 date and time with a timezone offset.
 - `classification`: one of `Public`, `Internal`, `Confidential`, `Highly Confidential`.
-- `risk`: one of `Low`, `Medium`, `High`.
+- `risk`: optional. One of `Low`, `Medium`, `High`, or omitted/null. Overall risk assessment is deferred to Sprint 4 (SCRUM-46); a missing value is never fabricated.
 - `counts`: an object with the keys `email`, `phone` and `keyword`, each a non-negative integer.
 
 Any other key is refused, so document text, file names, paths and matched values cannot reach
@@ -115,6 +115,29 @@ export CLOUD_DATABASE_URL=postgresql://postgres:postgres@localhost:5432/securewa
 export CLOUD_API_TOKENS="employee-token:employee"
 python -m cloud_api
 ```
+
+## Employee attribution (SCRUM-45)
+
+`scan_events.employee_id` is populated server-side from the verified bearer token. The client
+must never send `employee_id` (it is a forbidden field). A token may carry an employee UUID as
+a third colon-separated field: `token:role:employee_uuid`. Tokens without it store `NULL`
+(unattributed, used for historical rows).
+
+Reads are owner-scoped: an `employee` may read only their own scan events; `admin` and
+`security_officer` may read any. `GET /api/v1/scans/<event_id>` returns `403` otherwise.
+
+## Migration (SCRUM-45)
+
+Numbered SQL files live in `cloud_api/migrations/`. Apply them in order:
+
+```bash
+psql "$CLOUD_DATABASE_URL" -f cloud_api/migrations/000_schema_migrations.sql
+psql "$CLOUD_DATABASE_URL" -f cloud_api/migrations/001_scrum45_employee_and_nullable_risk.sql
+```
+
+Historic rows keep their `risk` value and get `employee_id = NULL` (unattributed). Roll back by
+restoring from a backup (`pg_dump`) taken before migration; the ALTERs are not automatically
+reversible.
 
 ## Tests
 

@@ -12,10 +12,13 @@ from cloud_api.config import Settings
 from cloud_api.db import SCHEMA_PATH, open_connection
 
 # Fake bearer tokens of the test suite. They are not credentials of any real service.
+EMPLOYEE_ID = "11111111-2222-3333-4444-555555555555"
+ADMIN_EMPLOYEE_ID = "aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee"
+
 TEST_USERS = {
-    "employee-token": "employee",
-    "admin-token": "admin",
-    "security-token": "security_officer",
+    "employee-token": ("employee", EMPLOYEE_ID),
+    "admin-token": ("admin", ADMIN_EMPLOYEE_ID),
+    "security-token": ("security_officer", ADMIN_EMPLOYEE_ID),
     "auditor-token": "auditor",
 }
 

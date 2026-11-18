@@ -44,7 +44,7 @@ def test_an_invalid_payload_is_refused(valid_payload, change, expected):
     assert any(expected in detail for detail in raised.value.details)
 
 
-@pytest.mark.parametrize("field", ["event_id", "timestamp", "classification", "risk", "counts"])
+@pytest.mark.parametrize("field", ["event_id", "timestamp", "classification", "counts"])
 def test_a_missing_field_is_refused(valid_payload, field):
     payload = {key: value for key, value in valid_payload.items() if key != field}
     with pytest.raises(PayloadError):

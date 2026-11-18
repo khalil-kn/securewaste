@@ -7,7 +7,7 @@ from collections.abc import Mapping
 
 from flask import Flask, jsonify
 
-from cloud_api.auth import parse_tokens
+from cloud_api.auth import parse_employee_ids, parse_tokens
 from cloud_api.config import Settings
 from cloud_api.routes import bp
 
@@ -19,10 +19,31 @@ def create_app(settings: Settings | None = None, tokens: Mapping[str, str] | Non
     """Build the Flask application of the cloud API."""
     settings = settings or Settings.from_env()
     app = Flask(__name__)
+    if tokens is None:
+        raw = os.environ.get("CLOUD_API_TOKENS")
+        token_roles = parse_tokens(raw)
+        token_employees = parse_employee_ids(raw)
+    else:
+        token_roles = {}
+        token_employees = {}
+        for token, value in tokens.items():
+            if isinstance(value, (tuple, list)):
+                role = value[0]
+                employee_id = value[1] if len(value) > 1 else None
+            elif isinstance(value, dict):
+                role = value.get("role")
+                employee_id = value.get("employee_id")
+            else:
+                role = value
+                employee_id = None
+            if role is not None:
+                token_roles[token] = role
+            token_employees[token] = employee_id
     app.config.update(
         MAX_CONTENT_LENGTH=MAX_REQUEST_BYTES,
         CLOUD_DATABASE_URL=settings.database_url,
-        CLOUD_API_TOKENS=dict(tokens) if tokens is not None else parse_tokens(os.environ.get("CLOUD_API_TOKENS")),
+        CLOUD_API_TOKENS=token_roles,
+        CLOUD_API_TOKEN_EMPLOYEES=token_employees,
     )
     app.register_blueprint(bp)
 
