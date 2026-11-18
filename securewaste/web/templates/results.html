@@ -61,7 +61,7 @@
     {% endif %}
   </div>
 
-  <aside class="sw-col-4 sw-stack">
+  <aside class="sw-col-4 sw-stack sr-summary">
     {% if classification %}
       <section class="sw-card sw-stack" aria-labelledby="sr-class-title">
         <span class="sr-label">Document classification &middot; automated estimate</span>
@@ -84,8 +84,8 @@
         <dl class="sw-dl">
           <div><dt>Rule-based assessment</dt><dd>{{ classification.provisional_label or 'No rule matched' }}</dd></div>
           <div><dt>Original ML prediction</dt><dd>{{ classification.ml_label or 'Unavailable' }}</dd></div>
-          <div><dt>Original ML confidence</dt><dd class="sw-num">{% if classification.ml_confidence is not none %}{{ (classification.ml_confidence * 100)|round(2) }}%{% else %}Unavailable{% endif %}</dd></div>
-          <div><dt>Decision source</dt><dd>{{ classification.decision_source|replace('_', ' ')|title }}</dd></div>
+          <div><dt>Original ML confidence</dt><dd class="sw-num">{% if classification.ml_confidence is not none %}{{ (classification.ml_confidence * 100)|round|int }}%{% else %}Unavailable{% endif %}</dd></div>
+          <div><dt>Decision source</dt><dd>{{ {'ml': 'ML model', 'rule_override': 'Rule override', 'rule_based': 'Rules only'}.get(classification.decision_source, classification.decision_source) }}</dd></div>
           <div><dt>Model version</dt><dd>{{ classification.model_version }}</dd></div>
         </dl>
       </section>

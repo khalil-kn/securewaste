@@ -19,3 +19,5 @@
 .sw-pill-sev-low { background: var(--sw-chip); color: var(--sw-sev-low); }
 @media (max-width: 800px) { .sr-kpis { grid-template-columns: repeat(3, minmax(0, 1fr)); } .sr-head { flex-direction: column; } }
 @media (max-width: 540px) { .sr-kpis { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+/* Stacked layout: the classification summary comes before the long findings list. */
+@media (max-width: 1100px) { .sr-summary { order: -1; } }
