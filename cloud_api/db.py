@@ -6,6 +6,7 @@ and matched values never reach this module (ADR-0006: a raw value never leaves d
 
 from __future__ import annotations
 
+import uuid
 from collections.abc import Iterator
 from contextlib import contextmanager
 from datetime import datetime
@@ -45,21 +46,28 @@ def insert_scan_event(
     event_id: str,
     event_timestamp: datetime,
     classification: str,
-    risk: str,
+    risk: str | None,
     email_count: int,
     phone_count: int,
     keyword_count: int,
+    employee_id: str | None = None,
 ) -> dict[str, Any]:
     """Store one scan event and return the stored row."""
+    # Never let a malformed identity reach PostgreSQL (would surface as a 500).
+    if employee_id is not None:
+        try:
+            employee_id = str(uuid.UUID(str(employee_id)))
+        except (ValueError, AttributeError, TypeError):
+            employee_id = None
     try:
         row = connection.execute(
             """
             INSERT INTO scan_events (
-                event_id, event_timestamp, classification, risk,
+                event_id, event_timestamp, classification, risk, employee_id,
                 email_count, phone_count, keyword_count
             )
-            VALUES (%s, %s, %s, %s, %s, %s, %s)
-            RETURNING event_id, event_timestamp, classification, risk,
+            VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
+            RETURNING event_id, event_timestamp, classification, risk, employee_id,
                       email_count, phone_count, keyword_count, received_at
             """,
             (
@@ -67,6 +75,7 @@ def insert_scan_event(
                 event_timestamp,
                 classification,
                 risk,
+                employee_id,
                 email_count,
                 phone_count,
                 keyword_count,
@@ -85,7 +94,7 @@ def get_scan_event(connection: psycopg.Connection[dict[str, Any]], event_id: str
     """Return one stored event, or None when the event_id is unknown."""
     row = connection.execute(
         """
-        SELECT event_id, event_timestamp, classification, risk,
+        SELECT event_id, event_timestamp, classification, risk, employee_id,
                email_count, phone_count, keyword_count, received_at
         FROM scan_events
         WHERE event_id = %s

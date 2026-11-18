@@ -15,6 +15,9 @@ RISKS = ("Low", "Medium", "High")
 COUNT_KEYS = ("email", "phone", "keyword")
 MAX_COUNT = 1_000_000
 
+# risk is OPTIONAL in the interim S3 contract (overall risk deferred to Sprint 4).
+# employee_id is NEVER accepted from the client; it is populated server-side from
+# verified authentication (SCRUM-45). Sending it is a forbidden field.
 ALLOWED_KEYS = frozenset({"event_id", "timestamp", "classification", "risk", "counts"})
 
 
@@ -33,7 +36,7 @@ class ScanEvent:
     event_id: str
     event_timestamp: datetime
     classification: str
-    risk: str
+    risk: str | None
     counts: dict[str, int]
 
 
@@ -53,14 +56,16 @@ def parse_scan_payload(payload: Any) -> ScanEvent:
             f"unknown key: {', '.join(unknown)}; only the keys event_id, timestamp, classification, "
             "risk and counts are accepted, document text, file names, paths and matched values are not"
         )
-    missing = sorted(ALLOWED_KEYS - set(payload))
+    # risk is optional in the interim S3 contract; everything else is required.
+    required_keys = ALLOWED_KEYS - {"risk"}
+    missing = sorted(required_keys - set(payload))
     if missing:
         errors.append(f"missing required keys: {', '.join(missing)}")
 
     event_id = _event_id(payload, errors)
     event_timestamp = _timestamp(payload, errors)
     classification = _choice(payload, "classification", CLASSIFICATIONS, errors)
-    risk = _choice(payload, "risk", RISKS, errors)
+    risk = _optional_choice(payload, "risk", RISKS, errors)
     counts = _counts(payload, errors)
 
     if errors:
@@ -70,7 +75,7 @@ def parse_scan_payload(payload: Any) -> ScanEvent:
         event_id=event_id or "",
         event_timestamp=event_timestamp or datetime.fromtimestamp(0),
         classification=classification or "",
-        risk=risk or "",
+        risk=risk,
         counts=counts,
     )
 
@@ -113,6 +118,16 @@ def _choice(payload: dict[str, Any], key: str, allowed: tuple[str, ...], errors:
     value = payload[key]
     if not isinstance(value, str) or value not in allowed:
         errors.append(f"{key} must be one of {', '.join(allowed)}")
+        return None
+    return value
+
+
+def _optional_choice(payload: dict[str, Any], key: str, allowed: tuple[str, ...], errors: list[str]) -> str | None:
+    if key not in payload or payload[key] is None:
+        return None
+    value = payload[key]
+    if not isinstance(value, str) or value not in allowed:
+        errors.append(f"{key} must be one of {', '.join(allowed)} or null")
         return None
     return value
 
