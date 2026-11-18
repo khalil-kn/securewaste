@@ -12,23 +12,29 @@ One place that guarantees sensitive data is never shown or logged:
 
 A "finding" can be an object or a dict with: start, end, and type/kind/category.
 """
+
 from __future__ import annotations
 
 import logging
 import re
-from typing import Any, Iterable
+from collections.abc import Iterable
+from typing import Any
 
 DOT = "\u2022"  # •
 
 # Words that must never be shown (extend as needed). Matches e.g. CONFIDENTIAL,
 # SECRET_TOKEN_998877, "internal use only", case-insensitive.
 SENSITIVE_KEYWORDS = (
-    "confidential", "strictly confidential", "top secret", "secret",
-    "internal use only", "restricted", "classified",
+    "confidential",
+    "strictly confidential",
+    "top secret",
+    "secret",
+    "internal use only",
+    "restricted",
+    "classified",
 )
 
-_KW = "|".join(sorted((re.escape(k).replace(r"\ ", r"\s+") for k in SENSITIVE_KEYWORDS),
-                      key=len, reverse=True))
+_KW = "|".join(sorted((re.escape(k).replace(r"\ ", r"\s+") for k in SENSITIVE_KEYWORDS), key=len, reverse=True))
 
 # (kind, regex) - order matters for overlaps (earlier wins).
 _PATTERNS: list[tuple[str, re.Pattern]] = [
@@ -49,12 +55,11 @@ def mask_value(value: str, kind: str = "") -> str:
     if "mail" in kind or ("@" in value and "." in value):
         local, _, domain = value.partition("@")
         host, _, tld = domain.rpartition(".")
-        return f"{local[:1]}{DOT*3}@{host[:1]}{DOT*3}.{tld}"
+        return f"{local[:1]}{DOT * 3}@{host[:1]}{DOT * 3}.{tld}"
     if kind in ("phone", "card", "iban", "ssn", "id", "national_id"):
         digits = [i for i, c in enumerate(value) if c.isdigit()]
         keep = set(digits[-2:])
-        return "".join(c if (not c.isdigit() or i in keep) else DOT
-                       for i, c in enumerate(value))
+        return "".join(c if (not c.isdigit() or i in keep) else DOT for i, c in enumerate(value))
     # secrets, keywords, anything else: fixed length so length is not leaked
     return DOT * 8
 
@@ -76,9 +81,12 @@ def _spans(text: str, findings: Iterable[Any] = ()) -> list[tuple[int, int, str]
         if isinstance(s, int) and isinstance(e, int) and 0 <= s < e <= len(text):
             raw.append((s, e, str(_get(f, "type", "kind", "category", default=""))))
     for kind, rx in _PATTERNS:
-        raw += [(m.start(), m.end(), kind) for m in rx.finditer(text)
-                if not (kind == "phone" and not 8 <= sum(c.isdigit() for c in m.group()) <= 15)
-                and not (kind == "card" and not 13 <= sum(c.isdigit() for c in m.group()) <= 19)]
+        raw += [
+            (m.start(), m.end(), kind)
+            for m in rx.finditer(text)
+            if not (kind == "phone" and not 8 <= sum(c.isdigit() for c in m.group()) <= 15)
+            and not (kind == "card" and not 13 <= sum(c.isdigit() for c in m.group()) <= 19)
+        ]
     raw.sort(key=lambda t: (t[0], -(t[1] - t[0])))
     merged: list[list] = []
     for s, e, k in raw:
@@ -93,10 +101,13 @@ def mask_text(text: str, findings: Iterable[Any] = ()):
     """Return (masked_text, mapping) where mapping = [(o_start, o_end, m_start, m_end)]."""
     out, mapping, pos, cur = [], [], 0, 0
     for s, e, k in _spans(text, findings):
-        out.append(text[pos:s]); cur += s - pos
+        out.append(text[pos:s])
+        cur += s - pos
         m = mask_value(text[s:e], k)
-        out.append(m); mapping.append((s, e, cur, cur + len(m)))
-        cur += len(m); pos = e
+        out.append(m)
+        mapping.append((s, e, cur, cur + len(m)))
+        cur += len(m)
+        pos = e
     out.append(text[pos:])
     return "".join(out), mapping
 
@@ -107,8 +118,7 @@ def scrub(text: str) -> str:
 
 
 # ----------------------------------------------------------------- context --
-def build_masked_context(text: str, findings: Iterable[Any], target: Any = None,
-                         window: int = 60) -> str:
+def build_masked_context(text: str, findings: Iterable[Any], target: Any = None, window: int = 60) -> str:
     """
     Context around `target` (one of `findings`), with ALL sensitive values masked.
     Masking happens on the full text BEFORE slicing, so nothing is cut in half.

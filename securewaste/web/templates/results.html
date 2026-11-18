@@ -97,7 +97,7 @@
         <h2 id="sr-sync-title" class="sw-card-title">Cloud sync</h2>
         <div class="sr-tags"><span class="sw-pill {{ 'sw-pill-sev-informational' if sync.ok else 'sw-pill-neutral' }}">{{ sync.status|replace('_',' ')|title }}</span></div>
         <p class="sw-secondary" role="status">{{ sync.message }}</p>
-        <p class="sw-muted">This is separate from the local scan, which finished. Only the label, risk and counts are ever sent, never the document.</p>
+        <p class="sw-muted">This is separate from the local scan, which finished. Only the event ID, timestamp, classification and aggregate counts are sent, never the document or matched values.</p>
       </section>
     {% endif %}
     <section class="sw-notice">
