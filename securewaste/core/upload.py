@@ -11,7 +11,7 @@ from typing import Literal
 
 import fitz  # PyMuPDF
 
-# One shared class: the route catches errors.UploadRejected, so a local copy would turn every rejection into a 500.
+# One shared error class: routes_documents.py catches this exact class.
 from securewaste.core.errors import UploadRejected
 
 

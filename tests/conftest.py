@@ -18,22 +18,39 @@ def env(monkeypatch):
 
 
 @pytest.fixture
-def app(tmp_path):
-    app = create_app(
-        {
+def app_factory(tmp_path):
+    """Build an isolated app (own temp DB + storage). Pass config overrides, e.g.
+    app_factory(WTF_CSRF_ENABLED=False) or app_factory(PROPAGATE_EXCEPTIONS=False)."""
+
+    def make(**overrides):
+        config = {
             "TESTING": True,
             "STORAGE_DIR": tmp_path / "storage",
             "DATABASE_PATH": tmp_path / "test.db",
         }
-    )
-    with app.app_context():
-        init_db()
-    yield app
+        config.update(overrides)
+        app = create_app(config)
+        with app.app_context():
+            init_db()
+        return app
+
+    return make
+
+
+@pytest.fixture
+def app(app_factory):
+    return app_factory()
 
 
 @pytest.fixture
 def client(app):
     return app.test_client()
+
+
+@pytest.fixture
+def no_csrf_client(app_factory):
+    """For functional upload tests: CSRF off so POST /documents is really processed."""
+    return app_factory(WTF_CSRF_ENABLED=False).test_client()
 
 
 @pytest.fixture
