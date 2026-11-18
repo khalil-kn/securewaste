@@ -130,7 +130,7 @@ def test_an_admin_cannot_impersonate_an_employee(client, new_event, bearer):
 def test_an_employee_cannot_read_another_employees_event(client, new_event, bearer):
     created = client.post(SCANS, json=new_event(), headers=bearer("employee_a"))
     event_id = created.get_json()["event_id"]
-    assert client.get(f"{SCANS}/{event_id}", headers=bearer("employee_b")).status_code == 403
+    assert client.get(f"{SCANS}/{event_id}", headers=bearer("employee_b")).status_code == 404
     assert client.get(f"{SCANS}/{event_id}", headers=bearer("employee_a")).status_code == 200
 
 
@@ -196,7 +196,7 @@ def test_legacy_unattributed_event_is_visible_only_to_officer_and_admin(client, 
         (event_id, datetime.now(UTC), "Internal", None, 0, 0, 0, None),
     )
     db_connection.commit()
-    assert client.get(f"{SCANS}/{event_id}", headers=bearer("employee_a")).status_code == 403
+    assert client.get(f"{SCANS}/{event_id}", headers=bearer("employee_a")).status_code == 404
     assert client.get(f"{SCANS}/{event_id}", headers=bearer("security_officer")).status_code == 200
     assert client.get(f"{SCANS}/{event_id}", headers=bearer("admin")).status_code == 200
 

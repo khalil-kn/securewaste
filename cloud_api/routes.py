@@ -9,6 +9,7 @@ from flask import Blueprint, current_app, jsonify, request
 from werkzeug.exceptions import BadRequest
 
 from cloud_api.auth import (
+    AuthorizationError,
     Permission,
     authorize_employee_access,
     require_permission,
@@ -109,9 +110,13 @@ def get_scan(event_id: str):
 
     owner = row.get("employee_id")
     owner_str = str(owner) if owner is not None else None
-    # Raises AuthorizationError (-> 403 JSON) unless the caller owns the event or
-    # holds SCAN_READ_ALL. Legacy rows with no owner are readable only with READ_ALL.
-    authorize_employee_access(owner_str if owner_str is not None else "")
+    # Callers who may not read this event get the same 404 as for an unknown event_id,
+    # so they cannot probe which event_ids exist. Legacy rows with no owner are readable
+    # only with SCAN_READ_ALL.
+    try:
+        authorize_employee_access(owner_str if owner_str is not None else "")
+    except AuthorizationError:
+        return _error("not_found", "the scan event was not found"), 404
 
     return jsonify(
         {

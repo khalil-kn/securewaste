@@ -38,7 +38,8 @@ Authorization: Bearer swt_xxxxxxxx
 | 409 | `event_id` already stored | Treat as already synced |
 | 400 | Payload does not match the contract (details are in the response) | Do not retry unchanged. Fix the payload. |
 | 401 | Token missing, unknown or expired (same message for all three) | Stop and ask for a new token. There is no refresh endpoint. |
-| 403 | Authenticated, but this role or employee is not allowed | Do not retry. Report it. |
+| 403 | Authenticated, but this role is not allowed | Do not retry. Report it. |
+| 404 | Event does not exist, or is not yours | Do not retry. |
 | 503 | Database not reachable | Retry later with backoff |
 
 ## Rotation
