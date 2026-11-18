@@ -12,7 +12,15 @@
     {{ classification.label }}
   </p>
 
+  {% if classification.low_ml_confidence %}
+  <p class="sr-warning" role="alert"><strong>Low ML confidence ({{ (classification.ml_confidence * 100)|round|int }}%).</strong>
+    This classification needs human review before the document is shared.</p>
+  {% endif %}
+  {# Risk badge hidden for now (tech lead decision). The level is still computed; set to true to show it again. #}
+  {% set show_risk_badge = false %}
+  {% if show_risk_badge %}
   <p><span class="sr-tag sr-severity-{{ classification.risk_level }}">Risk level: {{ classification.risk_level|title }}</span></p>
+  {% endif %}
   <p class="sr-explanation">{{ classification.explanation }}</p>
   <div class="sr-recommendation"><strong>Recommended action</strong><p>{{ classification.recommendation }}</p></div>
 

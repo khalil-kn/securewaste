@@ -6,6 +6,8 @@ document, and nothing here reads or logs document content.
 
 from __future__ import annotations
 
+from securewaste.core.ml_classifier import REVIEW_THRESHOLD
+
 # Label -> level. The level reuses the sr-severity-* CSS classes.
 LEVELS = {
     "Public": "informational",
@@ -41,7 +43,10 @@ def risk_guidance(classification: dict, occurrences: int) -> dict:
         parts.append(f"{occurrences} sensitive item(s) were detected and are listed below.")
     elif label != "Public":
         parts.append("No specific value matched the detection rules, so review the document's content manually.")
+    ml_confidence = classification.get("ml_confidence")
     return {
+        # Below the classifier's own review threshold: a human must check the label before sharing.
+        "low_ml_confidence": ml_confidence is not None and ml_confidence < REVIEW_THRESHOLD,
         "risk_level": LEVELS[label],
         "explanation": " ".join(p for p in parts if p),
         "recommendation": RECOMMENDATIONS[label],
