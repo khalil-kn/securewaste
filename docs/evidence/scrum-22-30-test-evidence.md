@@ -51,7 +51,7 @@ Seven states (dashboard, upload, results, no findings, PDF without text, rejecte
 
 | | Overflow | Targets < 24 px | Visible keyboard focus |
 |---|---|---|---|
-| Before (`main`) | none | 9 states affected (links and buttons 20-21 px high) | missing on one tab stop |
+| Before (`main`) | none | 12 of 21 renders (links and buttons 20-21 px high) | 2 px outline |
 | After | none in all 21 renders | none | 2 px outline on every tab stop |
 
 Screenshots (before/after, desktop, tablet, phone) are attached to the pull requests.
