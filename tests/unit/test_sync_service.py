@@ -14,10 +14,10 @@ import pytest
 from securewaste import create_app
 from securewaste.core.detection.catalogue import Category
 from securewaste.core.extraction import PageText
-from securewaste.services.sync_service import RISK_FOR_LABEL, build_event, send_event, sync_scan
+from securewaste.services.sync_service import build_event, send_event, sync_scan
 
 TOKEN = "test-token-not-a-real-secret"  # noqa: S105
-ALLOWED_KEYS = {"event_id", "timestamp", "classification", "risk", "counts"}
+ALLOWED_KEYS = {"event_id", "timestamp", "classification", "counts"}
 FINDINGS = [
     SimpleNamespace(category=Category.EMAIL, occurrences=2),
     SimpleNamespace(category=Category.PHONE, occurrences=1),
@@ -86,7 +86,7 @@ def test_outgoing_request_contains_only_allowed_metadata(cloud):
     sent = server.requests[0]
     payload = json.loads(sent["body"])
     assert set(payload) == ALLOWED_KEYS
-    assert payload["classification"] == "Confidential" and payload["risk"] == RISK_FOR_LABEL["Confidential"]
+    assert payload["classification"] == "Confidential"
     assert payload["counts"] == {"email": 2, "phone": 1, "keyword": 0}
     assert sent["path"] == "/api/v1/scans"
     assert sent["headers"]["Authorization"] == f"Bearer {TOKEN}"
@@ -211,10 +211,27 @@ def test_sync_off_by_default(tmp_path):
     assert "Cloud sync is off. Nothing was sent." in body
 
 
-@pytest.mark.parametrize("label", list(RISK_FOR_LABEL))
+@pytest.mark.parametrize("label", ["Public", "Internal", "Confidential", "Highly Confidential"])
 def test_payload_is_accepted_by_the_real_api_validator(label):
     """Contract test: the cloud API's own parser accepts what the client builds for every label."""
     from cloud_api.validation import parse_scan_payload
 
     event = parse_scan_payload(build_event({"label": label}, FINDINGS))
-    assert event.classification == label and event.risk == RISK_FOR_LABEL[label]
+    assert event.classification == label and event.risk is None
+
+
+@pytest.mark.parametrize(
+    "url",
+    [
+        "https://",
+        "http://[invalid",
+        "https://example.com:99999",
+        "https://example.com:abc",
+        "https://user:password@example.com",
+        "https://example.com?token=secret",
+        "https://example.com#fragment",
+    ],
+)
+def test_malformed_cloud_url_does_not_crash(url):
+    result = sync_scan(cfg(url), CLASSIFICATION, FINDINGS)
+    assert result.status == "not_configured"

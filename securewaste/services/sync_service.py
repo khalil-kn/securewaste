@@ -1,6 +1,6 @@
 """Optional metadata sync to the cloud API (SCRUM-30).
 
-Sends ONLY what cloud_api/validation.py allows: event_id, timestamp, classification, risk and
+Sends ONLY what cloud_api/validation.py allows: event_id, timestamp, classification and
 aggregate counts. Never the document, its text, file name, matched values, or the token in logs.
 A cloud error never stops the local result: every failure becomes a status the page can show.
 """
@@ -17,8 +17,6 @@ from urllib.parse import urlsplit
 
 log = logging.getLogger(__name__)
 
-# Page labels -> the API's three risk values (ADR-0011). The schema allows only Low/Medium/High.
-RISK_FOR_LABEL = {"Public": "Low", "Internal": "Low", "Confidential": "Medium", "Highly Confidential": "High"}
 COUNT_KEYS = ("email", "phone", "keyword")
 LOCAL_HOSTS = {"127.0.0.1", "localhost", "::1"}
 
@@ -62,7 +60,6 @@ def build_event(classification: dict, findings: list) -> dict:
         "event_id": str(uuid.uuid4()),
         "timestamp": datetime.now(UTC).isoformat(),
         "classification": classification["label"],
-        "risk": RISK_FOR_LABEL[classification["label"]],
         "counts": counts,
     }
 
@@ -78,9 +75,25 @@ _opener = request.build_opener(_NoRedirect)
 
 
 def _url_is_safe(url: str) -> bool:
-    """The token travels in a header: require https, or plain http only to this machine."""
-    parts = urlsplit(url)
-    return parts.scheme == "https" or (parts.scheme == "http" and parts.hostname in LOCAL_HOSTS)
+    """Require HTTPS, allowing HTTP only for local development."""
+    try:
+        parts = urlsplit(url)
+
+        if not parts.hostname:
+            return False
+
+        if parts.username is not None or parts.password is not None:
+            return False
+
+        if parts.query or parts.fragment:
+            return False
+
+        if parts.port is not None and not 1 <= parts.port <= 65535:
+            return False
+
+        return parts.scheme == "https" or (parts.scheme == "http" and parts.hostname in LOCAL_HOSTS)
+    except ValueError:
+        return False
 
 
 def send_event(config: dict, payload: dict) -> SyncResult:

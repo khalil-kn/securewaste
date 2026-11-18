@@ -32,7 +32,7 @@ run in CI.
 | Missing model file: rule-based fallback, stated on the page | `tests/unit/test_result_states.py` |
 | PDF without text layer, unsupported, broken or empty file: honest error, no classification | `tests/unit/test_result_states.py` |
 | No inline styles (CSP), navigation state, self-hosted fonts, upload form contract | `tests/unit/test_ui_shell.py` |
-| Sync sends only the 5 allowed fields; token not in path, body or logs | `tests/unit/test_sync_service.py` |
+| Sync sends only the 4 allowed metadata fields; token not in path, body or logs | `tests/unit/test_sync_service.py` |
 | Sync payload accepted by the real `cloud_api` validator for all 4 labels | `test_payload_is_accepted_by_the_real_api_validator` |
 | Sync off, 401, 403, 409, 400, 5xx, timeout, offline, malformed body, redirect: local results kept | `tests/unit/test_sync_service.py` |
 | "Stored" shown only after a 201 echoing the same `event_id` | `test_page_shows_stored_only_after_a_201` |
@@ -60,3 +60,23 @@ Screenshots (before/after, desktop, tablet, phone) are attached to the pull requ
 ## Not covered yet (waiting on the team)
 
 - A real `201` stored in PostgreSQL and a real `403` with a non-writer token (agreed to run later, SCRUM-44 QA).
+## Integration QA — 2026-11-18
+
+- Integrated metadata sync with the latest main.
+- Removed risk from the payload until Sprint 4.
+- Hardened cloud URL validation.
+- Full Docker regression suite: 286 passed, 14 existing ML warnings.
+- Real local scanner to cloud API synchronization: HTTP 201.
+- PostgreSQL persistence verified.
+- Classification: Highly Confidential.
+- Counts: email=1, phone=1, keyword=1.
+- Risk: NULL.
+- Employee UUID attribution verified using a development token.
+- No document content or matched values stored in PostgreSQL.
+
+### Remaining dependencies
+
+- Production authentication and authorization: SCRUM-29.
+- Live authentication and access isolation testing after SCRUM-29.
+- Persistent synchronization retries: SCRUM-31.
+- Overall risk assessment: Sprint 4.
