@@ -2,13 +2,22 @@
 
 from __future__ import annotations
 
-import psycopg
-from flask import Blueprint, current_app, g, jsonify, request
+import uuid
+from importlib import import_module
+
+from flask import Blueprint, current_app, jsonify, request
 from werkzeug.exceptions import BadRequest
 
-from cloud_api.auth import require_writer
+from cloud_api.auth import (
+    Permission,
+    authorize_employee_access,
+    require_permission,
+    resolve_owner_id,
+)
 from cloud_api.db import DuplicateEventError, insert_scan_event, open_connection
 from cloud_api.validation import PayloadError, parse_scan_payload
+
+psycopg = import_module("psycopg")
 
 bp = Blueprint("cloud_api", __name__)
 
@@ -20,9 +29,9 @@ def health():
 
 
 @bp.post("/api/v1/scans")
-@require_writer
+@require_permission(Permission.SCAN_CREATE)
 def store_scan():
-    """Store the metadata of one scan event."""
+    """Store the metadata of one scan event, owned by the authenticated employee."""
     if not request.is_json:
         return _error("unsupported_media_type", "the Content-Type must be application/json"), 415
 
@@ -32,6 +41,10 @@ def store_scan():
         return _error("invalid_json", "the request body is not valid JSON"), 400
     if payload is None:
         return _error("invalid_json", "the request body is not valid JSON"), 400
+
+    # Ownership comes only from the validated token. A client-supplied employee_id is a
+    # forbidden field: parse_scan_payload below rejects it with 400.
+    owner_id = resolve_owner_id()
 
     try:
         event = parse_scan_payload(payload)
@@ -58,7 +71,7 @@ def store_scan():
                 email_count=event.counts["email"],
                 phone_count=event.counts["phone"],
                 keyword_count=event.counts["keyword"],
-                employee_id=g.get("employee_id"),
+                employee_id=owner_id,
             )
     except DuplicateEventError:
         return _error("duplicate_event", "this event_id has already been stored"), 409
@@ -69,13 +82,11 @@ def store_scan():
 
 
 @bp.get("/api/v1/scans/<event_id>")
-@require_writer
+@require_permission(Permission.SCAN_READ_OWN)
 def get_scan(event_id: str):
-    """Read one stored scan event, subject to owner-scoped visibility."""
-    import uuid as _uuid
-
+    """Read one stored scan event: own events, or any event with SCAN_READ_ALL."""
     try:
-        _uuid.UUID(event_id)
+        uuid.UUID(event_id)
     except ValueError:
         return _error("not_found", "the scan event was not found"), 404
 
@@ -96,12 +107,11 @@ def get_scan(event_id: str):
     if row is None:
         return _error("not_found", "the scan event was not found"), 404
 
-    role = g.get("role")
-    current_employee = g.get("employee_id")
     owner = row.get("employee_id")
     owner_str = str(owner) if owner is not None else None
-    if role not in {"admin", "security_officer"} and owner_str != current_employee:
-        return _error("forbidden", "you may not read this scan event"), 403
+    # Raises AuthorizationError (-> 403 JSON) unless the caller owns the event or
+    # holds SCAN_READ_ALL. Legacy rows with no owner are readable only with READ_ALL.
+    authorize_employee_access(owner_str if owner_str is not None else "")
 
     return jsonify(
         {
@@ -109,7 +119,7 @@ def get_scan(event_id: str):
             "timestamp": row["event_timestamp"].isoformat(),
             "classification": row["classification"],
             "risk": row["risk"],
-            "employee_id": str(owner) if owner is not None else None,
+            "employee_id": owner_str,
             "counts": {
                 "email": row["email_count"],
                 "phone": row["phone_count"],

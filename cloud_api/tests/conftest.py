@@ -5,21 +5,28 @@ from __future__ import annotations
 import os
 import uuid
 
-import pytest
+import pytest  # pyright: ignore[reportMissingImports]
 
 from cloud_api.app import create_app
+from cloud_api.auth import Role, new_credential, parse_credentials
 from cloud_api.config import Settings
 from cloud_api.db import SCHEMA_PATH, open_connection
 
-# Fake bearer tokens of the test suite. They are not credentials of any real service.
+# Test identities. None of these is a real person or service.
 EMPLOYEE_ID = "11111111-2222-3333-4444-555555555555"
+OTHER_EMPLOYEE_ID = "66666666-7777-8888-9999-000000000000"
 ADMIN_EMPLOYEE_ID = "aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee"
+SECURITY_OFFICER_ID = "bbbbbbbb-cccc-dddd-eeee-ffffffffffff"
+
+# Aliases used by test_auth.py
+EMPLOYEE_A = EMPLOYEE_ID
+EMPLOYEE_B = OTHER_EMPLOYEE_ID
 
 TEST_USERS = {
-    "employee-token": ("employee", EMPLOYEE_ID),
-    "admin-token": ("admin", ADMIN_EMPLOYEE_ID),
-    "security-token": ("security_officer", ADMIN_EMPLOYEE_ID),
-    "auditor-token": "auditor",
+    "employee_a": (Role.EMPLOYEE, EMPLOYEE_ID),
+    "employee_b": (Role.EMPLOYEE, OTHER_EMPLOYEE_ID),
+    "admin": (Role.ADMIN, ADMIN_EMPLOYEE_ID),
+    "security_officer": (Role.SECURITY_OFFICER, SECURITY_OFFICER_ID),
 }
 
 
@@ -50,9 +57,21 @@ def db_connection(migrated_database: str):
 
 
 @pytest.fixture
-def app(migrated_database: str):
-    """The cloud API, wired to the test database and to the test tokens."""
-    return create_app(Settings(database_url=migrated_database), tokens=TEST_USERS)
+def auth_tokens() -> dict[str, tuple[str, str]]:
+    """name -> (plaintext token, config entry). Fresh random tokens for every test."""
+    return {name: new_credential(role, employee_id, 3600) for name, (role, employee_id) in TEST_USERS.items()}
+
+
+@pytest.fixture
+def credentials(auth_tokens):
+    """The parsed credential mapping the app validates against (hashes only)."""
+    return parse_credentials(",".join(entry for _token, entry in auth_tokens.values()))
+
+
+@pytest.fixture
+def app(migrated_database: str, credentials):
+    """The cloud API, wired to the test database and to the test credentials."""
+    return create_app(Settings(database_url=migrated_database), credentials=credentials)
 
 
 @pytest.fixture
@@ -62,9 +81,19 @@ def client(app):
 
 
 @pytest.fixture
-def auth_headers() -> dict[str, str]:
-    """The authorization header of a token that may store scan events."""
-    return {"Authorization": "Bearer employee-token"}
+def bearer(auth_tokens):
+    """bearer("admin") -> {"Authorization": "Bearer <token>"} for a named test user."""
+
+    def _bearer(name: str) -> dict[str, str]:
+        return {"Authorization": f"Bearer {auth_tokens[name][0]}"}
+
+    return _bearer
+
+
+@pytest.fixture
+def auth_headers(bearer) -> dict[str, str]:
+    """The authorization header of an employee token (may store scan events)."""
+    return bearer("employee_a")
 
 
 @pytest.fixture
@@ -77,3 +106,13 @@ def valid_payload() -> dict:
         "risk": "High",
         "counts": {"email": 2, "phone": 1, "keyword": 3},
     }
+
+
+@pytest.fixture
+def new_event(valid_payload):
+    """Factory for a valid payload with a fresh event_id, for tests storing several events."""
+
+    def _new_event(**overrides) -> dict:
+        return {**valid_payload, "event_id": str(uuid.uuid4()), **overrides}
+
+    return _new_event
