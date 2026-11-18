@@ -1,6 +1,7 @@
 # Test evidence: SCRUM-22 (classification and risk display), SCRUM-30 (metadata sync), UI redesign
 
-Recorded 2026-11-18. Synthetic data only. Python 3.13, ruff 0.17.3 (the version CI pins). CI runs Python 3.12.
+Recorded 2026-11-18. Synthetic data only. Python 3.13, scikit-learn 1.6.1 and ruff 0.17.3 (the versions the repo pins).
+CI runs Python 3.12 and passed on all three branches.
 
 ## Commands
 
@@ -59,5 +60,3 @@ Screenshots (before/after, desktop, tablet, phone) are attached to the pull requ
 ## Not covered yet (waiting on the team)
 
 - A real `201` stored in PostgreSQL and a real `403` with a non-writer token (agreed to run later, SCRUM-44 QA).
-- The model file was pickled with scikit-learn 1.6.1 but `requirements.txt` pins 1.9.1; scikit-learn warns this can
-  give invalid results. To raise with the model owner.
