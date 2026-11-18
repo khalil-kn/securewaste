@@ -92,6 +92,14 @@
     {% else %}
       <section class="sw-notice"><p>Document classification is unavailable for this scan. The findings are still valid.</p></section>
     {% endif %}
+    {% if sync is defined and sync %}
+      <section class="sw-card sw-stack" aria-labelledby="sr-sync-title">
+        <h2 id="sr-sync-title" class="sw-card-title">Cloud sync</h2>
+        <div class="sr-tags"><span class="sw-pill {{ 'sw-pill-sev-informational' if sync.ok else 'sw-pill-neutral' }}">{{ sync.status|replace('_',' ')|title }}</span></div>
+        <p class="sw-secondary" role="status">{{ sync.message }}</p>
+        <p class="sw-muted">This is separate from the local scan, which finished. Only the label, risk and counts are ever sent, never the document.</p>
+      </section>
+    {% endif %}
     <section class="sw-notice">
       <p>The classification is an automated estimate and can be wrong. Review status is displayed only. Changing status and the rule-based document risk score require the separate review and risk features.</p>
     </section>

@@ -44,6 +44,11 @@ def load_config(instance_path: str) -> dict:
         "STORAGE_DIR": Path(os.environ.get("STORAGE_DIR", instance / "storage")),
         "DATABASE_PATH": Path(os.environ.get("DATABASE_PATH", instance / "securewaste.db")),
         "KEYWORDS": [k.strip() for k in os.environ.get("SECUREWASTE_KEYWORDS", "").split(",") if k.strip()],
+        # Optional metadata sync to the cloud API (SCRUM-30). Off unless SYNC_ENABLED=true.
+        "SYNC_ENABLED": os.environ.get("SYNC_ENABLED", "false").strip().lower() == "true",
+        "CLOUD_API_URL": os.environ.get("CLOUD_API_URL", "").strip().rstrip("/"),
+        "CLOUD_API_TOKEN": os.environ.get("CLOUD_API_TOKEN", "").strip(),
+        "SYNC_TIMEOUT_SECONDS": float(os.environ.get("SYNC_TIMEOUT_SECONDS", "3")),
         # Cookie hardening (NFR-02). SESSION_COOKIE_SECURE stays off: the MVP runs on plain HTTP localhost.
         "SESSION_COOKIE_HTTPONLY": True,
         "SESSION_COOKIE_SAMESITE": "Lax",
