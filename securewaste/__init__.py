@@ -9,7 +9,7 @@ from __future__ import annotations
 from flask import Flask
 
 from securewaste.config import load_config
-from securewaste.core import security
+from securewaste.web import security
 from securewaste.web import (
     routes_api,
     routes_dashboard,
