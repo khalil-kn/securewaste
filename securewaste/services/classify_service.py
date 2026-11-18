@@ -36,7 +36,11 @@ def risk_guidance(classification: dict, occurrences: int) -> dict:
     """Return risk_level, explanation and recommendation for a classification dict."""
     label = classification["label"]
     parts = [
-        f"The classifier estimates this document as {label} ({round(classification['confidence'] * 100)}% confidence).",
+        (
+            f"The classifier estimates this document as {label} ({round(classification['confidence'] * 100)}% confidence)."
+            if classification.get("decision_source") == "ml"
+            else f"The final classification is {label}, based on sensitive-content rules."
+        ),
         DECISION_NOTES.get(classification.get("decision_source"), ""),
     ]
     if occurrences:
