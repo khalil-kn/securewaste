@@ -180,6 +180,7 @@ code { font-family: var(--sw-font-mono); font-size: 12.5px; }
 }
 .sw-alert-error { background: var(--sw-sev-critical-bg); border-color: var(--sw-sev-critical); }
 .sw-alert-success { background: var(--sw-positive-bg); border-color: var(--sw-positive); }
+.sw-alert-warning { background: var(--sw-sev-high-bg); border-color: var(--sw-sev-high); }
 .sw-alert p + p { margin-top: var(--sw-space-2); }
 .sw-error { /* used by the legacy detect form */
   padding: var(--sw-space-3) var(--sw-space-4);
