@@ -17,7 +17,7 @@ from urllib.parse import urlsplit
 
 log = logging.getLogger(__name__)
 
-# Page labels -> the API's three risk values. To be confirmed with Jawed.
+# Page labels -> the API's three risk values (ADR-0011). The schema allows only Low/Medium/High.
 RISK_FOR_LABEL = {"Public": "Low", "Internal": "Low", "Confidential": "Medium", "Highly Confidential": "High"}
 COUNT_KEYS = ("email", "phone", "keyword")
 LOCAL_HOSTS = {"127.0.0.1", "localhost", "::1"}
@@ -29,7 +29,7 @@ MESSAGES = {
     "stored": "Metadata stored in the cloud.",
     "already_stored": "Metadata was already stored (duplicate event).",
     "not_configured": "Cloud sync is on but the URL or token is not configured. Nothing was sent.",
-    "unauthorized": "Not sent: the cloud rejected the access token (401).",
+    "unauthorized": "Not sent: the cloud rejected your access token (401). Check CLOUD_API_TOKEN.",
     "forbidden": "Not sent: this role may not store scan events (403).",
     "rejected": "Not sent: the cloud rejected the metadata format.",
     "server_error": "Not sent: the cloud had an error. Your local results are unaffected.",
