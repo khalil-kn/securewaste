@@ -11,6 +11,9 @@ from typing import Literal
 
 import fitz  # PyMuPDF
 
+# One shared class: the route catches errors.UploadRejected, so a local copy would turn every rejection into a 500.
+from securewaste.core.errors import UploadRejected
+
 
 @dataclass(frozen=True)
 class Limits:
@@ -27,14 +30,6 @@ class ValidatedUpload:
     size_bytes: int
     sha256: str
     page_count: int
-
-
-class UploadRejected(ValueError):
-    """Upload failed validation; code identifies the reason."""
-
-    def __init__(self, code: str):
-        self.code = code
-        super().__init__(code)
 
 
 def validate_upload(
