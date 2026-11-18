@@ -1,73 +1,83 @@
-
 {% extends "base.html" %}
 
-{% block title %}Upload Document{% endblock %}
+{% block title %}Upload and scan{% endblock %}
 
 {% block content %}
-<section class="sw-card">
-    <h1>Upload Document</h1>
+<header class="sw-pagehead">
+  <h1>Upload and scan</h1>
+  <p class="sw-lead">SecureWaste checks the file, reads its text and flags anything sensitive before you share it.</p>
+</header>
 
-    <p>
-        Select a PDF or TXT document for secure local analysis.
-    </p>
-
+<div class="sw-grid">
+  <div class="sw-col-8 sw-stack">
     {% if error %}
     <div role="alert" class="sw-alert sw-alert-error">
-        {{ error }}
+      {{ error }}
     </div>
     {% endif %}
 
     {% if success %}
     <div role="status" class="sw-alert sw-alert-success">
-        <p>{{ success }}</p>
-
-        <p>
-            <strong>Filename:</strong>
-            {{ filename }}
-        </p>
-
-        <p>
-            <strong>SHA-256:</strong>
-            <code>{{ fingerprint }}</code>
-        </p>
+      <p>{{ success }}</p>
+      <p><strong>Filename:</strong> {{ filename }}</p>
+      <p><strong>SHA-256:</strong> <code>{{ fingerprint }}</code></p>
     </div>
     {% endif %}
 
     <form
-        action="{{ url_for('documents.upload_document') }}"
-        method="POST"
-        enctype="multipart/form-data"
+      class="sw-card sw-drop"
+      action="{{ url_for('documents.upload_document') }}"
+      method="POST"
+      enctype="multipart/form-data"
     >
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+      <span class="sw-drop-art" aria-hidden="true"></span>
+      <div class="sw-drop-body">
+        <label class="sw-drop-title" for="file">Choose a PDF or TXT file</label>
+        <p id="limits" class="sw-secondary">
+          Up to {{ config.MAX_UPLOAD_MB }} MB and {{ config.MAX_PDF_PAGES }} pages. PDFs need selectable text; scanned images can't be read yet.
+        </p>
         <input
-            type="hidden"
-            name="csrf_token"
-            value="{{ csrf_token() }}"
+          class="sw-file"
+          type="file"
+          id="file"
+          name="file"
+          accept=".pdf,.txt"
+          required
+          aria-describedby="limits"
         >
-
-        <div class="sw-field">
-            <label for="file">
-                Choose a document
-            </label>
-
-            <input
-                type="file"
-                id="file"
-                name="file"
-                accept=".pdf,.txt"
-                required
-            >
+        <div class="sw-actions">
+          <button class="sw-btn sw-btn-primary" type="submit">Scan document</button>
         </div>
-
-        <p>Accepted formats: PDF and TXT. Maximum size: 10 MB.</p>
-
-        <button type="submit">
-            Upload Document
-        </button>
+      </div>
     </form>
+  </div>
 
-    <p>
-        Files are validated and stored locally using
-        randomly generated filenames.
-    </p>
-</section>
+  <aside class="sw-col-4 sw-stack">
+    <section class="sw-card sw-stack" aria-labelledby="accepted-h">
+      <h2 id="accepted-h" class="sw-card-title">Accepted files</h2>
+      <dl class="sw-dl">
+        <div><dt>Formats</dt><dd>PDF with text, TXT</dd></div>
+        <div><dt>Largest file</dt><dd class="sw-num">{{ config.MAX_UPLOAD_MB }} MB</dd></div>
+        <div><dt>Most pages</dt><dd class="sw-num">{{ config.MAX_PDF_PAGES }}</dd></div>
+        <div><dt>Text encoding</dt><dd>UTF-8</dd></div>
+      </dl>
+    </section>
+
+    <section class="sw-card sw-stack" aria-labelledby="handled-h">
+      <h2 id="handled-h" class="sw-card-title">How your file is handled</h2>
+      <ul class="sw-list">
+        <li>Stored outside the web folder under a random name, never the one you uploaded.</li>
+        <li>Read on this machine. Nothing goes to an outside service.</li>
+        <li>Results show masked values, not the original text.</li>
+        <li>The temporary copy is removed as soon as the scan ends.</li>
+      </ul>
+    </section>
+
+    <section class="sw-notice">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+      <p>This is an educational prototype. Upload synthetic test files only, never real customer data or live credentials.</p>
+    </section>
+  </aside>
+</div>
 {% endblock %}

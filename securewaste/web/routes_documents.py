@@ -8,6 +8,7 @@ from werkzeug.exceptions import RequestEntityTooLarge
 from securewaste.core.errors import ExtractionFailed, UploadRejected
 from securewaste.core.ml_classifier import predict_classification_v3_dict
 from securewaste.core.upload import Limits, validate_upload
+from securewaste.services.classify_service import risk_guidance
 from securewaste.services.detect_service import scan_file
 
 bp = Blueprint("documents", __name__)
@@ -93,7 +94,13 @@ def upload_document():
         # 4. Classify the extracted document text with V3.
         document_text = "\n".join(page.text for page in pages)
 
-        classification = predict_classification_v3_dict(document_text)
+        try:
+            classification = predict_classification_v3_dict(document_text)
+            classification.update(risk_guidance(classification, sum(f.occurrences for f in findings)))
+        except Exception as error:
+            # Findings stay visible. Log only the type: the message can hold pieces of the document.
+            current_app.logger.warning("Document classification unavailable: %s", type(error).__name__)
+            classification = None
 
         # 5. Display masked findings and classification.
         return render_template(

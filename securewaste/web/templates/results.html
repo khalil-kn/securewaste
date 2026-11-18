@@ -1,128 +1,99 @@
-{# Presentation only. Receives Jawed's Finding objects; never scans, persists or unmasks data. #}
-<section class="sr" aria-labelledby="sr-title">
+{# Presentation only. Receives Finding objects; never scans, persists or unmasks data. #}
+{% set counts = namespace(email=0, phone=0, keyword=0, total=0) %}
+{% for f in findings %}
+  {% set counts.total = counts.total + f.occurrences %}
+  {% if f.category.value == 'email' %}{% set counts.email = counts.email + f.occurrences %}{% endif %}
+  {% if f.category.value == 'phone' %}{% set counts.phone = counts.phone + f.occurrences %}{% endif %}
+  {% if f.category.value == 'keyword' %}{% set counts.keyword = counts.keyword + f.occurrences %}{% endif %}
+{% endfor %}
 
-{% if classification is defined and classification %}
-<section class="sw-card" style="padding:24px; margin:24px 0;"
-         aria-labelledby="ml-classification-title">
+<header class="sw-pagehead sr-head">
+  <div>
+    <p class="sw-eyebrow">Local document analysis</p>
+    <h1 id="sr-title">Scan results</h1>
+    <p class="sw-lead">Sensitive values are masked. Review findings before sharing this document.</p>
+  </div>
+  <a class="sw-btn" href="{{ url_for('documents.upload_page') }}">Scan another PDF</a>
+</header>
 
-  <p class="sr-eyebrow">SECURE WASTE / HYBRID ML</p>
-  <h3 id="ml-classification-title">Document classification</h3>
+<div class="sw-grid">
+  <div class="sw-col-8 sw-stack">
+    <section class="sw-card" aria-label="Finding summary">
+      <dl class="sr-kpis">
+        <div><dt>Distinct findings</dt><dd class="sw-num">{{ findings|length }}</dd></div>
+        <div><dt>Total occurrences</dt><dd class="sw-num">{{ counts.total }}</dd></div>
+        <div><dt>Email occurrences</dt><dd class="sw-num">{{ counts.email }}</dd></div>
+        <div><dt>Phone occurrences</dt><dd class="sw-num">{{ counts.phone }}</dd></div>
+        <div><dt>Keyword occurrences</dt><dd class="sw-num">{{ counts.keyword }}</dd></div>
+      </dl>
+    </section>
 
-  <p><strong>Final security classification:</strong>
-    {{ classification.label }}
-  </p>
-
-  {% if classification.provisional_label %}
-  <p><strong>Rule-based assessment:</strong>
-    {{ classification.provisional_label }}
-  </p>
-  <p class="sr-footnote">
-    This assessment is advisory and does not override
-    the final security classification.
-  </p>
-  {% else %}
-  <p><strong>Rule-based assessment:</strong>
-    No classification rule matched.
-  </p>
-  {% endif %}
-
-  <p><strong>Original ML prediction:</strong>
-    {{ classification.ml_label if classification.ml_label else 'Unavailable' }}
-  </p>
-
-  <p><strong>Original ML confidence:</strong>
-    {% if classification.ml_confidence is not none %}
-      {{ (classification.ml_confidence * 100)|round(2) }}%
+    {% if findings %}
+      <section class="sw-card sw-stack" aria-labelledby="sr-found">
+        <div class="sr-title-row"><h2 id="sr-found" class="sw-card-title">Detected information</h2><span class="sw-muted">{{ findings|length }} finding(s)</span></div>
+        {% for f in findings %}
+          <article class="sr-item" aria-label="{{ f.category.value }} finding on page {{ f.page_number }}">
+            <div class="sr-item-top">
+              <div class="sr-tags">
+                <span class="sw-meter sw-meter-{{ f.severity.value }}" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+                <span class="sw-pill sw-pill-sev-{{ f.severity.value }}">{{ f.severity.value|replace('_',' ')|title }}</span>
+                <span class="sw-pill sw-pill-neutral">{{ f.category.value|replace('_',' ')|title }}</span>
+                <span class="sw-pill sw-pill-neutral">Page {{ f.page_number }}</span>
+                {% if f.occurrences > 1 %}<span class="sw-pill sw-pill-neutral">{{ f.occurrences }} occurrences</span>{% endif %}
+              </div>
+              <span class="sw-muted">{{ f.review_status.value|replace('_',' ')|title }}</span>
+            </div>
+            <p class="sr-value"><code>{{ f.masked_value }}</code></p>
+            {% if f.context %}
+              <div class="sr-context"><span class="sr-label">Masked context</span><p>{{ f.context }}</p></div>
+            {% endif %}
+            <p class="sw-secondary">{{ f.explanation }}</p>
+            <div class="sr-reco"><strong>Recommended action</strong><p class="sw-secondary">{{ f.recommendation }}</p></div>
+          </article>
+        {% endfor %}
+      </section>
     {% else %}
-      Unavailable
+      <section class="sw-card sr-empty">
+        <h2 class="sw-card-title">No findings detected</h2>
+        <p>No sensitive data found in this document.</p>
+        <p class="sw-muted">No configured detection rule matched this document. This does not guarantee the document is free of sensitive information.</p>
+      </section>
     {% endif %}
-  </p>
-
-  <p><strong>Decision source:</strong>
-    {{ classification.decision_source|replace('_', ' ')|title }}
-  </p>
-
-  <p><strong>Model version:</strong>
-    {{ classification.model_version }}
-  </p>
-
-  <p><strong>Human review:</strong>
-    {{ 'Required' if classification.requires_review else 'Not flagged' }}
-  </p>
-
-  {% if classification.review_reason %}
-    <p><strong>Review reason:</strong>
-      {{ classification.review_reason }}
-    </p>
-  {% endif %}
-
-  <p class="sr-footnote">
-    Automated classification is advisory. Review sensitive documents
-    before sharing.
-  </p>
-</section>
-{% endif %}
-
-  <div class="sr-heading">
-    <div>
-      <p class="sr-eyebrow">LOCAL DOCUMENT ANALYSIS</p>
-      <h2 id="sr-title">Scan results</h2>
-      <p class="sr-muted">Sensitive values are masked. Review findings before sharing this document.</p>
-    </div>
-    <a class="sr-rescan" href="{{ url_for('documents.upload_page') }}">Scan another PDF</a>
   </div>
 
-  {% set counts = namespace(email=0, phone=0, keyword=0, total=0) %}
-  {% for f in findings %}
-    {% set counts.total = counts.total + f.occurrences %}
-    {% if f.category.value == 'email' %}{% set counts.email = counts.email + f.occurrences %}{% endif %}
-    {% if f.category.value == 'phone' %}{% set counts.phone = counts.phone + f.occurrences %}{% endif %}
-    {% if f.category.value == 'keyword' %}{% set counts.keyword = counts.keyword + f.occurrences %}{% endif %}
-  {% endfor %}
-  <div class="sr-stats" aria-label="Finding summary">
-    <div class="sr-stat"><strong>{{ findings|length }}</strong><span>Distinct findings</span></div>
-    <div class="sr-stat"><strong>{{ counts.total }}</strong><span>Total occurrences</span></div>
-    <div class="sr-stat"><strong>{{ counts.email }}</strong><span>Email occurrences</span></div>
-    <div class="sr-stat"><strong>{{ counts.phone }}</strong><span>Phone occurrences</span></div>
-    <div class="sr-stat"><strong>{{ counts.keyword }}</strong><span>Keyword occurrences</span></div>
-  </div>
-
-  {% if findings %}
-    <div class="sr-section-title"><h3>Detected information</h3><span>{{ findings|length }} finding(s)</span></div>
-    <div class="sr-list">
-    {% for f in findings %}
-      <article class="sr-item" aria-label="{{ f.category.value }} finding on page {{ f.page_number }}">
-        <div class="sr-item-top">
-          <div class="sr-tags">
-            <span class="sr-tag sr-severity-{{ f.severity.value }}">{{ f.severity.value|replace('_',' ')|title }}</span>
-            <span class="sr-tag sr-category">{{ f.category.value|replace('_',' ')|title }}</span>
-            <span class="sr-tag">Page {{ f.page_number }}</span>
-            {% if f.occurrences > 1 %}<span class="sr-tag">{{ f.occurrences }} occurrences</span>{% endif %}
-          </div>
-          <span class="sr-status">{{ f.review_status.value|replace('_',' ')|title }}</span>
+  <aside class="sw-col-4 sw-stack sr-summary">
+    {% if classification %}
+      <section class="sw-card sw-stack" aria-labelledby="sr-class-title">
+        <span class="sr-label">Document classification &middot; automated estimate</span>
+        <h2 id="sr-class-title" class="sr-class-label">{{ classification.label }}</h2>
+        <div class="sr-tags">
+          {# Risk badge hidden for now (tech lead decision). The level is still computed; set to true to show it again. #}
+          {% set show_risk_badge = false %}
+          {% if show_risk_badge %}
+          <span class="sw-meter sw-meter-{{ classification.risk_level }}" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+          <span class="sw-pill sw-pill-sev-{{ classification.risk_level }}">Risk level: {{ classification.risk_level|title }}</span>
+          {% endif %}
+          {% if classification.requires_review %}<span class="sw-pill sw-pill-sev-high">Human review required</span>{% endif %}
         </div>
-        <div class="sr-value"><code>{{ f.masked_value }}</code></div>
-        {% if f.context %}
-          <div class="sr-context"><span class="sr-field-label">Masked context</span><p>{{ f.context }}</p></div>
+        {% if classification.low_ml_confidence %}
+        <div class="sw-alert sw-alert-warning" role="alert"><strong>Low ML confidence ({{ (classification.ml_confidence * 100)|round|int }}%).</strong> This classification needs human review before the document is shared.</div>
         {% endif %}
-        <p class="sr-explanation">{{ f.explanation }}</p>
-        <div class="sr-recommendation"><strong>Recommended action</strong><p>{{ f.recommendation }}</p></div>
-      </article>
-    {% endfor %}
-    </div>
-
-
-{% else %}
-  <div class="sr-empty">
-    <h3>No findings detected</h3>
-    <p>No sensitive data found in this document.</p>
-    <p>
-      No configured detection rule matched this document.
-      This does not guarantee the document is free of sensitive information.
-    </p>
-  </div>
-{% endif %}
-
-
-  <p class="sr-footnote">Review status is displayed only. Changing status and calculating a document risk score require the separate review and risk features.</p>
-</section>
+        <p class="sw-secondary">{{ classification.explanation }}</p>
+        <div class="sr-reco"><strong>Recommended action</strong><p class="sw-secondary">{{ classification.recommendation }}</p></div>
+        {% if classification.review_reason %}<p class="sw-secondary"><strong>Review reason:</strong> {{ classification.review_reason }}</p>{% endif %}
+        <dl class="sw-dl">
+          <div><dt>Rule-based assessment</dt><dd>{{ classification.provisional_label or 'No rule matched' }}</dd></div>
+          <div><dt>Original ML prediction</dt><dd>{{ classification.ml_label or 'Unavailable' }}</dd></div>
+          <div><dt>Original ML confidence</dt><dd class="sw-num">{% if classification.ml_confidence is not none %}{{ (classification.ml_confidence * 100)|round|int }}%{% else %}Unavailable{% endif %}</dd></div>
+          <div><dt>Decision source</dt><dd>{{ {'ml': 'ML model', 'rule_override': 'Rule override', 'rule_based': 'Rules only'}.get(classification.decision_source, classification.decision_source) }}</dd></div>
+          <div><dt>Model version</dt><dd>{{ classification.model_version }}</dd></div>
+        </dl>
+      </section>
+    {% else %}
+      <section class="sw-notice"><p>Document classification is unavailable for this scan. The findings are still valid.</p></section>
+    {% endif %}
+    <section class="sw-notice">
+      <p>The classification is an automated estimate and can be wrong. Review status is displayed only. Changing status and the rule-based document risk score require the separate review and risk features.</p>
+    </section>
+  </aside>
+</div>

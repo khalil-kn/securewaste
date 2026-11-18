@@ -7,6 +7,8 @@ cannot forget them (NFR-02, NFR-03; threats T-01, T-10, T-14 in docs/04-threat-m
 from __future__ import annotations
 
 import logging
+import os
+import traceback
 import uuid
 
 from flask import Flask, jsonify, render_template, request
@@ -44,14 +46,31 @@ def init_app(app: Flask) -> None:
 
     @app.errorhandler(HTTPException)
     def http_error(e: HTTPException):
-        return _error(e.code or 500, ERROR_CODES.get(e.code, "BAD_REQUEST"), e.description)
+        status = e.code or 500
+        return _error(
+            status,
+            ERROR_CODES.get(status, "BAD_REQUEST"),
+            e.description or "The request could not be completed.",
+        )
 
     @app.errorhandler(Exception)
     def unexpected_error(e: Exception):
-        # Log the details server-side with an ID; never show a stack trace or document content to the user.
+        # Log WHERE it failed, never WHAT it said: exception messages and source lines can contain
+        # document text (emails, phone numbers, keys). The ID lets support find this log line.
         correlation_id = uuid.uuid4().hex[:12]
-        log.exception("Unhandled error %s", correlation_id)
+        log.error(
+            "Unhandled error %s: %s at %s",
+            correlation_id,
+            type(e).__name__,
+            _where(e),
+        )
         return _error(500, "INTERNAL_ERROR", f"Something went wrong (reference {correlation_id}).")
+
+
+def _where(error: BaseException) -> str:
+    """Stack as 'file.py:line:function <- ...' with no source code and no exception message."""
+    frames = traceback.extract_tb(error.__traceback__)
+    return " <- ".join(f"{os.path.basename(f.filename)}:{f.lineno}:{f.name}" for f in reversed(frames))
 
 
 def _error(status: int, code: str, message: str):
