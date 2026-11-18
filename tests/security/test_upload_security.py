@@ -1,5 +1,6 @@
 # pyright: reportMissingImports=false
 """Unit tests for securewaste.core.upload.validate_upload."""
+
 from __future__ import annotations
 
 import pytest

@@ -1,4 +1,5 @@
 """Security tests ST-06 (CSRF) and ST-11 (headers) from docs/04-threat-model.md, plus safe errors."""
+
 from __future__ import annotations
 
 import io

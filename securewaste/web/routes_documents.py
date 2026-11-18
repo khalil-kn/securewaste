@@ -124,8 +124,11 @@ def upload_document():
             ),
         ), 400
 
-    except OSError:
-        current_app.logger.exception("Unable to store or read uploaded document")
+    except OSError as error:
+        current_app.logger.error(
+            "Unable to store or read uploaded document: %s",
+            type(error).__name__,
+        )
 
         return render_template(
             "upload.html",

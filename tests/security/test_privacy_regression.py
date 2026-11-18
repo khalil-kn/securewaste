@@ -1,4 +1,5 @@
 """Privacy tests for POST /documents with real .txt and .pdf uploads."""
+
 from __future__ import annotations
 
 import io
@@ -13,7 +14,7 @@ except ImportError:  # older PyMuPDF
 EMAIL = "alice.secret@example.com"
 PHONE = "(202) 555-0104"
 KEYWORD = "CONFIDENTIAL"
-TOKEN = "SECRET_TOKEN_998877"
+TOKEN = "SECRET_TOKEN_998877"  # noqa: S105 - Synthetic test data
 
 # How your UI shows the masked email (from your screenshot). Adjust if you change masking.
 MASKED_EMAIL = "a\u2022\u2022\u2022@e\u2022\u2022\u2022.com"
@@ -101,9 +102,7 @@ def test_error_messages_do_not_leak_payload_content(client, filename, payload):
 
 
 @pytest.mark.parametrize("filename, payload", BAD_UPLOADS)
-def test_rejected_upload_does_not_leak_sensitive_data_in_logs(
-    client, caplog, capfd, filename, payload
-):
+def test_rejected_upload_does_not_leak_sensitive_data_in_logs(client, caplog, capfd, filename, payload):
     with caplog.at_level("DEBUG"):
         upload(client, filename, payload)
 
@@ -114,9 +113,7 @@ def test_rejected_upload_does_not_leak_sensitive_data_in_logs(
 
 
 def test_xss_escaping_in_filename(client):
-    html = upload(client, "<script>alert('xss')</script>.txt", b"Normal text, no PII.").get_data(
-        as_text=True
-    )
+    html = upload(client, "<script>alert('xss')</script>.txt", b"Normal text, no PII.").get_data(as_text=True)
     assert "<script>alert" not in html
     assert "alert('xss')" not in html
 
