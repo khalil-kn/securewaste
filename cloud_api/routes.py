@@ -15,7 +15,7 @@ from cloud_api.auth import (
     require_permission,
     resolve_owner_id,
 )
-from cloud_api.db import DuplicateEventError, insert_scan_event, open_connection
+from cloud_api.db import DuplicateEventError, get_scan_event, insert_scan_event, open_connection
 from cloud_api.validation import PayloadError, parse_scan_payload
 
 psycopg = import_module("psycopg")
@@ -75,6 +75,15 @@ def store_scan():
                 employee_id=owner_id,
             )
     except DuplicateEventError:
+        try:
+            with open_connection(current_app.config["CLOUD_DATABASE_URL"]) as connection:
+                existing = get_scan_event(connection, event.event_id)
+        except psycopg.OperationalError:
+            return _error("database_unavailable", "the database is not reachable"), 503
+
+        if existing is None or str(existing.get("employee_id")) != owner_id:
+            return _error("not_found", "the scan event was not found"), 404
+
         return _error("duplicate_event", "this event_id has already been stored"), 409
     except psycopg.OperationalError:
         return _error("database_unavailable", "the database is not reachable"), 503

@@ -205,3 +205,60 @@ def test_a_duplicate_event_is_still_a_conflict_for_the_same_employee(client, new
     event = new_event()
     assert client.post(SCANS, json=event, headers=bearer("employee_a")).status_code == 201
     assert client.post(SCANS, json=event, headers=bearer("employee_a")).status_code == 409
+
+
+def test_successful_scan_responses_are_not_cacheable(client, new_event, bearer):
+    headers = bearer("employee_a")
+
+    created = client.post(SCANS, json=new_event(), headers=headers)
+    assert created.status_code == 201
+    assert created.headers["Cache-Control"] == "no-store"
+
+    event_id = created.get_json()["event_id"]
+    response = client.get(f"{SCANS}/{event_id}", headers=headers)
+
+    assert response.status_code == 200
+    assert response.headers["Cache-Control"] == "no-store"
+
+
+def test_cross_employee_denial_is_not_cacheable(client, new_event, bearer):
+    created = client.post(SCANS, json=new_event(), headers=bearer("employee_a"))
+    assert created.status_code == 201
+
+    event_id = created.get_json()["event_id"]
+    response = client.get(f"{SCANS}/{event_id}", headers=bearer("employee_b"))
+
+    assert response.status_code == 404
+    assert response.headers["Cache-Control"] == "no-store"
+
+
+def test_cross_employee_duplicate_event_is_not_acknowledged(client, new_event, bearer):
+    event = new_event()
+
+    created = client.post(SCANS, json=event, headers=bearer("employee_a"))
+    assert created.status_code == 201
+
+    duplicate = client.post(SCANS, json=event, headers=bearer("employee_b"))
+    assert duplicate.status_code == 404
+
+    stored = client.get(f"{SCANS}/{event['event_id']}", headers=bearer("employee_a"))
+    assert stored.status_code == 200
+    assert stored.get_json()["employee_id"] == EMPLOYEE_A
+
+
+def test_legacy_duplicate_event_is_not_acknowledged(client, new_event, bearer, db_connection):
+    event = new_event()
+
+    db_connection.execute(
+        """
+        INSERT INTO scan_events (
+            event_id, event_timestamp, classification, risk,
+            email_count, phone_count, keyword_count, employee_id
+        ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
+        """,
+        (event["event_id"], datetime.now(UTC), "Internal", None, 0, 0, 0, None),
+    )
+    db_connection.commit()
+
+    response = client.post(SCANS, json=event, headers=bearer("employee_a"))
+    assert response.status_code == 404

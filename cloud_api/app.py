@@ -35,6 +35,11 @@ def create_app(
     init_auth(app)  # must run after app.config.update, before serving requests
     app.register_blueprint(bp)
 
+    @app.after_request
+    def prevent_response_caching(response):
+        response.headers["Cache-Control"] = "no-store"
+        return response
+
     @app.errorhandler(413)
     def payload_too_large(_error):
         return jsonify({"error": "payload_too_large", "message": "the request body is too large"}), 413
