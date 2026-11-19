@@ -64,7 +64,7 @@ def test_unexpected_error_hides_details(app_factory):
 
 
 def test_unexpected_error_does_not_log_sensitive_values(app_factory, caplog):
-    """Needs install_log_redaction() (privacy.py) to be called in create_app()."""
+    """Unexpected application errors must not expose sensitive values in logs."""
     app = app_factory(PROPAGATE_EXCEPTIONS=False)
 
     @app.get("/_boom")
