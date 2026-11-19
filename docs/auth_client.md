@@ -26,7 +26,7 @@ Authorization: Bearer swt_xxxxxxxx
 1. **Do not send `employee_id`.** The server takes the owner from the token. A body that contains
    `employee_id` is rejected with 400.
 2. Send only the contract keys: `event_id`, `timestamp`, `classification`, `risk`, `counts`.
-3. Read the token from config or an environment variable (for example `SECUREWASTE_API_TOKEN`).
+3. Read the token from config or an environment variable (for example `CLOUD_API_TOKEN`).
    Never put it in source code, the repository, a URL or a log. Redact the `Authorization`
    header in client logs.
 4. Do not cache API responses.
