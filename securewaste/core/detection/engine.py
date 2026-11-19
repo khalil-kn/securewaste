@@ -17,20 +17,16 @@ Two details keep that guarantee honest:
 
 from __future__ import annotations
 
-import re
-
-from securewaste.core.detection.catalogue import CATALOGUE, Category
-from securewaste.core.detection.masking import mask, value_hmac
+from securewaste.core.detection.catalogue import CATALOGUE
+from securewaste.core.detection.masking import (
+    _context_window,
+    _mask_page,
+    _translate,
+    value_hmac,
+)
 from securewaste.core.detection.models import Finding
 from securewaste.core.detection.rules.base import DetectionRule
 from securewaste.core.extraction import PageText
-
-_CONTEXT_MARGIN = 30
-
-# Safety net for values no rule detected (the bullet is excluded so masks are never re-masked).
-_EMAIL_RE = re.compile(r"[A-Za-z0-9._%+\-]+@[A-Za-z0-9\-]+(?:\.[A-Za-z0-9\-]+)*\.[A-Za-z]{2,}")
-_DIGIT_RUN_RE = re.compile(r"(?<![\w\u2022])\+?\(?\d[\d\s().\-]{6,}\d(?![\w\u2022])")
-_ISO_DATE_RE = re.compile(r"\d{4}-\d{2}-\d{2}")
 
 
 def mask_text(text: str, rules: list[DetectionRule]) -> str:
@@ -78,7 +74,7 @@ class DetectionEngine:
                     page_number=candidate.page_number,
                     char_start=candidate.char_start,
                     char_end=candidate.char_end,
-                    masked_value=mask(candidate.category, candidate.raw_value),
+                    masked_value=masked_text[ctx_start:ctx_end],
                     value_hmac=fingerprint,
                     context=_context_window(masked_text, ctx_start, ctx_end),
                     explanation=info.explanation,
@@ -90,87 +86,3 @@ class DetectionEngine:
                 by_fingerprint[key] = finding
 
         return findings
-
-
-# ---------------------------------------------------------------- masking --
-def _spans(text: str, candidates) -> list[tuple[int, int, Category]]:
-    """Every range to mask: each candidate's own range plus every other occurrence of its value."""
-    raw: list[tuple[int, int, Category]] = []
-    for c in candidates:
-        if 0 <= c.char_start < c.char_end <= len(text):
-            raw.append((c.char_start, c.char_end, c.category))
-        if c.raw_value:
-            i = text.find(c.raw_value)
-            while i != -1:
-                raw.append((i, i + len(c.raw_value), c.category))
-                i = text.find(c.raw_value, i + 1)
-
-    raw.sort(key=lambda t: (t[0], -(t[1] - t[0])))
-    merged: list[tuple[int, int, Category]] = []
-    for start, end, category in raw:
-        if merged and start < merged[-1][1]:  # overlaps the previous range: extend it
-            if end > merged[-1][1]:
-                merged[-1] = (merged[-1][0], end, merged[-1][2])
-        else:
-            merged.append((start, end, category))
-    return merged
-
-
-def _mask_page(text: str, candidates) -> tuple[str, list[tuple[int, int, int, int]]]:
-    """Return (masked text, mapping) where mapping rows are (orig_start, orig_end, masked_start, masked_end)."""
-    pieces: list[str] = []
-    mapping: list[tuple[int, int, int, int]] = []
-    pos = 0
-    out_len = 0
-    for start, end, category in _spans(text, candidates):
-        pieces.append(text[pos:start])
-        out_len += start - pos
-        masked = mask(category, text[start:end])
-        mapping.append((start, end, out_len, out_len + len(masked)))
-        pieces.append(masked)
-        out_len += len(masked)
-        pos = end
-    pieces.append(text[pos:])
-    return "".join(pieces), mapping
-
-
-def _translate(mapping: list[tuple[int, int, int, int]], pos: int, *, is_end: bool) -> int:
-    """Convert a position in the ORIGINAL text into the matching position in the MASKED text."""
-    delta = 0
-    for start, end, masked_start, masked_end in mapping:
-        if pos >= end:
-            delta = masked_end - end
-            continue
-        if pos < start or (is_end and pos == start):
-            break
-        return masked_end if is_end else masked_start  # inside a masked value
-    return pos + delta
-
-
-# ---------------------------------------------------------------- context --
-def _context_window(masked_text: str, start: int, end: int) -> str:
-    """A ±30-character window of the already-masked text, cut on word boundaries and scrubbed."""
-    lo = max(0, start - _CONTEXT_MARGIN)
-    hi = min(len(masked_text), end + _CONTEXT_MARGIN)
-
-    while 0 < lo < start and not masked_text[lo - 1].isspace():  # don't start mid-word
-        lo += 1
-    while end < hi < len(masked_text) and not masked_text[hi].isspace():  # don't end mid-word
-        hi -= 1
-
-    window = " ".join(masked_text[lo:hi].split())
-    return _scrub_unrecognised(window)
-
-
-def _scrub_unrecognised(text: str) -> str:
-    """Mask e-mail addresses and phone-like numbers that no rule detected (defence in depth)."""
-    text = _EMAIL_RE.sub(lambda m: mask(Category.EMAIL, m.group()), text)
-
-    def _digits(match: re.Match) -> str:
-        run = match.group()
-        digits = sum(ch.isdigit() for ch in run)
-        if not 8 <= digits <= 19 or _ISO_DATE_RE.fullmatch(run.strip()):
-            return run
-        return mask(Category.PHONE, run)
-
-    return _DIGIT_RUN_RE.sub(_digits, text)
