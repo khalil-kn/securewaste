@@ -184,6 +184,22 @@ Every step that adds points also adds a human-readable **reason** (e.g. "+38 Pay
 
 **Confidence** (0–1, shown as Low < 0.5 ≤ Medium < 0.8 ≤ High): each rule declares a base value and adjustments, e.g. card pattern 0.30 → 0.95 if Luhn passes (discarded if it fails); IBAN 0.40 → 0.95 if mod-97 passes; phone 0.50, +0.20 with a context word ("tel", "phone", "GSM", "mobile"); provider-specific secret prefix 0.90, generic `api_key = "…"` assignment 0.60; national ID only reported when a context word ("CIN", "carte d'identité", "national ID") is within 40 characters. Low-confidence findings drop one severity level.
 
+**Implementation notes (SCRUM-46, `core/risk.py`)**
+
+- Risk is computed **only from findings**. The classification label (Public … Highly Confidential) is never an input; the two are shown and stored separately.
+- "Distinct" means a distinct `value_hmac`. The same value repeated in the text or on several pages counts once; more than 3 extra distinct values per category add nothing.
+- Rounding is half-up (24.5 → 25), so a boundary never depends on Python's banker's rounding.
+- Rounding, the cap at 100 and the floors are recorded as factors, so the factor points always add up to the score.
+- Output carries `score_version` (`additive-1+<RULESET_VERSION>`); bump `RISK_MODEL_VERSION` when the algorithm changes and `RULESET_VERSION` when a number changes.
+- Reasons and recommendations are catalogue text plus counts only; no masked value, context, HMAC, path or page text.
+
+**Limitations**
+
+- Weights are team judgement calls, not measured; they must be revisited with real feedback.
+- The score can only be as good as the detection rules: with only e-mail and phone rules wired, no real document can score above *low*.
+- Findings marked *resolved* still count (the original document still contains them); only *false_positive* is excluded.
+- Not comparable with other tools' scores and not a compliance score.
+
 ## 9. Module structure
 
 ```

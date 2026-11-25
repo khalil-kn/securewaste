@@ -67,11 +67,11 @@
         <span class="sr-label">Document classification &middot; automated estimate</span>
         <h2 id="sr-class-title" class="sr-class-label">{{ classification.label }}</h2>
         <div class="sr-tags">
-          {# Risk badge hidden for now (tech lead decision). The level is still computed; set to true to show it again. #}
+          {# Risk badge hidden until the risk display is approved (SCRUM-46 M4). Risk comes from core.risk.assess, never from the label. #}
           {% set show_risk_badge = false %}
-          {% if show_risk_badge %}
-          <span class="sw-meter sw-meter-{{ classification.risk_level }}" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
-          <span class="sw-pill sw-pill-sev-{{ classification.risk_level }}">Risk level: {{ classification.risk_level|title }}</span>
+          {% if show_risk_badge and risk %}
+          <span class="sw-meter sw-meter-{{ risk.level }}" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+          <span class="sw-pill sw-pill-sev-{{ risk.level }}">Risk level: {{ risk.level|title }} ({{ risk.score }}/100)</span>
           {% endif %}
           {% if classification.requires_review %}<span class="sw-pill sw-pill-sev-high">Human review required</span>{% endif %}
         </div>

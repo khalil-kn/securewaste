@@ -1,20 +1,13 @@
-"""Risk guidance for the results page: turns the classifier's label into a risk level, explanation and action.
+"""Classification guidance for the results page: explanation and recommended action for the classifier's label.
 
-Works on the dict from predict_classification_v3_dict. Text is fixed and reviewable, never built from the
-document, and nothing here reads or logs document content.
+Works on the dict from predict_classification_v3_dict. It does NOT produce a risk level: document risk is
+computed separately from the findings by securewaste.core.risk.assess (SCRUM-46), never from the label.
+Text is fixed and reviewable, never built from the document, and nothing here reads or logs document content.
 """
 
 from __future__ import annotations
 
 from securewaste.core.ml_classifier import REVIEW_THRESHOLD
-
-# Label -> level. The level reuses the sr-severity-* CSS classes.
-LEVELS = {
-    "Public": "informational",
-    "Internal": "low",
-    "Confidential": "high",
-    "Highly Confidential": "critical",
-}
 
 RECOMMENDATIONS = {
     "Public": "No action needed. Share only after a quick manual check.",
@@ -33,7 +26,7 @@ DECISION_NOTES = {
 
 
 def risk_guidance(classification: dict, occurrences: int) -> dict:
-    """Return risk_level, explanation and recommendation for a classification dict."""
+    """Return explanation, recommendation and the low-confidence flag for a classification dict."""
     label = classification["label"]
     parts = [
         (
@@ -52,7 +45,6 @@ def risk_guidance(classification: dict, occurrences: int) -> dict:
     return {
         # Below the classifier's own review threshold: a human must check the label before sharing.
         "low_ml_confidence": ml_confidence is not None and ml_confidence < REVIEW_THRESHOLD,
-        "risk_level": LEVELS[label],
         "explanation": " ".join(p for p in parts if p),
         "recommendation": RECOMMENDATIONS[label],
     }

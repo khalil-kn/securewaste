@@ -7,6 +7,7 @@ from werkzeug.exceptions import RequestEntityTooLarge
 
 from securewaste.core.errors import ExtractionFailed, UploadRejected
 from securewaste.core.ml_classifier import predict_classification_v3_dict
+from securewaste.core.risk import assess
 from securewaste.core.upload import Limits, validate_upload
 from securewaste.services.classify_service import risk_guidance
 from securewaste.services.detect_service import scan_file
@@ -103,14 +104,18 @@ def upload_document():
             current_app.logger.warning("Document classification unavailable: %s", type(error).__name__)
             classification = None
 
-        # 5. Optional metadata-only sync. A cloud failure never hides the local result.
+        # 5. Document risk comes from the findings only, so it exists even when classification fails.
+        risk = assess(findings).to_dict()
+
+        # 6. Optional metadata-only sync. A cloud failure never hides the local result.
         sync = sync_scan(config, classification, findings)
 
-        # 6. Display masked findings, classification and the sync status.
+        # 7. Display masked findings, classification, risk and the sync status.
         return render_template(
             "detect.html",
             findings=findings,
             classification=classification,
+            risk=risk,
             sync=sync,
             error=None,
         ), 200

@@ -1,4 +1,4 @@
-"""Risk level, explanation and recommendation added on top of the hybrid classification card."""
+"""Classification guidance (explanation, recommendation) on the results card. Risk is NOT derived from the label."""
 
 import io
 from unittest.mock import patch
@@ -8,7 +8,8 @@ import pytest
 
 from securewaste import create_app
 from securewaste.core.extraction import PageText
-from securewaste.services.classify_service import LEVELS, RECOMMENDATIONS, risk_guidance
+from securewaste.core.risk import assess
+from securewaste.services.classify_service import RECOMMENDATIONS, risk_guidance
 
 V3 = "securewaste.web.routes_documents.predict_classification_v3_dict"
 
@@ -17,11 +18,12 @@ def v3(label, source="ml", confidence=0.874):
     return {"label": label, "confidence": confidence, "decision_source": source}
 
 
-@pytest.mark.parametrize("label", list(LEVELS))
-def test_every_label_has_level_and_recommendation(label):
+@pytest.mark.parametrize("label", list(RECOMMENDATIONS))
+def test_every_label_has_recommendation_but_no_risk_level(label):
     g = risk_guidance(v3(label), 0)
-    assert g["risk_level"] == LEVELS[label] and g["recommendation"] == RECOMMENDATIONS[label]
+    assert g["recommendation"] == RECOMMENDATIONS[label]
     assert "87% confidence" in g["explanation"]
+    assert "risk_level" not in g  # SCRUM-46: no mapping from classification to risk
 
 
 def test_explanation_covers_source_and_findings():
@@ -70,9 +72,18 @@ def test_results_page_shows_guidance_without_leaking_values(tmp_path):
     assert "sana@example.tn" not in body and ' style="' not in body
 
 
-def test_risk_badge_is_hidden_but_still_computed(tmp_path):
+def test_risk_badge_is_hidden(tmp_path):
     assert "Risk level" not in render(tmp_path)
-    assert risk_guidance(v3("Highly Confidential"), 0)["risk_level"] == "critical"
+
+
+@pytest.mark.parametrize("label", list(RECOMMENDATIONS))
+def test_risk_ignores_the_classification_label(tmp_path, label):
+    # Same findings (one e-mail) under every label: the route must compute the same risk each time.
+    with patch("securewaste.web.routes_documents.assess", wraps=assess) as spy:
+        render(tmp_path / label.replace(" ", "_"), label=label)
+    (findings,), _ = spy.call_args
+    assert [f.category for f in findings] == ["email"]
+    assert assess(findings).level == "informational"
 
 
 @pytest.mark.parametrize(
