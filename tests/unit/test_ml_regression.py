@@ -169,11 +169,19 @@ def test_risk_does_not_change_when_only_the_label_changes(monkeypatch):
     assert risks[0] == risks[1] == risks[2]
 
 
-def test_highly_confidential_label_does_not_create_risk_on_its_own():
-    # Classification says Highly Confidential; with no findings from the detection engine, risk stays 0.
-    # (Secret detection rules are not wired into the engine yet: see docs/risk-contract.md.)
-    assert predict_classification_v3_dict(AWS_KEY)["label"] == "Highly Confidential"
-    assert assess(detect_pages([PageText(page_number=1, text=AWS_KEY)], [], 0.3, HMAC_KEY)).score == 0
+def test_highly_confidential_label_does_not_create_risk_on_its_own(monkeypatch):
+    # The classifier may call a harmless text Highly Confidential; with no findings, risk stays 0.
+    text = "The museum opens at nine and closes at six."
+    fake_ml(monkeypatch, "Highly Confidential", 0.95)
+    assert predict_classification_v3_dict(text)["label"] == "Highly Confidential"
+    assert assess(detect_pages([PageText(page_number=1, text=text)], [], 0.3, HMAC_KEY)).score == 0
+
+
+def test_a_detected_secret_makes_risk_critical_whatever_the_label(monkeypatch):
+    fake_ml(monkeypatch, "Public", 0.97)
+    findings = detect_pages([PageText(page_number=1, text=AWS_KEY)], [], 0.3, HMAC_KEY)
+    assert [f.category for f in findings] == ["secret"]
+    assert assess(findings).level == "critical"
 
 
 # --- the report ------------------------------------------------------------------------------

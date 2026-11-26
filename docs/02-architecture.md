@@ -196,7 +196,7 @@ Every step that adds points also adds a human-readable **reason** (e.g. "+38 Pay
 **Limitations**
 
 - Weights are team judgement calls, not measured; they must be revisited with real feedback.
-- The score can only be as good as the detection rules: with only e-mail and phone rules wired, no real document can score above *low*.
+- The score can only be as good as the detection rules. Wired: e-mail, phone, keyword, payment card (Luhn), IBAN (mod-97), secrets, confidentiality labels. Not yet: national ID and passport (format and scope not decided), so those categories never contribute.
 - Findings marked *resolved* still count (the original document still contains them); only *false_positive* is excluded.
 - Not comparable with other tools' scores and not a compliance score.
 

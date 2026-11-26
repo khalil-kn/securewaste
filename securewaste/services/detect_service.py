@@ -12,14 +12,17 @@ from typing import Literal
 
 from securewaste.core.detection.engine import DetectionEngine
 from securewaste.core.detection.rules.email import EmailRule
+from securewaste.core.detection.rules.financial import IbanRule, PaymentCardRule
 from securewaste.core.detection.rules.keywords import KeywordRule
+from securewaste.core.detection.rules.label import ConfidentialityLabelRule
 from securewaste.core.detection.rules.phone import PhoneRule
+from securewaste.core.detection.rules.secret import SecretRule
 from securewaste.core.extraction import PageText, extract_pages
 from securewaste.core.upload import Limits
 
 
 def _build_rules(keywords: list[str]):
-    rules = [EmailRule(), PhoneRule()]
+    rules = [EmailRule(), PhoneRule(), PaymentCardRule(), IbanRule(), SecretRule(), ConfidentialityLabelRule()]
     if keywords:
         rules.append(KeywordRule(keywords))
     return rules

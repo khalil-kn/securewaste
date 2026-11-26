@@ -18,6 +18,7 @@ from securewaste.services.sync_service import build_event, send_event, sync_scan
 
 TOKEN = "test-token-not-a-real-secret"  # noqa: S105
 ALLOWED_KEYS = {"event_id", "timestamp", "classification", "counts"}
+RESULTS_PAGE_KEYS = ALLOWED_KEYS | {"risk"}  # the page syncs approved risk (SCRUM-46); risk is on by default
 FINDINGS = [
     SimpleNamespace(category=Category.EMAIL, occurrences=2),
     SimpleNamespace(category=Category.PHONE, occurrences=1),
@@ -190,7 +191,7 @@ def test_page_shows_stored_only_after_a_201(tmp_path, cloud):
     ).get_data(as_text=True)
     assert "Metadata stored in the cloud." in body
     sent = json.loads(server.requests[0]["body"])
-    assert set(sent) == ALLOWED_KEYS
+    assert set(sent) == RESULTS_PAGE_KEYS and sent["risk"] in {"Low", "Medium", "High"}
     raw = server.requests[0]["body"].decode()
     assert "sana@example.tn" not in raw and "secret-name" not in raw and "Contact" not in raw
 

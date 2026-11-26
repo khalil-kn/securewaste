@@ -161,7 +161,7 @@ def assess(findings: list[Finding]) -> RiskAssessment:
     if score != raw:
         factors.append(RiskFactor("rounding", score - raw, f"{_points(score - raw)} Rounded to a whole number"))
     if score > 100:
-        factors.append(RiskFactor("cap", 100 - score, "Score capped at 100"))
+        factors.append(RiskFactor("cap", 100 - score, f"{_points(100 - score)} Score capped at 100"))
         score = 100
 
     floors = []

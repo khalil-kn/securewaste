@@ -72,8 +72,10 @@ def test_results_page_shows_guidance_without_leaking_values(tmp_path):
     assert "sana@example.tn" not in body and ' style="' not in body
 
 
-def test_risk_badge_is_hidden(tmp_path):
-    assert "Risk level" not in render(tmp_path)
+def test_risk_is_shown_by_default_and_can_be_turned_off(tmp_path, monkeypatch):
+    assert "Risk level" in render(tmp_path / "on")
+    monkeypatch.setenv("SECUREWASTE_RISK_APPROVED", "false")
+    assert "Risk level" not in render(tmp_path / "off")
 
 
 @pytest.mark.parametrize("label", list(RECOMMENDATIONS))
@@ -115,6 +117,7 @@ def test_results_page_survives_classifier_failure(tmp_path, caplog):
         )
     body = r.get_data(as_text=True)
     assert r.status_code == 200
-    assert "Document classification is unavailable" in body and "Risk level" not in body
+    assert "Document classification is unavailable" in body
+    assert "Risk level" in body  # risk comes from findings, so it survives a classifier failure
     assert "s•••@e•••.tn" in body and "sana@example.tn" not in body
     assert "RuntimeError" in caplog.text and leak_marker not in caplog.text

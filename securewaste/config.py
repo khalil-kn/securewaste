@@ -49,8 +49,9 @@ def load_config(instance_path: str) -> dict:
         "CLOUD_API_URL": os.environ.get("CLOUD_API_URL", "").strip().rstrip("/"),
         "CLOUD_API_TOKEN": os.environ.get("CLOUD_API_TOKEN", "").strip(),
         "SYNC_TIMEOUT_SECONDS": float(os.environ.get("SYNC_TIMEOUT_SECONDS", "3")),
-        # Document risk (SCRUM-46) is always computed, but shown and synced only once approved. Off by default.
-        "RISK_APPROVED": os.environ.get("SECUREWASTE_RISK_APPROVED", "false").strip().lower() == "true",
+        # Document risk (SCRUM-46): shown on the results page and its level synced. On by default now that
+        # secret, card, IBAN and label detection exist; set to false to hide and stop syncing it.
+        "RISK_APPROVED": os.environ.get("SECUREWASTE_RISK_APPROVED", "true").strip().lower() == "true",
         # Cookie hardening (NFR-02). SESSION_COOKIE_SECURE stays off: the MVP runs on plain HTTP localhost.
         "SESSION_COOKIE_HTTPONLY": True,
         "SESSION_COOKIE_SAMESITE": "Lax",

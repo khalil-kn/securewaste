@@ -22,6 +22,7 @@ def mask(category: Category, value: str) -> str:
       * e-mail     -> "s•••@e•••.tn"  (first char + bullets for local and SLD, keep TLD)
       * phone      -> keep the last two digits, bullet the rest (separators preserved)
       * keyword    -> shown as-is
+      * confidentiality label -> fully hidden (the category already says what it is)
     Any unexpected category falls back to hiding everything by the last four characters.
     """
     if category is Category.SECRET:
@@ -30,6 +31,8 @@ def mask(category: Category, value: str) -> str:
         return _mask_email(value)
     if category is Category.PHONE:
         return _mask_phone(value)
+    if category is Category.CONFIDENTIALITY_LABEL:  # hidden like other values (privacy regression test, SCRUM-18)
+        return "\u2022" * 6
     if category is Category.KEYWORD:
         return value
     # Conservative fallback: keep only the last four characters.
@@ -132,6 +135,8 @@ def _spans(text: str, candidates) -> list[tuple[int, int, Category]]:
             previous_start, previous_end, previous_category = merged[-1]
             if previous_category == category:
                 chosen = category
+            elif {previous_category, category} == {Category.KEYWORD, Category.CONFIDENTIALITY_LABEL}:
+                chosen = Category.KEYWORD  # an admin-configured keyword stays visible, even if it is also a label
             elif previous_category is Category.KEYWORD:
                 chosen = category
             elif category is Category.KEYWORD:

@@ -36,6 +36,28 @@ def mask_text(text: str, rules: list[DetectionRule]) -> str:
     return _mask_page(text, candidates)[0]
 
 
+def _drop_nested(candidates) -> list:
+    """Drop a candidate that lies inside a MORE sensitive candidate of another category.
+
+    Example: "4111 1111" inside the card "4111 1111 1111 1111" also looks like a phone number;
+    reporting it would double-count the same digits. Keywords are never dropped (admin-configured).
+    """
+    candidates = list(candidates)
+    weight = {c: CATALOGUE[c.category].weight for c in candidates}
+    return [
+        c
+        for c in candidates
+        if c.category.value == "keyword"
+        or not any(
+            o.category != c.category
+            and weight[o] > weight[c]
+            and o.char_start <= c.char_start
+            and c.char_end <= o.char_end
+            for o in candidates
+        )
+    ]
+
+
 class DetectionEngine:
     def __init__(self, rules: list[DetectionRule], min_confidence: float, hmac_key: bytes):
         self.rules = rules
@@ -47,7 +69,7 @@ class DetectionEngine:
         by_fingerprint: dict[tuple, Finding] = {}
 
         for page in pages:
-            candidates = [candidate for rule in self.rules for candidate in rule.find(page)]
+            candidates = _drop_nested(candidate for rule in self.rules for candidate in rule.find(page))
             masked_text, mapping = _mask_page(page.text, candidates)
 
             for candidate in candidates:
