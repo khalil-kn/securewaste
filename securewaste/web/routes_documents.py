@@ -105,10 +105,11 @@ def upload_document():
             classification = None
 
         # 5. Document risk comes from the findings only, so it exists even when classification fails.
-        risk = assess(findings).to_dict()
+        #    It is shown and synced only once approved (RISK_APPROVED); until then it stays absent.
+        risk = assess(findings).to_dict() if config["RISK_APPROVED"] else None
 
         # 6. Optional metadata-only sync. A cloud failure never hides the local result.
-        sync = sync_scan(config, classification, findings)
+        sync = sync_scan(config, classification, findings, risk)
 
         # 7. Display masked findings, classification, risk and the sync status.
         return render_template(

@@ -62,17 +62,32 @@
   </div>
 
   <aside class="sw-col-4 sw-stack sr-summary">
+    {# Document risk (SCRUM-46): computed from the findings by core.risk.assess, never from the classification
+       label. Shown in its own card, and only when RISK_APPROVED is on; otherwise `risk` is None. #}
+    {% if risk %}
+      <section class="sw-card sw-stack" aria-labelledby="sr-risk-title">
+        <span class="sr-label">Document risk &middot; application-defined estimate</span>
+        <h2 id="sr-risk-title" class="sr-class-label">{{ risk.level|title }} <span class="sw-num">{{ risk.score }}/100</span></h2>
+        <div class="sr-tags">
+          <span class="sw-meter sw-meter-{{ 'off' if risk.level == 'informational' else risk.level }}" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+          <span class="sw-pill sw-pill-sev-{{ risk.level }}">Risk level: {{ risk.level|title }}</span>
+        </div>
+        <div><strong>Why this score</strong>
+          <ul class="sw-secondary">{% for reason in risk.reasons %}<li>{{ reason }}</li>{% endfor %}</ul>
+        </div>
+        {% if risk.recommendations %}
+        <div class="sr-reco"><strong>Recommended actions</strong>
+          <ul class="sw-secondary">{% for item in risk.recommendations %}<li>{{ item }}</li>{% endfor %}</ul>
+        </div>
+        {% endif %}
+        <p class="sw-muted">Based only on the findings, not on the classification. Not a compliance score. Scoring version {{ risk.score_version }}.</p>
+      </section>
+    {% endif %}
     {% if classification %}
       <section class="sw-card sw-stack" aria-labelledby="sr-class-title">
         <span class="sr-label">Document classification &middot; automated estimate</span>
         <h2 id="sr-class-title" class="sr-class-label">{{ classification.label }}</h2>
         <div class="sr-tags">
-          {# Risk badge hidden until the risk display is approved (SCRUM-46 M4). Risk comes from core.risk.assess, never from the label. #}
-          {% set show_risk_badge = false %}
-          {% if show_risk_badge and risk %}
-          <span class="sw-meter sw-meter-{{ risk.level }}" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
-          <span class="sw-pill sw-pill-sev-{{ risk.level }}">Risk level: {{ risk.level|title }} ({{ risk.score }}/100)</span>
-          {% endif %}
           {% if classification.requires_review %}<span class="sw-pill sw-pill-sev-high">Human review required</span>{% endif %}
         </div>
         {% if classification.low_ml_confidence %}
@@ -97,11 +112,11 @@
         <h2 id="sr-sync-title" class="sw-card-title">Cloud sync</h2>
         <div class="sr-tags"><span class="sw-pill {{ 'sw-pill-sev-informational' if sync.ok else 'sw-pill-neutral' }}">{{ sync.status|replace('_',' ')|title }}</span></div>
         <p class="sw-secondary" role="status">{{ sync.message }}</p>
-        <p class="sw-muted">This is separate from the local scan, which finished. Only the event ID, timestamp, classification and aggregate counts are sent, never the document or matched values.</p>
+        <p class="sw-muted">This is separate from the local scan, which finished. Only the event ID, timestamp, classification, risk level (when approved) and aggregate counts are sent, never the document, reasons or matched values.</p>
       </section>
     {% endif %}
     <section class="sw-notice">
-      <p>The classification is an automated estimate and can be wrong. Review status is displayed only. Changing status and the rule-based document risk score require the separate review and risk features.</p>
+      <p>The classification is an automated estimate and can be wrong. Review status is displayed only; changing it requires the separate review feature. Document risk is computed from the findings, separately from the classification.</p>
     </section>
   </aside>
 </div>

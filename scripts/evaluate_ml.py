@@ -90,9 +90,7 @@ def _sha256(path: Path) -> str:
 
 
 def _detail(r: Result) -> list[str]:
-    precision, recall, f1, support = precision_recall_fscore_support(
-        r.y_true, r.y_pred, labels=LABELS, zero_division=0
-    )
+    precision, recall, f1, support = precision_recall_fscore_support(r.y_true, r.y_pred, labels=LABELS, zero_division=0)
     matrix = confusion_matrix(r.y_true, r.y_pred, labels=LABELS)
     short = ["Pub", "Int", "Conf", "HConf"]
     lines = [
@@ -137,9 +135,7 @@ def render_report(results: list[Result]) -> str:
         "| Model | Test set | Mode | Accuracy | Under-classified | Over-classified |",
         "|---|---|---|---|---|---|",
     ]
-    lines += [
-        f"| {r.model} | {r.dataset} | {r.mode} | {r.accuracy:.1%} | {r.under} | {r.over} |" for r in results
-    ]
+    lines += [f"| {r.model} | {r.dataset} | {r.mode} | {r.accuracy:.1%} | {r.under} | {r.over} |" for r in results]
     lines += [
         "",
         "*Under-classified* = predicted less sensitive than the truth (the dangerous error: a secret could be",

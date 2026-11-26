@@ -77,7 +77,8 @@ def test_risk_badge_is_hidden(tmp_path):
 
 
 @pytest.mark.parametrize("label", list(RECOMMENDATIONS))
-def test_risk_ignores_the_classification_label(tmp_path, label):
+def test_risk_ignores_the_classification_label(tmp_path, monkeypatch, label):
+    monkeypatch.setenv("SECUREWASTE_RISK_APPROVED", "true")
     # Same findings (one e-mail) under every label: the route must compute the same risk each time.
     with patch("securewaste.web.routes_documents.assess", wraps=assess) as spy:
         render(tmp_path / label.replace(" ", "_"), label=label)

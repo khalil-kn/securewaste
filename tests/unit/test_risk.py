@@ -187,6 +187,20 @@ def test_recommendations_come_from_catalogue_and_include_manual_review():
     assert any("manual review" in r for r in result.recommendations)
 
 
+def test_listed_reasons_add_up_to_the_score():
+    # Each reason shows one decimal and rounding is listed when visible, so a reader can check the sum.
+    findings = [
+        f(Category.KEYWORD, 0.6),
+        f(Category.PHONE, 0.7),
+        f(Category.EMAIL, 0.8, value="a"),
+        f(Category.EMAIL, 0.8, value="b"),
+    ]
+    result = assess(findings)
+    shown = sum(float(reason.split()[0]) for reason in result.reasons)
+    assert math.isclose(shown, result.score, abs_tol=0.051 * len(result.reasons))
+    assert result.score == 10 and any("Rounded" in r for r in result.reasons)
+
+
 def test_score_is_versioned():
     assert assess([]).score_version == SCORE_VERSION
     assert assess([]).to_dict()["score_version"] == SCORE_VERSION

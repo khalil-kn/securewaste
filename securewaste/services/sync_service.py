@@ -1,7 +1,8 @@
 """Optional metadata sync to the cloud API (SCRUM-30).
 
-Sends ONLY what cloud_api/validation.py allows: event_id, timestamp, classification and
-aggregate counts. Never the document, its text, file name, matched values, or the token in logs.
+Sends ONLY what cloud_api/validation.py allows: event_id, timestamp, classification, the risk
+level when approved, and aggregate counts. Never the document, its text, file name, matched values,
+or the token in logs.
 A cloud error never stops the local result: every failure becomes a status the page can show.
 """
 
@@ -19,6 +20,16 @@ log = logging.getLogger(__name__)
 
 COUNT_KEYS = ("email", "phone", "keyword")
 LOCAL_HOSTS = {"127.0.0.1", "localhost", "::1"}
+
+# Local risk has five levels (core/risk.py); the cloud column accepts three (cloud_api/validation.py RISKS).
+# Only the level crosses the boundary: never the score, reasons, factors or recommendations.
+CLOUD_RISK = {
+    "informational": "Low",
+    "low": "Low",
+    "medium": "Medium",
+    "high": "High",
+    "critical": "High",
+}
 
 # Status codes the page can show. "stored" is used only after a 201 from the server.
 MESSAGES = {
@@ -49,19 +60,26 @@ class SyncResult:
         return self.status in ("stored", "already_stored")
 
 
-def build_event(classification: dict, findings: list) -> dict:
-    """The metadata-only payload. Nothing else from the scan is ever added to it."""
+def build_event(classification: dict, findings: list, risk: dict | None = None) -> dict:
+    """The metadata-only payload. Nothing else from the scan is ever added to it.
+
+    `risk` is the approved RiskAssessment.to_dict(), or None. When None the key is left out, which the
+    cloud stores as NULL (the same as scans made before Sprint 4).
+    """
     counts = dict.fromkeys(COUNT_KEYS, 0)
     for finding in findings:
         key = finding.category.value
         if key in counts:
             counts[key] += finding.occurrences
-    return {
+    event = {
         "event_id": str(uuid.uuid4()),
         "timestamp": datetime.now(UTC).isoformat(),
         "classification": classification["label"],
         "counts": counts,
     }
+    if risk is not None:
+        event["risk"] = CLOUD_RISK[risk["level"]]
+    return event
 
 
 class _NoRedirect(request.HTTPRedirectHandler):
@@ -128,13 +146,13 @@ def send_event(config: dict, payload: dict) -> SyncResult:
         return SyncResult("invalid_response")
 
 
-def sync_scan(config: dict, classification: dict | None, findings: list) -> SyncResult:
+def sync_scan(config: dict, classification: dict | None, findings: list, risk: dict | None = None) -> SyncResult:
     """Entry point for the route. Logs only the status, never payloads, URLs or tokens."""
     if not config.get("SYNC_ENABLED"):
         result = SyncResult("disabled")
     elif classification is None:
         result = SyncResult("skipped")
     else:
-        result = send_event(config, build_event(classification, findings))
+        result = send_event(config, build_event(classification, findings, risk))
     log.info("Cloud sync status: %s", result.status)
     return result

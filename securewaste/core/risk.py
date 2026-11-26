@@ -89,6 +89,12 @@ def _round_half_up(value: float) -> int:
     return math.floor(value + 0.5 + 1e-9)
 
 
+def _points(value: float) -> str:
+    """Signed points with one decimal, without a useless '.0': +38, +2.7, -0.5."""
+    text = f"{value:+.1f}"
+    return text[:-2] if text.endswith(".0") else text
+
+
 def _confidence_word(confidence: float) -> str:
     return next(word for threshold, word in CONFIDENCE_LABELS if confidence >= threshold).lower()
 
@@ -113,7 +119,7 @@ def _category_factor(category: Category, confidences: list[float]) -> RiskFactor
     counted = f"{n} distinct value{'s' if n != 1 else ''}"
     if n > 1 + MAX_REPEATS:
         counted += f", only {1 + MAX_REPEATS} counted"
-    reason = f"+{_round_half_up(points)} {info.label} ({counted}, {_confidence_word(confidences[0])} confidence)"
+    reason = f"{_points(points)} {info.label} ({counted}, {_confidence_word(confidences[0])} confidence)"
     return RiskFactor(f"category:{category.value}", points, reason)
 
 
@@ -153,7 +159,7 @@ def assess(findings: list[Finding]) -> RiskAssessment:
     raw = sum(f.points for f in factors)
     score = _round_half_up(raw)
     if score != raw:
-        factors.append(RiskFactor("rounding", score - raw, "Rounded to a whole number"))
+        factors.append(RiskFactor("rounding", score - raw, f"{_points(score - raw)} Rounded to a whole number"))
     if score > 100:
         factors.append(RiskFactor("cap", 100 - score, "Score capped at 100"))
         score = 100
@@ -174,5 +180,6 @@ def assess(findings: list[Finding]) -> RiskAssessment:
         recommendations.append(MANUAL_REVIEW_RECOMMENDATION)
     recommendations = list(dict.fromkeys(recommendations))  # drop duplicates, keep order
 
-    reasons = [f.reason for f in factors if f.code != "rounding"]
+    # Show the rounding step only when it is visible at one decimal, so the listed points add up to the score.
+    reasons = [f.reason for f in factors if f.code != "rounding" or abs(f.points) >= 0.05]
     return RiskAssessment(score, level_for(score), reasons, tuple(factors), recommendations)
