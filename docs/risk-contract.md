@@ -1,6 +1,6 @@
 # Document risk: contract (SCRUM-46 / SCRUM-47)
 
-**Status: proposed by Khalil Knaissi. To be agreed with Nour (detection) and Jawed (cloud). Open points are listed at the end.**
+**Status: decided by Khalil Knaissi (SCRUM-46 owner), 26 Nov 2026. Decisions and their reasons are in section 8; challenge them in PR review.**
 
 ## 1. What risk is, and what it is not
 
@@ -95,9 +95,19 @@ Examples (real output of `assess()` on fictional findings):
 | 1 card (0.95), 1 e-mail (0.9) | 50 | high | +38 Payment card number · +2.7 E-mail address · +0.3 Rounded · +9 Minimum score of 50 for a Luhn-valid payment card |
 | e-mail, phone, card, IBAN, label | 97 | critical | +38 card · +23.8 IBAN · +10 label · +2.4 phone · +2.7 e-mail · +10 combination · +10 label with high-sensitivity data · +0.2 Rounded |
 
-## 8. Open points to agree
+## 8. Decisions
 
-1. **Nour:** card, IBAN, secret, national-ID/passport and confidentiality-label rules are not yet in the detection engine (`detect_service.py` wires only e-mail, phone, keyword; `validators.py` is a stub). Until they are, no real document can score above *low*. Who adds them, and by when?
-2. **Jawed:** confirm the 5 → 3 mapping above (especially informational → `Low` rather than omitting risk).
-3. **Team:** when to set `SECUREWASTE_RISK_APPROVED=true` (after review of this contract and the weights).
-4. **Team:** findings marked *resolved* still count (the original file still contains them). Confirm.
+1. **Risk stays OFF (`SECUREWASTE_RISK_APPROVED=false`) until the high-sensitivity detection rules exist.**
+   Today the engine only detects e-mail, phone and keywords (`detect_service.py`; `validators.py` is a stub). A
+   document with an API key or card number would therefore show **"Low"**, and a user could trust that and share
+   it. A missing score is safer than a falsely reassuring one. Turn it on in the PR that adds the secret, card,
+   IBAN and confidentiality-label rules to the engine (the hybrid classifier's `_luhn_check` / `_iban_check` can be
+   reused for `validators.py`). Those rules are detection work and are out of scope for SCRUM-46.
+2. **Cloud mapping as in section 6; `informational` is sent as `Low`, not omitted.**
+   `NULL` must keep one meaning, "risk was not assessed" (old scans, risk off), so it is never confused with
+   "assessed, nothing found". The cloud only has three levels, and `informational` is the bottom of `Low`.
+3. **The switch is a deployment setting, not a per-user choice.** It turns the card and the synced level on
+   together, so the cloud never holds a level the user was not shown.
+4. **Findings marked *resolved* still count; only *false positive* is excluded.**
+   "Resolved" means someone dealt with it, but the original file still contains the value. A redacted copy is a
+   new document and gets its own scan and score.
