@@ -172,6 +172,21 @@ class MLClassifier:
         return [self.predict(text) for text in texts]
 
 
+# A missing, empty, truncated, corrupted or incompatible model file must fall back to the rules,
+# never crash the scan (SCRUM-46 M3). pickle raises UnpicklingError / EOFError / ImportError for those,
+# which are not ValueError subclasses.
+_MODEL_LOAD_ERRORS = (
+    OSError,
+    ValueError,
+    AttributeError,
+    TypeError,
+    EOFError,
+    ImportError,
+    pickle.UnpicklingError,
+    MLClassifierError,
+)
+
+
 def _active_model_path() -> Path:
     """Optional trusted local model path; default remains unchanged."""
     configured = os.environ.get("SECUREWASTE_MODEL_PATH")
@@ -183,7 +198,7 @@ def predict_classification(text: str, model_path: Path | None = None) -> Classif
     if path.exists():
         try:
             return MLClassifier.load(path).predict(text).label
-        except (OSError, ValueError, AttributeError, TypeError, MLClassifierError):
+        except _MODEL_LOAD_ERRORS:
             pass
     from securewaste.core.classifier import predict_classification as rule_predict
 
@@ -195,7 +210,7 @@ def predict_classification_with_confidence(text: str, model_path: Path | None = 
     if path.exists():
         try:
             return MLClassifier.load(path).predict(text)
-        except (OSError, ValueError, AttributeError, TypeError, MLClassifierError):
+        except _MODEL_LOAD_ERRORS:
             pass
     from securewaste.core.classifier import predict_classification_with_confidence as rule_predict
 
